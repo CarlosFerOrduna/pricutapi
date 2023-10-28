@@ -33,15 +33,15 @@ class FileController {
 
     getFileById = async (req, res) => {
         try {
-            const { fid, pid } = req.params
+            const { fid, mid } = req.params
             if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
-            if (!pid || !isNaN(pid)) throw new Error('pid is required, or is not valid')
+            if (!mid || !isNaN(mid)) throw new Error('pid is required, or is not valid')
 
             const result = await this.fileService.getFileById(fid)
 
             const dimensions = calculateDimensions(result.file)
             const file = dxfParser(result.file)
-            const price = calculatePrice(dimensions, pid)
+            const price = await calculatePrice(dimensions, mid)
 
             return res.status(200).json({
                 status: 'success',
