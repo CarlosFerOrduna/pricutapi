@@ -1,4 +1,5 @@
 import DxfParser from 'dxf-parser'
+import MaterialService from '../services/materials.service.js'
 
 export const dxfParser = (buffer) => {
     const parser = new DxfParser()
@@ -35,4 +36,17 @@ export const calculateDimensions = (buffer) => {
         perimeterIN: (widthIN * 2 + highIN * 2).toFixed(3),
         areaIN: (widthIN * highIN).toFixed(3)
     }
+}
+
+export const calculatePrice = async (dimensions, pid) => {
+    // ac = area pieza a calcular
+    // ae = area estandar
+    // p = precio estandar
+    // ac = p . (ac/ae)
+    const materialModel = new MaterialService()
+
+    const material = await materialModel.findById(pid)
+    if (!result) throw new Error('material not exists')
+
+    return material.price * (dimensions.areaMM / material.areaStandard)
 }

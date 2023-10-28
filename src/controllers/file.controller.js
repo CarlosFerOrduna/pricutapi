@@ -1,5 +1,5 @@
 import FileService from '../services/files.service.js'
-import { calculateDimensions, dxfParser } from '../utils/dxfParser.util.js'
+import { calculateDimensions, calculatePrice, dxfParser } from '../utils/dxfParser.util.js'
 
 class FileController {
     constructor() {
@@ -33,13 +33,15 @@ class FileController {
 
     getFileById = async (req, res) => {
         try {
-            const { fid } = req.params
-            if (!fid || !isNaN(fid)) throw new Error('fid is not valid')
+            const { fid, pid } = req.params
+            if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
+            if (!pid || !isNaN(pid)) throw new Error('pid is required, or is not valid')
 
             const result = await this.fileService.getFileById(fid)
 
             const dimensions = calculateDimensions(result.file)
             const file = dxfParser(result.file)
+            const price = calculatePrice(dimensions, pid)
 
             return res.status(200).json({
                 status: 'success',
@@ -47,6 +49,7 @@ class FileController {
                 data: {
                     _id: result._id,
                     filename: result.name,
+                    price,
                     dimensions,
                     file
                 }

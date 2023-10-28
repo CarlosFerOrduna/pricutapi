@@ -29,7 +29,12 @@ export default class BaseRouter {
     }
 
     put(path, policies, ...callbacks) {
-        this.router.put(path, this.handlePolicies(policies), this.applyCallbacks(callbacks))
+        this.router.put(
+            path,
+            this.handlePolicies(policies),
+            uploader.single('file'),
+            this.applyCallbacks(callbacks)
+        )
     }
 
     delete(path, policies, ...callbacks) {
