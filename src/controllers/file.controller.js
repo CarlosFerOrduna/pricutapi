@@ -1,5 +1,7 @@
 import FileService from '../services/files.service.js'
 import { calculateDimensions, calculatePrice, dxfParser } from '../utils/dxfParser.util.js'
+import { ConvertDxfToSvg } from '../utils/dxfToSvg.util.js'
+import { uploadImage } from '../utils/uploadImage.util.js'
 
 class FileController {
     constructor() {
@@ -12,9 +14,13 @@ class FileController {
             if (!originalname) throw new Error('filename is not valid')
             if (!buffer) throw new Error('file is not valid')
 
+            const svg = ConvertDxfToSvg(buffer)
+            const urlImage = await uploadImage(svg)
+
             const result = await this.fileService.saveFile({
                 name: originalname,
-                file: buffer
+                file: buffer,
+                url: urlImage
             })
 
             return res.status(201).json({
@@ -40,7 +46,6 @@ class FileController {
             const result = await this.fileService.getFileById(fid)
 
             const dimensions = calculateDimensions(result.file)
-            const file = dxfParser(result.file)
             const price = await calculatePrice(dimensions, mid)
 
             return res.status(200).json({
@@ -51,7 +56,7 @@ class FileController {
                     filename: result.name,
                     price,
                     dimensions,
-                    file
+                    urlImage: result.url
                 }
             })
         } catch (error) {
@@ -87,15 +92,14 @@ class FileController {
         try {
             let result = await this.fileService.getFiles()
 
-            result = result.map((f) => {
+            result = result.map(async (f) => {
                 const dimensions = calculateDimensions(f.file)
-                const file = dxfParser(f.file)
 
                 return {
                     _id: f._id,
                     name: f.name,
                     dimensions,
-                    file
+                    urlImage: f.url
                 }
             })
 
@@ -115,11 +119,12 @@ class FileController {
 
     updateFile = async (req, res) => {
         try {
-            const { name, file } = req.body
+            const { name, file, url } = req.body
             let newFile = {}
 
             if (name) newFile.name = name
             if (file) newFile.file = file
+            if (url) newFile.url = url
 
             const result = await this.fileService.updateFile(newFile)
 
