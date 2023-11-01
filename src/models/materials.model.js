@@ -9,6 +9,6 @@ const materialSchema = new Schema({
     areaStandard: { type: Number, required: true, default: 900 }
 })
 
-const materialModel = model('models', materialSchema)
+const materialModel = model('materials', materialSchema)
 
 export default materialModel
