@@ -1,4 +1,4 @@
-import fileController from '../controllers/file.controller.js'
+import fileController from '../controllers/files.controller.js'
 import BaseRouter from './base.routes.js'
 
 class FileRouter extends BaseRouter {

@@ -7,16 +7,7 @@ const userSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     rol: { type: String, enum: ['admin', 'user'], default: 'user' },
-    files: {
-        type: [
-            {
-                file: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'files'
-                }
-            }
-        ]
-    }
+    files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] }
 })
 
 userSchema.pre('save', function () {

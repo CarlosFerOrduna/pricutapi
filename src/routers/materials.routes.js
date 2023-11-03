@@ -1,4 +1,4 @@
-import materialController from '../controllers/material.controller.js'
+import materialController from '../controllers/materials.controller.js'
 import BaseRouter from './base.routes.js'
 
 class MaterialRouter extends BaseRouter {

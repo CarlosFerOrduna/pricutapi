@@ -1,4 +1,4 @@
-import userController from '../controllers/user.controller.js'
+import userController from '../controllers/users.controller.js'
 import BaseRouter from './base.routes.js'
 
 class UserRouter extends BaseRouter {
