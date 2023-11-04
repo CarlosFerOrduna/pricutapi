@@ -3,7 +3,7 @@ import BaseRouter from './base.routes.js'
 
 class MaterialRouter extends BaseRouter {
     init() {
-        this.get('/', ['public'], materialController.getMaterials)
+        this.get('/', ['public'], materialController.searchMaterials)
         this.get('/:fid', ['public'], materialController.getMaterialById)
         this.post('/', ['public'], materialController.saveMaterial)
         this.put('/:fid', ['public'], materialController.updateMaterial)

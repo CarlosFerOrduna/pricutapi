@@ -23,9 +23,9 @@ export default class MaterialService {
         }
     }
 
-    getMaterials = async () => {
+    searchMaterials = async (limit, page, query) => {
         try {
-            return await materialModel.find({})
+            return await materialModel.paginate(query, { limit: limit ?? 5, page: page ?? 1 })
         } catch (error) {
             throw new Error('getMaterials: ' + error)
         }

@@ -48,9 +48,15 @@ class ArticleController {
         }
     }
 
-    getArticles = async (req, res) => {
+    searchArticles = async (req, res) => {
         try {
-            const result = await this.articleService.getArticles()
+            const { limit, page, title, body } = req.query
+
+            let query = {}
+            if (title) query.title = title
+            if (body) query.body = body
+
+            const result = await this.articleService.searchArticles(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',

@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose'
+import { paginate } from 'mongoose-paginate-v2'
 
 const materialSchema = new Schema({
     name: { type: String, required: true },
@@ -8,6 +9,8 @@ const materialSchema = new Schema({
     thickness: { type: String, required: true },
     areaStandard: { type: Number, required: true, default: 900 }
 })
+
+materialSchema.plugin(paginate)
 
 const materialModel = model('materials', materialSchema)
 

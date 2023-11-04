@@ -3,7 +3,7 @@ import BaseRouter from './base.routes.js'
 
 class UserRouter extends BaseRouter {
     init() {
-        this.get('/', ['public'], userController.getUsers)
+        this.get('/', ['public'], userController.searchUsers)
         this.get('/:pid', ['public'], userController.getUserById)
         this.post('/register/', ['public'], userController.createUser)
         this.post('/login/', ['public'], userController.login)

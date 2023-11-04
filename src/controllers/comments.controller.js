@@ -48,9 +48,15 @@ class CommentController {
         }
     }
 
-    getComments = async (req, res) => {
+    searchComments = async (req, res) => {
         try {
-            const result = await this.commentService.getComments()
+            const { limit, page, author, details } = req.query
+
+            let query = {}
+            if (author) query.author = author
+            if (details) query.details = details
+
+            const result = await this.commentService.searchComments(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',

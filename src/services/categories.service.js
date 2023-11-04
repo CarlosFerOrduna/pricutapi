@@ -23,9 +23,9 @@ export default class CategoryService {
         }
     }
 
-    getCategories = async () => {
+    searchCategories = async (limit, page, query) => {
         try {
-            return await categoryModel.find({})
+            return await categoryModel.paginate(query, { limit: limit ?? 6, page: page ?? 1 })
         } catch (error) {
             throw new Error('getCategorys: ' + error)
         }

@@ -58,9 +58,28 @@ class MaterialController {
         }
     }
 
-    getMaterials = async (req, res) => {
+    searchMaterials = async (req, res) => {
         try {
-            const result = await this.materialService.getMaterials()
+            const {
+                limit,
+                page,
+                name,
+                description,
+                category,
+                price,
+                thickness,
+                areaStandard
+            } = req.query
+
+            let query = {}
+            if (name) query.name = name
+            if (description) query.description = description
+            if (category) query.category = category
+            if (price) query.price = price
+            if (thickness) query.thickness = thickness
+            if (areaStandard) query.areaStandard = areaStandard
+
+            const result = await this.materialService.searchMaterials(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',

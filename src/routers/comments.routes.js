@@ -3,7 +3,7 @@ import BaseRouter from './base.routes.js'
 
 class CommentRouter extends BaseRouter {
     init() {
-        this.get('/', ['public'], commentController.getComments)
+        this.get('/', ['public'], commentController.searchComments)
         this.get('/:fid', ['public'], commentController.getCommentById)
         this.post('/', ['public'], commentController.saveComment)
         this.put('/:fid', ['public'], commentController.updateComment)

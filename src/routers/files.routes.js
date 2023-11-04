@@ -3,7 +3,7 @@ import BaseRouter from './base.routes.js'
 
 class FileRouter extends BaseRouter {
     init() {
-        this.get('/', ['public'], fileController.getFiles)
+        this.get('/', ['public'], fileController.searchFiles)
         this.get('/download/:fid', ['public'], fileController.downloadFileById)
         this.get('/:fid/:mid', ['public'], fileController.getFileById)
         this.post('/', ['public'], fileController.saveFile)

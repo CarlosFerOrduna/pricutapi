@@ -34,9 +34,9 @@ export default class UserService {
         }
     }
 
-    getUsers = () => {
+    searchUsers = (limit, page, query) => {
         try {
-            return userModel.find({})
+            return userModel.paginate(query, { limit: limit ?? 10, page: page ?? 1 })
         } catch (error) {
             throw new Error('getUsers: ' + error)
         }

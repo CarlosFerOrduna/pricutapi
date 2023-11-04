@@ -37,9 +37,19 @@ class UserController {
         }
     }
 
-    getUsers = async (req, res) => {
+    searchUsers = async (req, res) => {
         try {
-            const result = await this.userService.getUsers()
+            const { limit, page, firstName, lastName, email, password, rol, files } = req.query
+
+            let query = {}
+            if (firstName) query.firstName = firstName
+            if (lastName) query.lastName = lastName
+            if (email) query.email = email
+            if (password) query.password = password
+            if (rol) query.rol = rol
+            if (files) query.files = files
+
+            const result = await this.userService.searchUsers(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',

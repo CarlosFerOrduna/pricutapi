@@ -23,9 +23,9 @@ export default class FileService {
         }
     }
 
-    getFiles = async () => {
+    searchFiles = async (limit, page, query) => {
         try {
-            return await fileModel.find({})
+            return await fileModel.paginate(query, { limit: limit ?? 10, page: page ?? 1 })
         } catch (error) {
             throw new Error('getFiles: ' + error)
         }

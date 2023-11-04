@@ -48,9 +48,15 @@ class CategoryController {
         }
     }
 
-    getCategories = async (req, res) => {
+    searchCategories = async (req, res) => {
         try {
-            const result = await this.categoryService.getCategories()
+            const { limit, page, name, description } = req.query
+
+            let query = {}
+            if (name) query.name = name
+            if (description) query.description = description
+
+            const result = await this.categoryService.searchCategories(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',

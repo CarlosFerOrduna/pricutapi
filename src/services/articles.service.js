@@ -23,9 +23,9 @@ export default class ArticleService {
         }
     }
 
-    getArticles = async () => {
+    searchArticles = async (limit, page, query) => {
         try {
-            return await articleModel.find({})
+            return await articleModel.paginate(query, { limit: limit ?? 3, page: page ?? 1 })
         } catch (error) {
             throw new Error('getArticles: ' + error)
         }

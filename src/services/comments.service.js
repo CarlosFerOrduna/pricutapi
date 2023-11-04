@@ -23,9 +23,9 @@ export default class CommentService {
         }
     }
 
-    getComments = async () => {
+    searchComments = async (limit, page, query) => {
         try {
-            return await commentModel.find({})
+            return await commentModel.paginate(query, { limit: limit ?? 5, page: page ?? 1 })
         } catch (error) {
             throw new Error('getComments: ' + error)
         }

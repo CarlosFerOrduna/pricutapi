@@ -3,7 +3,7 @@ import BaseRouter from './base.routes.js'
 
 class ArticleRouter extends BaseRouter {
     init() {
-        this.get('/', ['public'], articleController.getArticles)
+        this.get('/', ['public'], articleController.searchArticles)
         this.get('/:fid', ['public'], articleController.getArticleById)
         this.post('/', ['public'], articleController.saveArticle)
         this.put('/:fid', ['public'], articleController.updateArticle)
