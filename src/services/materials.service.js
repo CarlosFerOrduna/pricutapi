@@ -8,13 +8,13 @@ export default class MaterialService {
 
             return await newMaterial.save()
         } catch (error) {
-            throw new Error('materialService: ' + error)
+            throw new Error('saveMaterial: ' + error)
         }
     }
 
     getMaterialById = async (mid) => {
         try {
-            const result = await materialModel.findById(mid)
+            const result = await materialModel.findById(mid).populate('categories.category')
             if (!result) throw new Error('material not exists')
 
             return result
@@ -25,9 +25,13 @@ export default class MaterialService {
 
     searchMaterials = async (limit, page, query) => {
         try {
-            return await materialModel.paginate(query, { limit: limit ?? 5, page: page ?? 1 })
+            return await materialModel.paginate(query, {
+                limit: limit ?? 5,
+                page: page ?? 1,
+                populate: 'category'
+            })
         } catch (error) {
-            throw new Error('getMaterials: ' + error)
+            throw new Error('searchMaterials: ' + error)
         }
     }
 
@@ -38,7 +42,7 @@ export default class MaterialService {
 
             return result
         } catch (error) {
-            throw new Error('updatematerial: ' + error)
+            throw new Error('updateMaterial: ' + error)
         }
     }
 
@@ -49,7 +53,7 @@ export default class MaterialService {
 
             return result
         } catch (error) {
-            throw new Error('deletematerial: ' + error)
+            throw new Error('deleteMaterial: ' + error)
         }
     }
 }

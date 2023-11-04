@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { paginate } from 'mongoose-paginate-v2'
+import paginate from 'mongoose-paginate-v2'
 
 const categorySchema = new Schema({
     name: { type: String, required: true },

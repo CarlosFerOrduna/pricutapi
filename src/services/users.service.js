@@ -25,7 +25,7 @@ export default class UserService {
 
     getUserByEmail = async (email) => {
         try {
-            const user = await userModel.findOne({ email })
+            const user = await userModel.findOne({ email }).populate('files.file')
             if (!user) throw new Error('user not exists')
 
             return user
@@ -34,9 +34,13 @@ export default class UserService {
         }
     }
 
-    searchUsers = (limit, page, query) => {
+    searchUsers = async (limit, page, query) => {
         try {
-            return userModel.paginate(query, { limit: limit ?? 10, page: page ?? 1 })
+            return await userModel.paginate(query, {
+                limit: limit ?? 10,
+                page: page ?? 1,
+                populate: 'file'
+            })
         } catch (error) {
             throw new Error('getUsers: ' + error)
         }

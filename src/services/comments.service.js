@@ -14,7 +14,7 @@ export default class CommentService {
 
     getCommentById = async (cid) => {
         try {
-            const result = await commentModel.findById(cid)
+            const result = await commentModel.findById(cid).populate('users.user')
             if (!result) throw new Error('comment not exists')
 
             return result
@@ -25,7 +25,11 @@ export default class CommentService {
 
     searchComments = async (limit, page, query) => {
         try {
-            return await commentModel.paginate(query, { limit: limit ?? 5, page: page ?? 1 })
+            return await commentModel.paginate(query, {
+                limit: limit ?? 5,
+                page: page ?? 1,
+                populate: 'author'
+            })
         } catch (error) {
             throw new Error('getComments: ' + error)
         }

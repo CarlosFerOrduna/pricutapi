@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { paginate } from 'mongoose-paginate-v2'
+import paginate from 'mongoose-paginate-v2'
 
 const materialSchema = new Schema({
     name: { type: String, required: true },
@@ -7,7 +7,8 @@ const materialSchema = new Schema({
     category: { type: Schema.Types.ObjectId, ref: 'categories', required: true },
     price: { type: Number, required: true },
     thickness: { type: String, required: true },
-    areaStandard: { type: Number, required: true, default: 900 }
+    areaStandard: { type: Number, required: true, default: 900 },
+    urlImage: { type: String }
 })
 
 materialSchema.plugin(paginate)
