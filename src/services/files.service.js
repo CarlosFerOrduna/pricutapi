@@ -5,7 +5,6 @@ export default class FileService {
         try {
             const newFile = new fileModel(file)
             await newFile.validate()
-
             return await newFile.save()
         } catch (error) {
             throw new Error('fileService: ' + error)
