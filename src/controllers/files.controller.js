@@ -43,7 +43,7 @@ class FileController {
         }
     }
 
-    getFileById = async (req, res) => {
+    getFileByIdWithPrice = async (req, res) => {
         try {
             const { fid, mid } = req.params
             if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
@@ -61,8 +61,38 @@ class FileController {
                     _id: result._id,
                     filename: result.name,
                     price,
+                    urlImage: result.url,
                     dimensions,
-                    urlImage: result.url
+                    file: result.file
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                status: 'error',
+                message: error.message,
+                data: {}
+            })
+        }
+    }
+
+    getFileById = async (req, res) => {
+        try {
+            const { fid } = req.params
+            if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
+
+            const result = await this.fileService.getFileById(fid)
+
+            const dimensions = calculateDimensions(result.file)
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'file successfully found',
+                data: {
+                    _id: result._id,
+                    filename: result.name,
+                    urlImage: result.url,
+                    dimensions,
+                    file: result.file
                 }
             })
         } catch (error) {
