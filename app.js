@@ -15,11 +15,7 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT
 
-const allowed = [
-    'http://localhost:3000',
-    'https://pricut-demo.vercel.app/',
-    'https://pricut-demo.vercel.app'
-]
+const allowed = ['http://localhost:3000', 'https://pricut-demo.vercel.app']
 
 const corsOptions = {
     origin: (origin, callback) => {
