@@ -19,6 +19,7 @@ const allowed = ['http://localhost:3000', 'https://pricut-demo.vercel.app/']
 
 const corsOptions = {
     origin: (origin, callback) => {
+        console.log(origin)
         //TODO: sacar !origin del if dado que es solo para testeo desde postman
         if (!origin || allowed.indexOf(origin) !== -1) {
             // Permitir solicitudes sin encabezado "Origin" o desde orígenes permitidos
