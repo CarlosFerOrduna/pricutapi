@@ -1,3 +1,4 @@
+import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import handlebars from 'express-handlebars'
@@ -9,7 +10,6 @@ import materialRouter from './src/routers/materials.routes.js'
 import userRouter from './src/routers/users.routes.js'
 import connectMongo from './src/utils/connections.util.js'
 import __dirname from './src/utils/dirname.util.js'
-import cors from 'cors'
 
 dotenv.config()
 const app = express()

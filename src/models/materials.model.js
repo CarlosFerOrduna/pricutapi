@@ -8,6 +8,7 @@ const materialSchema = new Schema({
     price: { type: Number, required: true },
     thickness: { type: String, required: true },
     areaStandard: { type: Number, required: true, default: 900 },
+    characteristics: { type: [String], default: [], required: true },
     urlImage: { type: String }
 })
 

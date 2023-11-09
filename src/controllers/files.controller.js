@@ -97,17 +97,6 @@ class FileController {
 
             let result = await this.fileService.searchFiles(limit, page, query)
 
-            result = result.map(async (f) => {
-                const dimensions = calculateDimensions(f.file)
-
-                return {
-                    _id: f._id,
-                    name: f.name,
-                    dimensions,
-                    urlImage: f.url
-                }
-            })
-
             return res.status(200).json({
                 status: 'success',
                 message: 'all files',
