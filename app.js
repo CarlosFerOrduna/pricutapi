@@ -32,7 +32,7 @@ const corsOptions = {
     credentials: true
 }
 
-console.log(...corsOptions)
+console.log(corsOptions)
 
 connectMongo()
 
