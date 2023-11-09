@@ -26,7 +26,7 @@ export default class MaterialService {
     searchMaterials = async (limit, page, query) => {
         try {
             return await materialModel.paginate(query, {
-                limit: limit ?? 5,
+                // limit: limit ?? 5,
                 page: page ?? 1,
                 populate: 'category'
             })
