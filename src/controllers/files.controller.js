@@ -26,7 +26,13 @@ class FileController {
             return res.status(201).json({
                 status: 'success',
                 message: 'file successfully created',
-                data: result
+                data: {
+                    _id: result._id,
+                    name: result.name,
+                    url: result.url,
+                    dimensions: calculateDimensions(result.file),
+                    file: result.file
+                }
             })
         } catch (error) {
             return res.status(400).json({
