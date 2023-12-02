@@ -2,8 +2,10 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import handlebars from 'express-handlebars'
+
 import articleRouter from './src/routers/articles.routes.js'
 import categoryRouter from './src/routers/categories.routes.js'
+import citiesRouter from './src/routers/cities.routes.js'
 import commentRouter from './src/routers/comments.routes.js'
 import fileRouter from './src/routers/files.routes.js'
 import materialRouter from './src/routers/materials.routes.js'
@@ -46,6 +48,7 @@ app.use('/api/materials', materialRouter.getRouter())
 app.use('/api/articles', articleRouter.getRouter())
 app.use('/api/categories', categoryRouter.getRouter())
 app.use('/api/comments', commentRouter.getRouter())
+app.use('/api/cities', citiesRouter.getRouter())
 
 app.listen(port, () => {
     console.log('app run in port ' + port)

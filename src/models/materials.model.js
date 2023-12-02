@@ -2,13 +2,14 @@ import { model, Schema } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 const materialSchema = new Schema({
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    category: { type: Schema.Types.ObjectId, ref: 'categories', required: true },
-    price: { type: Number, required: true },
-    thickness: { type: String, required: true },
-    areaStandard: { type: Number, required: true, default: 900 },
-    characteristics: { type: [String], default: [], required: true },
+    name: { type: String, require: true },
+    description: { type: String, require: true },
+    category: { type: Schema.Types.ObjectId, ref: 'categories', require: true },
+    price: { type: Number, require: true },
+    thickness: { type: String, require: true },
+    areaStandard: { type: Number, require: true, default: 900 },
+    weightAtomic: { type: Number, require: true },
+    characteristics: { type: [String], default: [], require: true },
     urlImage: { type: String }
 })
 
