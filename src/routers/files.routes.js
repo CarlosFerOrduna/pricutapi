@@ -1,5 +1,5 @@
 import fileController from '../controllers/files.controller.js'
-import BaseRouter from './base.routes.js'
+import BaseRouter from './base.js'
 
 class FileRouter extends BaseRouter {
     init() {

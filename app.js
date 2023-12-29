@@ -2,6 +2,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import handlebars from 'express-handlebars'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUIExpress from 'swagger-ui-express'
 
 import articleRouter from './src/routers/articles.routes.js'
 import categoryRouter from './src/routers/categories.routes.js'
@@ -17,8 +19,22 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT
 
-const allowed = ['http://localhost:3000', 'https://pricut-demo.vercel.app']
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.3',
+        info: {
+            title: 'pricut',
+            description: 'Documentation for API pricut'
+        }
+    },
+    apis: ['./docs/**/*.yaml']
+}
 
+const specs = swaggerJSDoc(swaggerOptions)
+
+app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
+
+const allowed = ['http://localhost:3000', 'https://pricut-demo.vercel.app']
 const corsOptions = {
     origin: (origin, callback) => {
         //TODO: sacar !origin del if dado que es solo para testeo desde postman

@@ -1,5 +1,5 @@
 import materialController from '../controllers/materials.controller.js'
-import BaseRouter from './base.routes.js'
+import BaseRouter from './base.js'
 
 class MaterialRouter extends BaseRouter {
     init() {

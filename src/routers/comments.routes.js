@@ -1,5 +1,5 @@
 import commentController from '../controllers/comments.controller.js'
-import BaseRouter from './base.routes.js'
+import BaseRouter from './base.js'
 
 class CommentRouter extends BaseRouter {
     init() {

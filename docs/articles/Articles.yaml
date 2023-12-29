@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+    title: Article API
+    description: API for managing articles
+    version: 1.0.0
+paths:
+    /articles:
+        get:
+            summary: Get a list of articles
+            description: Retrieve a list of articles.
+            tags:
+                - Articles
+            security:
+                - public: []
+            responses:
+                '200':
+                    description: A list of articles
+        post:
+            summary: Create a new article
+            description: Create a new article.
+            tags:
+                - Articles
+            security:
+                - public: []
+            responses:
+                '201':
+                    description: Article created successfully
+    /articles/{fid}:
+        get:
+            summary: Get an article by ID
+            description: Retrieve an article by its ID.
+            tags:
+                - Articles
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the article
+            responses:
+                '200':
+                    description: The requested article
+        put:
+            summary: Update an article by ID
+            description: Update an article by its ID.
+            tags:
+                - Articles
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the article
+            responses:
+                '200':
+                    description: Article updated successfully
+        delete:
+            summary: Delete an article by ID
+            description: Delete an article by its ID.
+            tags:
+                - Articles
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the article
+            responses:
+                '204':
+                    description: Article deleted successfully
+components:
+    schemas:
+        ArticleInput:
+            type: object

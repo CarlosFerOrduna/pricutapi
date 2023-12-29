@@ -1,5 +1,5 @@
 import userController from '../controllers/users.controller.js'
-import BaseRouter from './base.routes.js'
+import BaseRouter from './base.js'
 
 class UserRouter extends BaseRouter {
     init() {

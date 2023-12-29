@@ -17,7 +17,7 @@ const getPriceShipping = async ({
             const browser = await launch({ headless: 'new', slowMo: 250 })
             const page = await browser.newPage()
 
-            await page.goto('https://www.servientrega.com.ec/Cotizador')
+            await page.goto(process.env.URL_QUOTE)
 
             await page.evaluate(() => {
                 document.getElementById('ciudadOrigen').value = cityOrigin
