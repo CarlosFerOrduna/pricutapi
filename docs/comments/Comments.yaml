@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+    title: Comment API
+    description: API for managing comments
+    version: 1.0.0
+paths:
+    /comments:
+        get:
+            summary: Get a list of comments
+            description: Retrieve a list of comments.
+            tags:
+                - Comments
+            security:
+                - public: []
+            responses:
+                '200':
+                    description: A list of comments
+        post:
+            summary: Create a new comment
+            description: Create a new comment.
+            tags:
+                - Comments
+            security:
+                - public: []
+            parameters:
+                - in: body
+                  name: comment
+                  description: Comment data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/CommentInput'
+            responses:
+                '201':
+                    description: Comment created successfully
+    /comments/{fid}:
+        get:
+            summary: Get a comment by ID
+            description: Retrieve a comment by its ID.
+            tags:
+                - Comments
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the comment
+            responses:
+                '200':
+                    description: The requested comment
+        put:
+            summary: Update a comment by ID
+            description: Update a comment by its ID.
+            tags:
+                - Comments
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the comment
+                - in: body
+                  name: comment
+                  description: Updated comment data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/CommentInput'
+            responses:
+                '200':
+                    description: Comment updated successfully
+        delete:
+            summary: Delete a comment by ID
+            description: Delete a comment by its ID.
+            tags:
+                - Comments
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the comment
+            responses:
+                '204':
+                    description: Comment deleted successfully
+components:
+    schemas:
+        CommentInput:
+            type: object
+            properties: // Define properties for the CommentInput schema as needed

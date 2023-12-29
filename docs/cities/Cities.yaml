@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+    title: City API
+    description: API for managing cities
+    version: 1.0.0
+paths:
+    /cities:
+        get:
+            summary: Get a list of cities
+            description: Retrieve a list of cities.
+            tags:
+                - Cities
+            security:
+                - public: []
+            responses:
+                '200':
+                    description: A list of cities
+        post:
+            summary: Create a new city
+            description: Create a new city.
+            tags:
+                - Cities
+            security:
+                - public: []
+            parameters:
+                - in: body
+                  name: city
+                  description: City data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/CityInput'
+            responses:
+                '201':
+                    description: City created successfully
+    /cities/{fid}:
+        get:
+            summary: Get a city by ID
+            description: Retrieve a city by its ID.
+            tags:
+                - Cities
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the city
+            responses:
+                '200':
+                    description: The requested city
+        put:
+            summary: Update a city by ID
+            description: Update a city by its ID.
+            tags:
+                - Cities
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the city
+                - in: body
+                  name: city
+                  description: Updated city data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/CityInput'
+            responses:
+                '200':
+                    description: City updated successfully
+        delete:
+            summary: Delete a city by ID
+            description: Delete a city by its ID.
+            tags:
+                - Cities
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the city
+            responses:
+                '204':
+                    description: City deleted successfully
+components:
+    schemas:
+        CityInput:
+            type: object
+            properties: // Define properties for the CityInput schema as needed

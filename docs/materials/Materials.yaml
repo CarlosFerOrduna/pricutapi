@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+    title: Material API
+    description: API for managing materials
+    version: 1.0.0
+paths:
+    /materials:
+        get:
+            summary: Get a list of materials
+            description: Retrieve a list of materials.
+            tags:
+                - Materials
+            security:
+                - public: []
+            responses:
+                '200':
+                    description: A list of materials
+        post:
+            summary: Create a new material
+            description: Create a new material.
+            tags:
+                - Materials
+            security:
+                - public: []
+            parameters:
+                - in: body
+                  name: material
+                  description: Material data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/MaterialInput'
+            responses:
+                '201':
+                    description: Material created successfully
+    /materials/{fid}:
+        get:
+            summary: Get a material by ID
+            description: Retrieve a material by its ID.
+            tags:
+                - Materials
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the material
+            responses:
+                '200':
+                    description: The requested material
+        put:
+            summary: Update a material by ID
+            description: Update a material by its ID.
+            tags:
+                - Materials
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the material
+                - in: body
+                  name: material
+                  description: Updated material data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/MaterialInput'
+            responses:
+                '200':
+                    description: Material updated successfully
+        delete:
+            summary: Delete a material by ID
+            description: Delete a material by its ID.
+            tags:
+                - Materials
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the material
+            responses:
+                '204':
+                    description: Material deleted successfully
+components:
+    schemas:
+        MaterialInput:
+            type: object
+            properties: // Define properties for the MaterialInput schema as needed

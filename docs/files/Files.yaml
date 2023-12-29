@@ -1,0 +1,135 @@
+openapi: 3.0.3
+info:
+    title: File API
+    description: API for managing files
+    version: 1.0.0
+paths:
+    /files:
+        get:
+            summary: Get a list of files
+            description: Retrieve a list of files.
+            tags:
+                - Files
+            security:
+                - public: []
+            responses:
+                '200':
+                    description: A list of files
+        post:
+            summary: Create a new file
+            description: Create a new file.
+            tags:
+                - Files
+            security:
+                - public: []
+            parameters:
+                - in: body
+                  name: file
+                  description: File data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/FileInput'
+            responses:
+                '201':
+                    description: File created successfully
+    /files/download/{fid}:
+        get:
+            summary: Download a file by ID
+            description: Download a file by its ID.
+            tags:
+                - Files
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the file
+            responses:
+                '200':
+                    description: File downloaded successfully
+    /files/{fid}/{mid}:
+        get:
+            summary: Get a file by ID with price
+            description: Retrieve a file by its ID with price information.
+            tags:
+                - Files
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the file
+                - in: path
+                  name: mid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the price
+            responses:
+                '200':
+                    description: The requested file with price
+    /files/{fid}:
+        get:
+            summary: Get a file by ID
+            description: Retrieve a file by its ID.
+            tags:
+                - Files
+            security:
+                - public: []
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the file
+            responses:
+                '200':
+                    description: The requested file
+        put:
+            summary: Update a file by ID
+            description: Update a file by its ID.
+            tags:
+                - Files
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the file
+                - in: body
+                  name: file
+                  description: Updated file data
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/FileInput'
+            responses:
+                '200':
+                    description: File updated successfully
+        delete:
+            summary: Delete a file by ID
+            description: Delete a file by its ID.
+            tags:
+                - Files
+            parameters:
+                - in: path
+                  name: fid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID of the file
+            responses:
+                '204':
+                    description: File deleted successfully
+components:
+    schemas:
+        FileInput:
+            type: object
+            properties: // Define properties for the FileInput schema as needed
