@@ -1,4 +1,4 @@
-import citiesController from '../controllers/cities.controller.js'
+import citiesController from '../../controllers/cities.controller.js'
 import BaseRouter from './base.js'
 
 class CitiesRouter extends BaseRouter {

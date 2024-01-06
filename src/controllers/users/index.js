@@ -1,6 +1,6 @@
 import UserService from '../services/users.service.js'
-import { createHash, isValidPassword } from '../utils/bcrypt.util.js'
-import { generateToken } from '../utils/jwt.util.js'
+import { createHash, isValidPassword } from '../../utils/bcrypt.util.js'
+import { generateToken } from '../../utils/jwt.util.js'
 
 class UserController {
     constructor() {

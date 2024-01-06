@@ -1,6 +1,7 @@
 import { Router } from 'express'
-import { authToken } from '../utils/jwt.util.js'
-import { uploader } from '../utils/multer.util.js'
+
+import { uploader } from '../../middlewares/multer/index.js'
+import { authToken } from '../../utils/jwt.util.js'
 
 export default class BaseRouter {
     constructor() {

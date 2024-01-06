@@ -1,4 +1,4 @@
-import categoryController from '../controllers/categories.controller.js'
+import categoryController from '../../controllers/categories.controller.js'
 import BaseRouter from './base.js'
 
 class CategoryRouter extends BaseRouter {

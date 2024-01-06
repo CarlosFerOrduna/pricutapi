@@ -1,7 +1,7 @@
 import FileService from '../services/files.service.js'
-import { calculateDimensions, calculatePrice } from '../utils/dxfParser.util.js'
-import { ConvertDxfToSvg } from '../utils/dxfToSvg.util.js'
-import { uploadImage } from '../utils/uploadImage.util.js'
+import { calculateDimensions, calculatePrice } from '../../utils/dxfParser.util.js'
+import { ConvertDxfToSvg } from '../../utils/dxfToSvg.util.js'
+import { uploadImage } from '../../utils/uploadImage.util.js'
 
 class FileController {
     constructor() {

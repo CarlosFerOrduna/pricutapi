@@ -1,4 +1,4 @@
-import articleController from '../controllers/articles.controller.js'
+import articleController from '../../controllers/articles.controller.js'
 import BaseRouter from './base.js'
 
 class ArticleRouter extends BaseRouter {

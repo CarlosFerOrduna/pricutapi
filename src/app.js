@@ -1,22 +1,17 @@
 import cors from 'cors'
-import dotenv from 'dotenv'
-import express from 'express'
+import express, { json, urlencoded } from 'express'
+import compression from 'express-compression'
 import handlebars from 'express-handlebars'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
 
-import articleRouter from './routers/articles.routes.js'
-import categoryRouter from './routers/categories.routes.js'
-import citiesRouter from './routers/cities.routes.js'
-import commentRouter from './routers/comments.routes.js'
-import fileRouter from './routers/files.routes.js'
-import materialRouter from './routers/materials.routes.js'
-import userRouter from './routers/users.routes.js'
+import config from './config/index.js'
+import { handlerErrors } from './middlewares/errors/index.js'
+import { handlerLogs } from './middlewares/logs/index.js'
+import router from './routers/api/files.routes.js'
 import __dirname from './utils/dirname.util.js'
 
-dotenv.config()
 const app = express()
-const port = process.env.PORT
 
 const swaggerOptions = {
     definition: {
@@ -26,19 +21,15 @@ const swaggerOptions = {
             description: 'Documentation for API pricut'
         }
     },
-    apis: ['./docs/**/*.yaml']
+    apis: ['../docs/**/*.yaml']
 }
 
 const specs = swaggerJSDoc(swaggerOptions)
 
-app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
-
 const allowed = ['http://localhost:3000', 'https://pricut-demo.vercel.app']
 const corsOptions = {
     origin: (origin, callback) => {
-        //TODO: sacar !origin del if dado que es solo para testeo desde postman
-        if (!origin || allowed.indexOf(origin) !== -1) {
-            // Permitir solicitudes sin encabezado "Origin" o desde orígenes permitidos
+        if (allowed.some((s) => s === origin)) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
@@ -48,20 +39,16 @@ const corsOptions = {
     credentials: false
 }
 
+app.use(handlerLogs)
+app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 app.use(cors(corsOptions))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(compression({ brotli: { enabled: true, zlib: {} } }))
+app.use(json())
+app.use(urlencoded({ extended: true }))
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
-app.use('/api/files', fileRouter.getRouter())
-app.use('/api/users', userRouter.getRouter())
-app.use('/api/materials', materialRouter.getRouter())
-app.use('/api/articles', articleRouter.getRouter())
-app.use('/api/categories', categoryRouter.getRouter())
-app.use('/api/comments', commentRouter.getRouter())
-app.use('/api/cities', citiesRouter.getRouter())
+app.use('/', router)
+app.use(handlerErrors)
 
-app.listen(port, () => {
-    console.log('app run in port ' + port)
-})
+app.listen(config.port, () => console.log('app run in port ' + config.port))

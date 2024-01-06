@@ -1,14 +1,16 @@
 import { connect, set } from 'mongoose'
 
-import config from '../config/dotenv.config.js'
-import CustomError from '../services/errors/CostumError.js'
-import errorCodes from '../services/errors/enum.errors.js'
+import config from '../config/index.js'
+import ErrorWrapper from '../middlewares/errors/entities/ErrorWrapper.js'
+import codes from '../middlewares/errors/enum/index.js'
 
-export let Cart
-export let Product
-export let User
-export let Message
-export let Ticket
+export let Articles
+export let Categories
+export let Cities
+export let Comments
+export let Files
+export let Materials
+export let Users
 
 switch (config.persistence) {
     case 'mongo':
@@ -16,31 +18,41 @@ switch (config.persistence) {
             await connect(config.connectionString)
             set('debug', true)
 
-            const { default: CartsMongo } = await import('./mongo/carts.mongo.js')
-            Cart = CartsMongo
-            const { default: ProductsMongo } = await import('./mongo/products.mongo.js')
-            Product = ProductsMongo
-            const { default: UsersMongo } = await import('./mongo/users.mongo.js')
-            User = UsersMongo
-            const { default: MessagesMongo } = await import('./mongo/messages.mongo.js')
-            Message = MessagesMongo
-            const { default: TicketsMongo } = await import('./mongo/tickets.mongo.js')
-            Ticket = TicketsMongo
+            const { default: ArticlesMongo } = await import(
+                './mongo/models/articles/schema/index.js'
+            )
+            Articles = ArticlesMongo
+            const { default: CategoriesMongo } = await import(
+                './mongo/models/categories/schema/index.js'
+            )
+            Categories = CategoriesMongo
+            const { default: CitiesMongo } = await import(
+                './mongo/models/cities/schema/index.js'
+            )
+            Cities = CitiesMongo
+            const { default: CommentsMongo } = await import(
+                './mongo/models/comments/schema/index.js'
+            )
+            Comments = CommentsMongo
+            const { default: FilesMongo } = await import(
+                './mongo/models/files/schema/index.js'
+            )
+            Files = FilesMongo
+            const { default: MaterialsMongo } = await import(
+                './mongo/models/materials/schema/index.js'
+            )
+            Materials = MaterialsMongo
+            const { default: UsersMongo } = await import(
+                './mongo/models/users/schema/index.js'
+            )
+            Users = UsersMongo
         } catch (error) {
-            CustomError.createError({
+            ErrorWrapper.createError({
                 name: 'can not connect to the db',
                 cause: error,
                 message: error.message,
-                code: errorCodes.DATABASE_ERROR
+                code: codes.DATABASE_ERROR
             })
         }
-        break
-
-    case 'memory':
-        const base = './memory/fileSystem/'
-        const { default: CartsMemory } = await import(`${base}CartManager.js`)
-        Cart = CartsMemory
-        const { default: ProductsMemory } = await import(`${base}ProductManager.js`)
-        Product = ProductsMemory
         break
 }
