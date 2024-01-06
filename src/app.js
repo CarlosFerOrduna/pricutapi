@@ -5,15 +5,14 @@ import handlebars from 'express-handlebars'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
 
-import articleRouter from './src/routers/articles.routes.js'
-import categoryRouter from './src/routers/categories.routes.js'
-import citiesRouter from './src/routers/cities.routes.js'
-import commentRouter from './src/routers/comments.routes.js'
-import fileRouter from './src/routers/files.routes.js'
-import materialRouter from './src/routers/materials.routes.js'
-import userRouter from './src/routers/users.routes.js'
-import connectMongo from './src/utils/connections.util.js'
-import __dirname from './src/utils/dirname.util.js'
+import articleRouter from './routers/articles.routes.js'
+import categoryRouter from './routers/categories.routes.js'
+import citiesRouter from './routers/cities.routes.js'
+import commentRouter from './routers/comments.routes.js'
+import fileRouter from './routers/files.routes.js'
+import materialRouter from './routers/materials.routes.js'
+import userRouter from './routers/users.routes.js'
+import __dirname from './utils/dirname.util.js'
 
 dotenv.config()
 const app = express()
@@ -49,10 +48,7 @@ const corsOptions = {
     credentials: false
 }
 
-connectMongo()
-
 app.use(cors(corsOptions))
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars', handlebars.engine())

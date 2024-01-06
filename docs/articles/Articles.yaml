@@ -3,6 +3,35 @@ info:
     title: Article API
     description: API for managing articles
     version: 1.0.0
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        MongoDBObjectId:
+            type: string
+            pattern: '^[0-9a-fA-F]{24}$'
+            description: >
+                Unique identifier of a document in MongoDB. Must be a hexadecimal string of 24 characters.
+        Article:
+            type: object
+            properties:
+                _id:
+                    $ref: '#/components/schemas/MongoDBObjectId'
+                title:
+                    type: string
+                    description: title of article
+                body:
+                    type: string
+                    description: body of article
+    examples:
+        Article:
+            value:
+                _id:
+                title: Title
+                description: Body
 paths:
     /articles:
         get:
@@ -77,7 +106,3 @@ paths:
             responses:
                 '204':
                     description: Article deleted successfully
-components:
-    schemas:
-        ArticleInput:
-            type: object
