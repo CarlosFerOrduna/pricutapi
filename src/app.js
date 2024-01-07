@@ -26,7 +26,11 @@ const swaggerOptions = {
 
 const specs = swaggerJSDoc(swaggerOptions)
 
-const allowed = ['http://localhost:3000', 'https://pricut-demo.vercel.app']
+const allowed = [
+    'http://localhost:8080',
+    'http://localhost:3000',
+    'https://pricut-demo.vercel.app'
+]
 const corsOptions = {
     origin: (origin, callback) => {
         if (allowed.some((s) => s === origin)) {
@@ -41,7 +45,7 @@ const corsOptions = {
 
 app.use(handlerLogs)
 app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
-app.use(cors(corsOptions))
+app.use(cors(/*corsOptions*/))
 app.use(compression({ brotli: { enabled: true, zlib: {} } }))
 app.use(json())
 app.use(urlencoded({ extended: true }))

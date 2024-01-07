@@ -1,4 +1,4 @@
-import { ArticleRepository } from '../../repositories'
+import { ArticleRepository } from '../../repositories/index.js'
 
 export class ArticleController {
     constructor() {
@@ -13,13 +13,13 @@ export class ArticleController {
 
             const result = await this.articleRepository.saveArticle({ title, body })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'article successfully created',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -34,13 +34,13 @@ export class ArticleController {
 
             const result = await this.articleRepository.getArticleById(aid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'article successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -58,13 +58,13 @@ export class ArticleController {
 
             const result = await this.articleRepository.searchArticles(limit, page, query)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'all article',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -82,13 +82,13 @@ export class ArticleController {
 
             const result = await this.articleRepository.updateArticle(newArticle)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'article successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -101,9 +101,9 @@ export class ArticleController {
             const { mid } = req.params
             await this.articleRepository.deleteArticle(mid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

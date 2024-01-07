@@ -1,6 +1,6 @@
-import userModel from '../models/users.model.js'
+import { userModel } from '../../models/index.js'
 
-export default class UserService {
+export class UserService {
     createUser = async (user) => {
         try {
             const newUser = new userModel(user)

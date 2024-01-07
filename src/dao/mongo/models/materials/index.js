@@ -15,6 +15,4 @@ const materialSchema = new Schema({
 
 materialSchema.plugin(paginate)
 
-const materialModel = model('materials', materialSchema)
-
-export default materialModel
+export const materialModel = model('materials', materialSchema)

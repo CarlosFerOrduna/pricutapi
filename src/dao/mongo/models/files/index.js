@@ -9,6 +9,4 @@ const fileSchema = new Schema({
 
 fileSchema.plugin(paginate)
 
-const fileModel = model('files', fileSchema)
-
-export default fileModel
+export const fileModel = model('files', fileSchema)

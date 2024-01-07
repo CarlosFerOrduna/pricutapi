@@ -1,5 +1,5 @@
-import { UserDAO } from '../../dao'
-import { CreateUser, SelectUser, UpdateUser } from '../../dao/mongo/dtos'
+import { UserDAO } from '../../dao/index.js'
+import { CreateUser, SelectUser, UpdateUser } from '../../dao/mongo/dtos/index.js'
 
 export class UsersRepository {
     constructor() {

@@ -8,6 +8,4 @@ const commentSchema = new Schema({
 
 commentSchema.plugin(paginate)
 
-const commentModel = model('comments', commentSchema)
-
-export default commentModel
+export const commentModel = model('comments', commentSchema)

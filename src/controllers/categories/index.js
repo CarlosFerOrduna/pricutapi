@@ -1,4 +1,4 @@
-import { CategoryRepository } from '../../repositories'
+import { CategoryRepository } from '../../repositories/index.js'
 
 export class CategoryController {
     constructor() {
@@ -13,13 +13,13 @@ export class CategoryController {
 
             const result = await this.categoryRepository.saveCategory({ name, description })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'category successfully created',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -34,13 +34,13 @@ export class CategoryController {
 
             const result = await this.categoryRepository.getCategoryById(cid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'category successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -58,13 +58,13 @@ export class CategoryController {
 
             const result = await this.categoryRepository.searchCategories(limit, page, query)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'all category',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -82,13 +82,13 @@ export class CategoryController {
 
             const result = await this.categoryRepository.updateCategory(newCategory)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'category successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -101,9 +101,9 @@ export class CategoryController {
             const { mid } = req.params
             await this.categoryRepository.deleteCategory(mid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

@@ -1,6 +1,6 @@
-import fileModel from '../models/files.model.js'
+import { fileModel } from '../../models/index.js'
 
-export default class FileService {
+export class FileService {
     saveFile = async (file) => {
         try {
             const newFile = new fileModel(file)

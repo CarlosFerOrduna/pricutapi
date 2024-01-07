@@ -1,5 +1,5 @@
-import { CommentDAO } from '../../dao'
-import { CreateComment, SelectComment, UpdateComment } from '../../dao/mongo/dtos'
+import { CommentDAO } from '../../dao/index.js'
+import { CreateComment, SelectComment, UpdateComment } from '../../dao/mongo/dtos/index.js'
 
 export class CommentRepository {
     constructor() {

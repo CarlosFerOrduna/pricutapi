@@ -33,21 +33,21 @@ const createConsoleTransport = (level) =>
 const createFileTransport = (level) =>
     new winston.transports.File({ filename: './errors.log', level, format: commonFormat })
 
-const loggerTest = winston.createLogger({
+const loggerDev = winston.createLogger({
     levels: customLevelsOptions.levels,
     transports: [createConsoleTransport('debug')]
 })
 
-const loggerProd = winston.createLogger({
+const loggerPrd = winston.createLogger({
     levels: customLevelsOptions.levels,
     transports: [createFileTransport('error'), createConsoleTransport('info')]
 })
 
-const loggers = { prod: loggerProd, test: loggerTest }
+const loggers = { prd: loggerPrd, dev: loggerDev }
 
 export const handlerLogs = (req, res, next) => {
     req.logger = loggers[config.logger]
-    req.logger.info(`${req.method} in ${req.url} - ${moment()}`)
+    req.logger.info(`${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`)
 
     const originalJson = res.send
     res.send = function (body) {

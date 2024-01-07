@@ -1,5 +1,5 @@
 import { ArticleDAO } from '../../dao/index.js'
-import { CreateArticle, SelectArticle, UpdateArticle } from '../../dao/mongo/dtos'
+import { CreateArticle, SelectArticle, UpdateArticle } from '../../dao/mongo/dtos/index.js'
 
 export class ArticleRepository {
     constructor() {

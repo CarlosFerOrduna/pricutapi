@@ -23,13 +23,13 @@ export class UserController {
                 rol
             })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'user successfully created',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -51,13 +51,13 @@ export class UserController {
 
             const result = await this.userRepository.searchUsers(limit, page, query)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'user successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -72,13 +72,13 @@ export class UserController {
 
             const result = await this.userRepository.getUserById(uid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'user successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -99,13 +99,13 @@ export class UserController {
 
             const result = await this.userRepository.updateUser(newUser)
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'user successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -120,9 +120,9 @@ export class UserController {
 
             await this.userRepository.deleteUser(uid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -150,12 +150,12 @@ export class UserController {
                 rol: data.rol
             }
 
-            return res.status(200).header('authorization', token).json({
+            return res.status(200).header('authorization', token).send({
                 user: data,
                 accessToken: token
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

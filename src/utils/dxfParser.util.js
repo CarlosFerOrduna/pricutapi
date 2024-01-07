@@ -1,5 +1,5 @@
 import DxfParser from 'dxf-parser'
-import materialModel from '../models/materials.model.js'
+import { materialModel } from '../dao/mongo/models/index.js'
 
 export const dxfParser = (buffer) => {
     const parser = new DxfParser()

@@ -23,7 +23,7 @@ export class FileController {
                 url: urlImage
             })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'file successfully created',
                 data: {
@@ -35,7 +35,7 @@ export class FileController {
                 }
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -54,7 +54,7 @@ export class FileController {
             const dimensions = calculateDimensions(result.file)
             const price = await calculatePrice(dimensions, mid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'file successfully found',
                 data: {
@@ -67,7 +67,7 @@ export class FileController {
                 }
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -84,7 +84,7 @@ export class FileController {
 
             const dimensions = calculateDimensions(result.file)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'file successfully found',
                 data: {
@@ -96,7 +96,7 @@ export class FileController {
                 }
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -116,7 +116,7 @@ export class FileController {
 
             return res.send(result.file)
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -133,13 +133,13 @@ export class FileController {
 
             let result = await this.fileRepository.searchFiles(limit, page, query)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'all files',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -158,13 +158,13 @@ export class FileController {
 
             const result = await this.fileRepository.updateFile(newFile)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'file successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -177,9 +177,9 @@ export class FileController {
             const { cid } = req.params
             await this.fileRepository.deleteFile(cid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

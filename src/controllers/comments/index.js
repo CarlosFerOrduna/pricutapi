@@ -1,4 +1,4 @@
-import { CommentRepository } from '../../repositories'
+import { CommentRepository } from '../../repositories/index.js'
 
 export class CommentController {
     constructor() {
@@ -13,13 +13,13 @@ export class CommentController {
 
             const result = await this.commentRepository.saveComment({ author, details })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'comment successfully created',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -34,13 +34,13 @@ export class CommentController {
 
             const result = await this.commentRepository.getCommentById(cid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'comment successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -58,13 +58,13 @@ export class CommentController {
 
             const result = await this.commentRepository.searchComments(limit, page, query)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'all comment',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -82,13 +82,13 @@ export class CommentController {
 
             const result = await this.commentRepository.updateComment(newComment)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'comment successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -101,9 +101,9 @@ export class CommentController {
             const { cid } = req.params
             await this.commentRepository.deleteComment(cid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

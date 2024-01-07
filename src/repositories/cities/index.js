@@ -1,5 +1,5 @@
-import { CityDAO } from '../../dao'
-import { CreateCity, SelectCity, UpdateCity } from '../../dao/mongo/dtos'
+import { CityDAO } from '../../dao/index.js'
+import { CreateCity, SelectCity, UpdateCity } from '../../dao/mongo/dtos/index.js'
 
 export class CityRepository {
     constructor() {

@@ -1,5 +1,5 @@
-import { FileDAO } from '../../dao'
-import { CreateFile, SelectFile, UpdateFile } from '../../dao/mongo/dtos'
+import { FileDAO } from '../../dao/index.js'
+import { CreateFile, SelectFile, UpdateFile } from '../../dao/mongo/dtos/index.js'
 
 export class FileRepository {
     constructor() {

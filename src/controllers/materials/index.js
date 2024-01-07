@@ -1,4 +1,4 @@
-import { MaterialRepository } from '../../repositories'
+import { MaterialRepository } from '../../repositories/index.js'
 
 export class MaterialController {
     constructor() {
@@ -23,13 +23,13 @@ export class MaterialController {
                 areaStandard
             })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'material successfully created',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -44,13 +44,13 @@ export class MaterialController {
 
             const result = await this.materialRepository.getMaterialById(fid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'material successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -81,13 +81,13 @@ export class MaterialController {
 
             const result = await this.materialRepository.searchMaterials(limit, page, query)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'all material',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -109,13 +109,13 @@ export class MaterialController {
 
             const result = await this.materialRepository.updateMaterial(newMaterial)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'material successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -128,9 +128,9 @@ export class MaterialController {
             const { mid } = req.params
             await this.materialRepository.deleteMaterial(mid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

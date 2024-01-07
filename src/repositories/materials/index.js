@@ -1,5 +1,5 @@
-import { MaterialDAO } from '../../dao'
-import { CreateMaterial, SelectMaterial, UpdateMaterial } from '../../dao/mongo/dtos'
+import { MaterialDAO } from '../../dao/index.js'
+import { CreateMaterial, SelectMaterial, UpdateMaterial } from '../../dao/mongo/dtos/index.js'
 
 export class MaterialRepository {
     constructor() {

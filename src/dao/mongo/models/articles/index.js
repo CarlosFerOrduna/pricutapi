@@ -8,6 +8,4 @@ const articleSchema = new Schema({
 
 articleSchema.plugin(paginate)
 
-const articleModel = model('articles', articleSchema)
-
-export default articleModel
+export const articleModel = model('articles', articleSchema)

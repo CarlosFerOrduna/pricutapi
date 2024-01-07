@@ -5,6 +5,4 @@ const citiesSchema = new Schema({
     value: { type: String, required: true }
 })
 
-const citiesModel = model('cities', citiesSchema)
-
-export default citiesModel
+export const citiesModel = model('cities', citiesSchema)

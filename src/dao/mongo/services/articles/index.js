@@ -1,6 +1,6 @@
-import articleModel from '../models/articles.model.js'
+import { articleModel } from '../../models/index.js'
 
-export default class ArticleService {
+export class ArticleService {
     saveArticle = async (article) => {
         try {
             const newArticle = new articleModel(article)

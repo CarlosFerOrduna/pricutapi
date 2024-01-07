@@ -10,6 +10,4 @@ const shippingSchema = new Schema({
     price: { type: Number, require: true }
 })
 
-const shippingModel = model('shipping', shippingSchema)
-
-export default shippingModel
+export const shippingModel = model('shipping', shippingSchema)

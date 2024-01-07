@@ -1,6 +1,6 @@
-import citiesModel from '../models/cities.model.js'
+import { citiesModel } from '../../models/index.js'
 
-export default class CitiesService {
+export class CityService {
     saveCity = async (cities) => {
         try {
             const newCities = new citiesModel(cities)

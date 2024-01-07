@@ -8,7 +8,7 @@ import {
     FileRouter,
     MaterialRouter,
     UserRouter
-} from './api'
+} from './api/index.js'
 
 export const router = Router()
 

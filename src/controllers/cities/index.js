@@ -1,4 +1,4 @@
-import { CityRepository } from '../../repositories'
+import { CityRepository } from '../../repositories/index.js'
 
 export class CitiesController {
     constructor() {
@@ -13,13 +13,13 @@ export class CitiesController {
 
             const result = await this.citiesRepository.saveCity({ key, value })
 
-            return res.status(201).json({
+            return res.status(201).send({
                 status: 'success',
                 message: 'cities successfully created',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -34,13 +34,13 @@ export class CitiesController {
 
             const result = await this.citiesRepository.getCityById(cid)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'cities successfully found',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -52,13 +52,13 @@ export class CitiesController {
         try {
             const result = await this.citiesRepository.searchCities()
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'all cities',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -76,13 +76,13 @@ export class CitiesController {
 
             const result = await this.citiesRepository.updateCity(newCities)
 
-            return res.status(200).json({
+            return res.status(200).send({
                 status: 'success',
                 message: 'cities successfully updated',
                 data: result
             })
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}
@@ -95,9 +95,9 @@ export class CitiesController {
             const { cid } = req.params
             await this.citiesRepository.deleteCity(cid)
 
-            return res.status(204).json({})
+            return res.status(204).send({})
         } catch (error) {
-            return res.status(400).json({
+            return res.status(400).send({
                 status: 'error',
                 message: error.message,
                 data: {}

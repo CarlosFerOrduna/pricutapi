@@ -8,6 +8,4 @@ const categorySchema = new Schema({
 
 categorySchema.plugin(paginate)
 
-const categoryModel = model('categories', categorySchema)
-
-export default categoryModel
+export const categoryModel = model('categories', categorySchema)

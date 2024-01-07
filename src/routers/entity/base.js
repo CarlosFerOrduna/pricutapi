@@ -61,7 +61,7 @@ export default class BaseRouter {
                 const result = authToken(authorization)
 
                 if (result?.code) {
-                    return res.status(result.code).json({
+                    return res.status(result.code).send({
                         status: 'error',
                         message: result.message
                     })
@@ -71,7 +71,7 @@ export default class BaseRouter {
 
                 next()
             } catch (error) {
-                return res.status(500).json({
+                return res.status(500).send({
                     status: 'error',
                     message: error.message
                 })

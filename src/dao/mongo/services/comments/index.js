@@ -1,6 +1,6 @@
-import commentModel from '../models/comments.model.js'
+import { commentModel } from '../../models/index.js'
 
-export default class CommentService {
+export class CommentService {
     saveComment = async (comment) => {
         try {
             const newComment = new commentModel(comment)

@@ -1,6 +1,6 @@
-import materialModel from '../models/materials.model.js'
+import { materialModel } from '../../models/index.js'
 
-export default class MaterialService {
+export class MaterialService {
     saveMaterial = async (material) => {
         try {
             const newMaterial = new materialModel(material)

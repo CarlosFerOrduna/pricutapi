@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { createHash } from '../utils/bcrypt.util.js'
 import paginate from 'mongoose-paginate-v2'
+
+import { createHash } from '../../../../utils/bcrypt.util.js'
 
 const userSchema = new Schema({
     firstName: { type: String, required: true },
@@ -18,6 +19,4 @@ userSchema.pre('save', function () {
 
 userSchema.plugin(paginate)
 
-const userModel = model('users', userSchema)
-
-export default userModel
+export const userModel = model('users', userSchema)

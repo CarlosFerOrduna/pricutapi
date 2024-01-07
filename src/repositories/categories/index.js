@@ -1,5 +1,5 @@
-import { CategoryDAO } from '../../dao'
-import { CreateCategory, SelectCategory, UpdateCategory } from '../../dao/mongo/dtos'
+import { CategoryDAO } from '../../dao/index.js'
+import { CreateCategory, SelectCategory, UpdateCategory } from '../../dao/mongo/dtos/index.js'
 
 export class CategoryRepository {
     constructor() {

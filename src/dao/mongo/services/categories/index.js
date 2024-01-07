@@ -1,6 +1,6 @@
-import categoryModel from '../models/categories.model.js'
+import { categoryModel } from '../../models/index.js'
 
-export default class CategoryService {
+export class CategoryService {
     saveCategory = async (category) => {
         try {
             const newCategory = new categoryModel(category)

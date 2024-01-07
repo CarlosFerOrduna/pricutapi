@@ -1,4 +1,8 @@
-import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors'
+import {
+    ErrorWrapper,
+    codes,
+    invalidFieldErrorInfo
+} from '../../../../middlewares/errors/index.js'
 
 export class UpdateCity {
     constructor(city) {
