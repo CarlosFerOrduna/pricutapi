@@ -1,8 +1,8 @@
-import ArticleService from '../services/articles.service.js'
+import { ArticlesRepository } from '../../repositories'
 
 export class ArticleController {
     constructor() {
-        this.articleService = new ArticleService()
+        this.articleRepository = new ArticlesRepository()
     }
 
     saveArticle = async (req, res) => {
@@ -11,7 +11,7 @@ export class ArticleController {
             if (!title) throw new Error('title is not valid')
             if (!body) throw new Error('body is not valid')
 
-            const result = await this.articleService.saveArticle({ title, body })
+            const result = await this.articleRepository.saveArticle({ title, body })
 
             return res.status(201).json({
                 status: 'success',
@@ -32,7 +32,7 @@ export class ArticleController {
             const { aid } = req.params
             if (!aid || !isNaN(aid)) throw new Error('aid is required, or is not valid')
 
-            const result = await this.articleService.getArticleById(aid)
+            const result = await this.articleRepository.getArticleById(aid)
 
             return res.status(200).json({
                 status: 'success',
@@ -56,7 +56,7 @@ export class ArticleController {
             if (title) query.title = title
             if (body) query.body = body
 
-            const result = await this.articleService.searchArticles(limit, page, query)
+            const result = await this.articleRepository.searchArticles(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',
@@ -80,7 +80,7 @@ export class ArticleController {
             if (title) newArticle.title = title
             if (body) newArticle.body = body
 
-            const result = await this.articleService.updateArticle(newArticle)
+            const result = await this.articleRepository.updateArticle(newArticle)
 
             return res.status(200).json({
                 status: 'success',
@@ -99,7 +99,7 @@ export class ArticleController {
     deleteArticle = async (req, res) => {
         try {
             const { mid } = req.params
-            await this.articleService.deleteArticle(mid)
+            await this.articleRepository.deleteArticle(mid)
 
             return res.status(204).json({})
         } catch (error) {

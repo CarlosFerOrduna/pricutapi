@@ -1,16 +1,16 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors'
 
-export class UpdateArticle {
-    constructor(article) {
+export class UpdateCategory {
+    constructor(category) {
         this._id =
-            article._id ||
+            category._id ||
             ErrorWrapper.createError({
                 name: '_id is not valid',
                 cause: invalidFieldErrorInfo({ name: '_id', type: 'string', value: _id }),
-                message: 'Error to update article',
+                message: 'Error to update category',
                 code: codes.INVALID_TYPES_ERROR
             })
-        if (article.title) this.title = article.title
-        if (article.body) this.body = article.body
+        if (category.name) this.name = category.name
+        if (category.description) this.description = category.description
     }
 }

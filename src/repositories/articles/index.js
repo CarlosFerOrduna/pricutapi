@@ -1,8 +1,9 @@
+import { ArticleDAO } from '../../dao/index.js'
 import { CreateArticle, SelectArticle, UpdateArticle } from '../../dao/mongo/dtos'
 
-export default class ArticlesRepository {
-    constructor(dao) {
-        this.dao = dao
+export class ArticleRepository {
+    constructor() {
+        this.dao = new ArticleDAO()
     }
 
     saveArticle = async (article) => {
@@ -40,6 +41,7 @@ export default class ArticlesRepository {
             nextPage
         }
     }
+
     updateArticle = async (article) => {
         const updateArticle = new UpdateArticle(article)
         const articleUpdated = await this.dao.updateArticle(updateArticle)

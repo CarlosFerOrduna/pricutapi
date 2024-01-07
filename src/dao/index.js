@@ -4,13 +4,13 @@ import config from '../config/index.js'
 import ErrorWrapper from '../middlewares/errors/entities/ErrorWrapper.js'
 import codes from '../middlewares/errors/enum/index.js'
 
-export let Articles
-export let Categories
-export let Cities
-export let Comments
-export let Files
-export let Materials
-export let Users
+export let ArticleDAO
+export let CategoryDAO
+export let CityDAO
+export let CommentDAO
+export let FileDAO
+export let MaterialDAO
+export let UserDAO
 
 switch (config.persistence) {
     case 'mongo':
@@ -21,31 +21,31 @@ switch (config.persistence) {
             const { default: ArticlesMongo } = await import(
                 './mongo/models/articles/schema/index.js'
             )
-            Articles = ArticlesMongo
+            ArticleDAO = ArticlesMongo
             const { default: CategoriesMongo } = await import(
                 './mongo/models/categories/schema/index.js'
             )
-            Categories = CategoriesMongo
+            CategoryDAO = CategoriesMongo
             const { default: CitiesMongo } = await import(
                 './mongo/models/cities/schema/index.js'
             )
-            Cities = CitiesMongo
+            CityDAO = CitiesMongo
             const { default: CommentsMongo } = await import(
                 './mongo/models/comments/schema/index.js'
             )
-            Comments = CommentsMongo
+            CommentDAO = CommentsMongo
             const { default: FilesMongo } = await import(
                 './mongo/models/files/schema/index.js'
             )
-            Files = FilesMongo
+            FileDAO = FilesMongo
             const { default: MaterialsMongo } = await import(
                 './mongo/models/materials/schema/index.js'
             )
-            Materials = MaterialsMongo
+            MaterialDAO = MaterialsMongo
             const { default: UsersMongo } = await import(
                 './mongo/models/users/schema/index.js'
             )
-            Users = UsersMongo
+            UserDAO = UsersMongo
         } catch (error) {
             ErrorWrapper.createError({
                 name: 'can not connect to the db',
