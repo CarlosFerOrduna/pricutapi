@@ -1,6 +1,6 @@
 import MaterialService from '../services/materials.service.js'
 
-class MaterialController {
+export class MaterialController {
     constructor() {
         this.materialService = new MaterialService()
     }
@@ -138,7 +138,3 @@ class MaterialController {
         }
     }
 }
-
-const materialController = new MaterialController()
-
-export default materialController

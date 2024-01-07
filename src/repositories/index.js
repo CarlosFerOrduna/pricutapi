@@ -1,7 +1,4 @@
-export * from './articles'
-export * from './categories'
-export * from './cities'
-export * from './comments'
-export * from './files'
-export * from './materials'
-export * from './users'
+import { Articles } from '../dao/index.js'
+import ArticlesRepository from './articles/index.js'
+
+export const articleRepository = new ArticlesRepository(new Articles())

@@ -1,6 +1,6 @@
 import CitiesService from '../services/cities.service.js'
 
-class CitiesController {
+export class CitiesController {
     constructor() {
         this.citiesService = new CitiesService()
     }
@@ -105,7 +105,3 @@ class CitiesController {
         }
     }
 }
-
-const citiesController = new CitiesController()
-
-export default citiesController

@@ -1,0 +1,7 @@
+export { ArticleRouter } from './articles'
+export { CategoryRouter } from './categories'
+export { CitiesRouter as CitiyRouter } from './cities'
+export { CommentRouter } from './comments'
+export { FileRouter } from './files'
+export { MaterialRouter } from './materials'
+export { UserRouter } from './users'

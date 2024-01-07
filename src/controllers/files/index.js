@@ -3,7 +3,7 @@ import { calculateDimensions, calculatePrice } from '../../utils/dxfParser.util.
 import { ConvertDxfToSvg } from '../../utils/dxfToSvg.util.js'
 import { uploadImage } from '../../utils/uploadImage.util.js'
 
-class FileController {
+export class FileController {
     constructor() {
         this.fileService = new FileService()
     }
@@ -187,7 +187,3 @@ class FileController {
         }
     }
 }
-
-const fileController = new FileController()
-
-export default fileController

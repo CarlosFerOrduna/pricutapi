@@ -2,7 +2,7 @@ import UserService from '../services/users.service.js'
 import { createHash, isValidPassword } from '../../utils/bcrypt.util.js'
 import { generateToken } from '../../utils/jwt.util.js'
 
-class UserController {
+export class UserController {
     constructor() {
         this.userService = new UserService()
     }
@@ -163,7 +163,3 @@ class UserController {
         }
     }
 }
-
-const userController = new UserController()
-
-export default userController

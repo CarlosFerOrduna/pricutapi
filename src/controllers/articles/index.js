@@ -1,6 +1,6 @@
 import ArticleService from '../services/articles.service.js'
 
-class ArticleController {
+export class ArticleController {
     constructor() {
         this.articleService = new ArticleService()
     }
@@ -111,7 +111,3 @@ class ArticleController {
         }
     }
 }
-
-const articleController = new ArticleController()
-
-export default articleController

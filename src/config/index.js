@@ -9,9 +9,9 @@ program.parse()
 const env = program.opts().mode
 
 const environments = {
-    prod: './.env.prod',
-    stag: './.env.stag',
-    test: './.env.test'
+    prd: './.env.prd',
+    stg: './.env.stg',
+    dev: './.env.dev'
 }
 
 dotenv.config({ path: environments[env] })

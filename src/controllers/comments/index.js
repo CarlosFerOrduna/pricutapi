@@ -1,6 +1,6 @@
 import CommentService from '../services/comments.service.js'
 
-class CommentController {
+export class CommentController {
     constructor() {
         this.commentService = new CommentService()
     }
@@ -111,7 +111,3 @@ class CommentController {
         }
     }
 }
-
-const commentController = new CommentController()
-
-export default commentController

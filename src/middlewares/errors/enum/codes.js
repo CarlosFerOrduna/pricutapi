@@ -1,4 +1,4 @@
-const codes = {
+export const codes = {
     ROUTING_ERROR: 1,
     INVALID_TYPES_ERROR: 2,
     DATABASE_ERROR: 3,
@@ -8,5 +8,3 @@ const codes = {
     MAILER: 7,
     NOT_FOUND: 8
 }
-
-export default codes

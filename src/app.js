@@ -8,7 +8,7 @@ import swaggerUIExpress from 'swagger-ui-express'
 import config from './config/index.js'
 import { handlerErrors } from './middlewares/errors/index.js'
 import { handlerLogs } from './middlewares/logs/index.js'
-import router from './routers/api/files.routes.js'
+import { router } from './routers/index.js'
 import __dirname from './utils/dirname.util.js'
 
 const app = express()

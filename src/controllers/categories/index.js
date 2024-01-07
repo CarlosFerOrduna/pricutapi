@@ -1,6 +1,6 @@
 import CategoryService from '../services/categories.service.js'
 
-class CategoryController {
+export class CategoryController {
     constructor() {
         this.categoryService = new CategoryService()
     }
@@ -111,7 +111,3 @@ class CategoryController {
         }
     }
 }
-
-const categoryController = new CategoryController()
-
-export default categoryController
