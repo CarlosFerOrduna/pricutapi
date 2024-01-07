@@ -6,7 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
 
 import config from './config/index.js'
-import { handlerErrors } from './middlewares/errors/index.js'
+import { ErrorWrapper, codes, handlerErrors } from './middlewares/errors/index.js'
 import { handlerLogs } from './middlewares/logs/index.js'
 import { router } from './routers/index.js'
 import __dirname from './utils/dirname.util.js'
@@ -53,6 +53,14 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 app.use('/', router)
+app.use('*', (req, res) => {
+    ErrorWrapper.createError({
+        name: 'invalid route',
+        cause: 'invalid route',
+        message: 'invalid route',
+        code: codes.ROUTING_ERROR
+    })
+})
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))

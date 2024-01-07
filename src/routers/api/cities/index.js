@@ -1,5 +1,5 @@
 import { CitiesController } from '../../../controllers/index.js'
-import BaseRouter from '../../entity/base.js'
+import BaseRouter from '../../entities/base.js'
 
 export class CitiesRouter extends BaseRouter {
     init() {

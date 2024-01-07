@@ -1,5 +1,5 @@
 import { CategoryDAO } from '../../dao/index.js'
-import { CreateCategory, SelectCategory, UpdateCategory } from '../../dao/mongo/dtos/index.js'
+import { CreateCategory, SelectCategory, UpdateCategory } from '../../dao/dtos/index.js'
 
 export class CategoryRepository {
     constructor() {
@@ -31,7 +31,7 @@ export class CategoryRepository {
         } = await this.dao.searchCategories(limit, page, query)
 
         return {
-            categories: docs.map((m) => new SelectCategory(m.category)),
+            categories: docs.map((c) => new SelectCategory(c)),
             totalPages,
             page,
             pagingCounter,

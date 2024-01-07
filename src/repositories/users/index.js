@@ -1,5 +1,5 @@
 import { UserDAO } from '../../dao/index.js'
-import { CreateUser, SelectUser, UpdateUser } from '../../dao/mongo/dtos/index.js'
+import { CreateUser, SelectUser, UpdateUser } from '../../dao/dtos/index.js'
 
 export class UsersRepository {
     constructor() {
@@ -31,7 +31,7 @@ export class UsersRepository {
         } = await this.dao.searchUsers(limit, page, query)
 
         return {
-            users: docs.map((m) => new SelectUser(m.user)),
+            users: docs.map((u) => new SelectUser(u)),
             totalPages,
             page,
             pagingCounter,

@@ -1,5 +1,5 @@
 import { FileDAO } from '../../dao/index.js'
-import { CreateFile, SelectFile, UpdateFile } from '../../dao/mongo/dtos/index.js'
+import { CreateFile, SelectFile, UpdateFile } from '../../dao/dtos/index.js'
 
 export class FileRepository {
     constructor() {
@@ -31,7 +31,7 @@ export class FileRepository {
         } = await this.dao.searchFiles(limit, page, query)
 
         return {
-            files: docs.map((m) => new SelectFile(m.file)),
+            files: docs.map((f) => new SelectFile(f)),
             totalPages,
             page,
             pagingCounter,

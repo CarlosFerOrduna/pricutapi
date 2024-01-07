@@ -1,5 +1,5 @@
 import { UserController } from '../../../controllers/index.js'
-import BaseRouter from '../../entity/base.js'
+import BaseRouter from '../../entities/base.js'
 
 export class UserRouter extends BaseRouter {
     init() {

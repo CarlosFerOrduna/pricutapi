@@ -1,29 +1,11 @@
+import moment from 'moment'
 import winston from 'winston'
 
-import moment from 'moment'
 import config from '../../config/index.js'
-
-const customLevelsOptions = {
-    levels: {
-        fatal: 0,
-        error: 1,
-        warning: 2,
-        info: 3,
-        http: 4,
-        debug: 5
-    },
-    colors: {
-        fatal: 'magenta',
-        error: 'red',
-        warning: 'yellow',
-        info: 'blue',
-        http: 'green',
-        debug: 'white'
-    }
-}
+import { colors, levels } from './enum/index.js'
 
 const commonFormat = winston.format.combine(
-    winston.format.colorize({ colors: customLevelsOptions.colors }),
+    winston.format.colorize({ colors: colors }),
     winston.format.simple()
 )
 
@@ -34,12 +16,12 @@ const createFileTransport = (level) =>
     new winston.transports.File({ filename: './errors.log', level, format: commonFormat })
 
 const loggerDev = winston.createLogger({
-    levels: customLevelsOptions.levels,
+    levels: levels,
     transports: [createConsoleTransport('debug')]
 })
 
 const loggerPrd = winston.createLogger({
-    levels: customLevelsOptions.levels,
+    levels: levels,
     transports: [createFileTransport('error'), createConsoleTransport('info')]
 })
 
@@ -49,11 +31,10 @@ export const handlerLogs = (req, res, next) => {
     req.logger = loggers[config.logger]
     req.logger.info(`${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`)
 
-    const originalJson = res.send
-    res.send = function (body) {
-        req.logger.http(`response:`, body)
-
-        originalJson.call(res, body)
+    const originalSend = res.send
+    res.send = (body) => {
+        req.logger.http(`response: ${body}`)
+        originalSend.call(res, body)
     }
 
     next()

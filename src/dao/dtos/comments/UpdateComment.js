@@ -2,7 +2,7 @@ import {
     ErrorWrapper,
     codes,
     invalidFieldErrorInfo
-} from '../../../../middlewares/errors/index.js'
+} from '../../../middlewares/errors/index.js'
 
 export class UpdateComment {
     constructor(comment) {

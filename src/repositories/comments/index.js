@@ -1,5 +1,5 @@
 import { CommentDAO } from '../../dao/index.js'
-import { CreateComment, SelectComment, UpdateComment } from '../../dao/mongo/dtos/index.js'
+import { CreateComment, SelectComment, UpdateComment } from '../../dao/dtos/index.js'
 
 export class CommentRepository {
     constructor() {
@@ -31,7 +31,7 @@ export class CommentRepository {
         } = await this.dao.searchComments(limit, page, query)
 
         return {
-            comments: docs.map((m) => new SelectComment(m.comment)),
+            comments: docs.map((c) => new SelectComment(c)),
             totalPages,
             page,
             pagingCounter,

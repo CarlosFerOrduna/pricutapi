@@ -2,19 +2,19 @@ import {
     ErrorWrapper,
     codes,
     invalidFieldErrorInfo
-} from '../../../../middlewares/errors/index.js'
+} from '../../../middlewares/errors/index.js'
 
-export class UpdateCity {
-    constructor(city) {
+export class UpdateCategory {
+    constructor(category) {
         this._id =
-            city._id ||
+            category._id ||
             ErrorWrapper.createError({
                 name: '_id is not valid',
                 cause: invalidFieldErrorInfo({ name: '_id', type: 'string', value: _id }),
-                message: 'Error to update city',
+                message: 'Error to update category',
                 code: codes.INVALID_TYPES_ERROR
             })
-        if (city.key) this.key = city.key
-        if (city.value) this.value = city.value
+        if (category.name) this.name = category.name
+        if (category.description) this.description = category.description
     }
 }

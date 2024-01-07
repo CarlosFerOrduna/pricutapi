@@ -1,5 +1,5 @@
 import { MaterialDAO } from '../../dao/index.js'
-import { CreateMaterial, SelectMaterial, UpdateMaterial } from '../../dao/mongo/dtos/index.js'
+import { CreateMaterial, SelectMaterial, UpdateMaterial } from '../../dao/dtos/index.js'
 
 export class MaterialRepository {
     constructor() {
@@ -31,7 +31,7 @@ export class MaterialRepository {
         } = await this.dao.searchMaterials(limit, page, query)
 
         return {
-            materials: docs.map((m) => new SelectMaterial(m.material)),
+            materials: docs.map((m) => new SelectMaterial(m)),
             totalPages,
             page,
             pagingCounter,

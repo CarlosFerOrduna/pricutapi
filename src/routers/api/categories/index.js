@@ -1,5 +1,5 @@
 import { CategoryController } from '../../../controllers/index.js'
-import BaseRouter from '../../entity/base.js'
+import BaseRouter from '../../entities/base.js'
 
 export class CategoryRouter extends BaseRouter {
     init() {

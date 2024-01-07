@@ -1,5 +1,5 @@
 import { ArticleDAO } from '../../dao/index.js'
-import { CreateArticle, SelectArticle, UpdateArticle } from '../../dao/mongo/dtos/index.js'
+import { CreateArticle, SelectArticle, UpdateArticle } from '../../dao/dtos/index.js'
 
 export class ArticleRepository {
     constructor() {
@@ -31,7 +31,7 @@ export class ArticleRepository {
         } = await this.dao.searchArticles(limit, page, query)
 
         return {
-            articles: docs.map((m) => new SelectArticle(m.article)),
+            articles: docs.map((a) => new SelectArticle(a)),
             totalPages,
             page,
             pagingCounter,
