@@ -1,10 +1,10 @@
-import UserService from '../services/users.service.js'
+import { UsersRepository } from '../../repositories/index.js'
 import { createHash, isValidPassword } from '../../utils/bcrypt.util.js'
 import { generateToken } from '../../utils/jwt.util.js'
 
 export class UserController {
     constructor() {
-        this.userService = new UserService()
+        this.userRepository = new UsersRepository()
     }
 
     createUser = async (req, res) => {
@@ -15,7 +15,7 @@ export class UserController {
             if (!email || !isNaN(email)) throw new Error('email is not valid')
             if (!password || !isNaN(password)) throw new Error('password is not valid')
 
-            const result = await this.userService.createUser({
+            const result = await this.userRepository.createUser({
                 firstName,
                 lastName,
                 email,
@@ -49,7 +49,7 @@ export class UserController {
             if (rol) query.rol = rol
             if (files) query.files = files
 
-            const result = await this.userService.searchUsers(limit, page, query)
+            const result = await this.userRepository.searchUsers(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',
@@ -70,7 +70,7 @@ export class UserController {
             const { uid } = req.params
             if (!uid || !isNaN(uid)) throw new Error('uid is not valid')
 
-            const result = await this.userService.getUserById(uid)
+            const result = await this.userRepository.getUserById(uid)
 
             return res.status(200).json({
                 status: 'success',
@@ -97,7 +97,7 @@ export class UserController {
             if (password) newUser.password = createHash(password)
             if (rol) newUser.rol = rol
 
-            const result = await this.userService.updateUser(newUser)
+            const result = await this.userRepository.updateUser(newUser)
 
             return res.status(201).json({
                 status: 'success',
@@ -118,7 +118,7 @@ export class UserController {
             const { uid } = req.params
             if (!uid || !isNaN(uid)) throw new Error('uid is not valid')
 
-            await this.userService.deleteUser(uid)
+            await this.userRepository.deleteUser(uid)
 
             return res.status(204).json({})
         } catch (error) {
@@ -136,7 +136,7 @@ export class UserController {
             if (!email || !email.includes('@')) throw new Error('email is not valid')
             if (!password) throw new Error('password is not valid')
 
-            const data = await this.userService.getUserByEmail(email)
+            const data = await this.userRepository.getUserByEmail(email)
 
             if (!isValidPassword(data, password))
                 throw new Error('something went wrong: ' + data)

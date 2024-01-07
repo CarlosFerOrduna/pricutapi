@@ -1,8 +1,8 @@
-import CategoryService from '../services/categories.service.js'
+import { CategoryRepository } from '../../repositories'
 
 export class CategoryController {
     constructor() {
-        this.categoryService = new CategoryService()
+        this.categoryRepository = new CategoryRepository()
     }
 
     saveCategory = async (req, res) => {
@@ -11,7 +11,7 @@ export class CategoryController {
             if (!name) throw new Error('name is not valid')
             if (!description) throw new Error('description is not valid')
 
-            const result = await this.categoryService.saveCategory({ name, description })
+            const result = await this.categoryRepository.saveCategory({ name, description })
 
             return res.status(201).json({
                 status: 'success',
@@ -32,7 +32,7 @@ export class CategoryController {
             const { cid } = req.params
             if (!cid || !isNaN(cid)) throw new Error('cid is required, or is not valid')
 
-            const result = await this.categoryService.getCategoryById(cid)
+            const result = await this.categoryRepository.getCategoryById(cid)
 
             return res.status(200).json({
                 status: 'success',
@@ -56,7 +56,7 @@ export class CategoryController {
             if (name) query.name = name
             if (description) query.description = description
 
-            const result = await this.categoryService.searchCategories(limit, page, query)
+            const result = await this.categoryRepository.searchCategories(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',
@@ -80,7 +80,7 @@ export class CategoryController {
             if (name) newCategory.name = name
             if (description) newCategory.description = description
 
-            const result = await this.categoryService.updateCategory(newCategory)
+            const result = await this.categoryRepository.updateCategory(newCategory)
 
             return res.status(200).json({
                 status: 'success',
@@ -99,7 +99,7 @@ export class CategoryController {
     deleteCategory = async (req, res) => {
         try {
             const { mid } = req.params
-            await this.categoryService.deleteCategory(mid)
+            await this.categoryRepository.deleteCategory(mid)
 
             return res.status(204).json({})
         } catch (error) {

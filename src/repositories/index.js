@@ -1,7 +1,7 @@
 export { ArticleRepository } from './articles'
 export { CategoryRepository } from './categories'
 export { CityRepository } from './cities'
-export { CommentsRepository } from './comments'
+export { CommentRepository } from './comments'
 export { FileRepository } from './files'
 export { MaterialRepository } from './materials'
 export { UsersRepository } from './users'

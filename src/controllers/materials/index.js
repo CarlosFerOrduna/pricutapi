@@ -1,8 +1,8 @@
-import MaterialService from '../services/materials.service.js'
+import { MaterialRepository } from '../../repositories'
 
 export class MaterialController {
     constructor() {
-        this.materialService = new MaterialService()
+        this.materialRepository = new MaterialRepository()
     }
 
     saveMaterial = async (req, res) => {
@@ -14,7 +14,7 @@ export class MaterialController {
             if (!price) throw new Error('price is not valid')
             if (!thickness) throw new Error('thickness is not valid')
 
-            const result = await this.materialService.saveMaterial({
+            const result = await this.materialRepository.saveMaterial({
                 name,
                 description,
                 category,
@@ -42,7 +42,7 @@ export class MaterialController {
             const { fid } = req.params
             if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
 
-            const result = await this.materialService.getMaterialById(fid)
+            const result = await this.materialRepository.getMaterialById(fid)
 
             return res.status(200).json({
                 status: 'success',
@@ -79,7 +79,7 @@ export class MaterialController {
             if (thickness) query.thickness = thickness
             if (areaStandard) query.areaStandard = areaStandard
 
-            const result = await this.materialService.searchMaterials(limit, page, query)
+            const result = await this.materialRepository.searchMaterials(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',
@@ -107,7 +107,7 @@ export class MaterialController {
             if (thickness) newMaterial.thickness = thickness
             if (areaStandard) newMaterial.areaStandard = areaStandard
 
-            const result = await this.materialService.updateMaterial(newMaterial)
+            const result = await this.materialRepository.updateMaterial(newMaterial)
 
             return res.status(200).json({
                 status: 'success',
@@ -126,7 +126,7 @@ export class MaterialController {
     deleteMaterial = async (req, res) => {
         try {
             const { mid } = req.params
-            await this.materialService.deleteMaterial(mid)
+            await this.materialRepository.deleteMaterial(mid)
 
             return res.status(204).json({})
         } catch (error) {

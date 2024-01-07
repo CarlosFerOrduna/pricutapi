@@ -1,8 +1,8 @@
-import CitiesService from '../services/cities.service.js'
+import { CityRepository } from '../../repositories'
 
 export class CitiesController {
     constructor() {
-        this.citiesService = new CitiesService()
+        this.citiesRepository = new CityRepository()
     }
 
     saveCity = async (req, res) => {
@@ -11,7 +11,7 @@ export class CitiesController {
             if (!key || isNaN(key)) throw new Error('key is not valid')
             if (!value || !isNaN(value)) throw new Error('value is not valid')
 
-            const result = await this.citiesService.saveCity({ key, value })
+            const result = await this.citiesRepository.saveCity({ key, value })
 
             return res.status(201).json({
                 status: 'success',
@@ -32,7 +32,7 @@ export class CitiesController {
             const { cid } = req.params
             if (!cid || !isNaN(cid)) throw new Error('cid is required, or is not valid')
 
-            const result = await this.citiesService.getCityById(cid)
+            const result = await this.citiesRepository.getCityById(cid)
 
             return res.status(200).json({
                 status: 'success',
@@ -50,7 +50,7 @@ export class CitiesController {
 
     searchCities = async (req, res) => {
         try {
-            const result = await this.citiesService.searchCities()
+            const result = await this.citiesRepository.searchCities()
 
             return res.status(200).json({
                 status: 'success',
@@ -74,7 +74,7 @@ export class CitiesController {
             if (key) newCities.key = key
             if (value) newCities.value = value
 
-            const result = await this.citiesService.updateCity(newCities)
+            const result = await this.citiesRepository.updateCity(newCities)
 
             return res.status(200).json({
                 status: 'success',
@@ -93,7 +93,7 @@ export class CitiesController {
     deleteCity = async (req, res) => {
         try {
             const { cid } = req.params
-            await this.citiesService.deleteCity(cid)
+            await this.citiesRepository.deleteCity(cid)
 
             return res.status(204).json({})
         } catch (error) {

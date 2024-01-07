@@ -1,8 +1,8 @@
-import { ArticlesRepository } from '../../repositories'
+import { ArticleRepository } from '../../repositories'
 
 export class ArticleController {
     constructor() {
-        this.articleRepository = new ArticlesRepository()
+        this.articleRepository = new ArticleRepository()
     }
 
     saveArticle = async (req, res) => {

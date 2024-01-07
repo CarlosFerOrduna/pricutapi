@@ -1,11 +1,11 @@
-import FileService from '../services/files.service.js'
+import { FileRepository } from '../../repositories/index.js'
 import { calculateDimensions, calculatePrice } from '../../utils/dxfParser.util.js'
 import { ConvertDxfToSvg } from '../../utils/dxfToSvg.util.js'
 import { uploadImage } from '../../utils/uploadImage.util.js'
 
 export class FileController {
     constructor() {
-        this.fileService = new FileService()
+        this.fileRepository = new FileRepository()
     }
 
     saveFile = async (req, res) => {
@@ -17,7 +17,7 @@ export class FileController {
             const svg = ConvertDxfToSvg(buffer)
             const urlImage = await uploadImage(svg)
 
-            const result = await this.fileService.saveFile({
+            const result = await this.fileRepository.saveFile({
                 name: originalname,
                 file: buffer,
                 url: urlImage
@@ -49,7 +49,7 @@ export class FileController {
             if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
             if (!mid || !isNaN(mid)) throw new Error('pid is required, or is not valid')
 
-            const result = await this.fileService.getFileById(fid)
+            const result = await this.fileRepository.getFileById(fid)
 
             const dimensions = calculateDimensions(result.file)
             const price = await calculatePrice(dimensions, mid)
@@ -80,7 +80,7 @@ export class FileController {
             const { fid } = req.params
             if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
 
-            const result = await this.fileService.getFileById(fid)
+            const result = await this.fileRepository.getFileById(fid)
 
             const dimensions = calculateDimensions(result.file)
 
@@ -109,7 +109,7 @@ export class FileController {
             const { fid } = req.params
             if (!fid || !isNaN(fid)) throw new Error('fid is not valid')
 
-            const result = await this.fileService.getFileById(fid)
+            const result = await this.fileRepository.getFileById(fid)
 
             res.setHeader('Content-Type', 'application/octet-stream')
             res.setHeader('Content-Disposition', 'attachment; filename=' + result.name)
@@ -131,7 +131,7 @@ export class FileController {
             let query = {}
             if (name) query.name = name
 
-            let result = await this.fileService.searchFiles(limit, page, query)
+            let result = await this.fileRepository.searchFiles(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',
@@ -156,7 +156,7 @@ export class FileController {
             if (file) newFile.file = file
             if (url) newFile.url = url
 
-            const result = await this.fileService.updateFile(newFile)
+            const result = await this.fileRepository.updateFile(newFile)
 
             return res.status(200).json({
                 status: 'success',
@@ -175,7 +175,7 @@ export class FileController {
     deleteFile = async (req, res) => {
         try {
             const { cid } = req.params
-            await this.fileService.deleteFile(cid)
+            await this.fileRepository.deleteFile(cid)
 
             return res.status(204).json({})
         } catch (error) {

@@ -1,7 +1,7 @@
 import { CommentDAO } from '../../dao'
 import { CreateComment, SelectComment, UpdateComment } from '../../dao/mongo/dtos'
 
-export class CommentsRepository {
+export class CommentRepository {
     constructor() {
         this.dao = new CommentDAO()
     }

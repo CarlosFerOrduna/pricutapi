@@ -1,8 +1,8 @@
-import CommentService from '../services/comments.service.js'
+import { CommentRepository } from '../../repositories'
 
 export class CommentController {
     constructor() {
-        this.commentService = new CommentService()
+        this.commentRepository = new CommentRepository()
     }
 
     saveComment = async (req, res) => {
@@ -11,7 +11,7 @@ export class CommentController {
             if (!author) throw new Error('name is not valid')
             if (!details) throw new Error('description is not valid')
 
-            const result = await this.commentService.saveComment({ author, details })
+            const result = await this.commentRepository.saveComment({ author, details })
 
             return res.status(201).json({
                 status: 'success',
@@ -32,7 +32,7 @@ export class CommentController {
             const { cid } = req.params
             if (!cid || !isNaN(cid)) throw new Error('cid is required, or is not valid')
 
-            const result = await this.commentService.getCommentById(cid)
+            const result = await this.commentRepository.getCommentById(cid)
 
             return res.status(200).json({
                 status: 'success',
@@ -56,7 +56,7 @@ export class CommentController {
             if (author) query.author = author
             if (details) query.details = details
 
-            const result = await this.commentService.searchComments(limit, page, query)
+            const result = await this.commentRepository.searchComments(limit, page, query)
 
             return res.status(200).json({
                 status: 'success',
@@ -80,7 +80,7 @@ export class CommentController {
             if (author) newComment.author = author
             if (details) newComment.details = details
 
-            const result = await this.commentService.updateComment(newComment)
+            const result = await this.commentRepository.updateComment(newComment)
 
             return res.status(200).json({
                 status: 'success',
@@ -99,7 +99,7 @@ export class CommentController {
     deleteComment = async (req, res) => {
         try {
             const { cid } = req.params
-            await this.commentService.deleteComment(cid)
+            await this.commentRepository.deleteComment(cid)
 
             return res.status(204).json({})
         } catch (error) {
