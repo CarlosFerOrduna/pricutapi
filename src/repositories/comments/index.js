@@ -1,9 +1,9 @@
-import { CommentDAO } from '../../dao/index.js'
+import { commentDAO } from '../../dao/index.js'
 import { CreateComment, SelectComment, UpdateComment } from '../../dao/dtos/index.js'
 
 export class CommentRepository {
     constructor() {
-        this.dao = new CommentDAO()
+        this.dao = commentDAO
     }
 
     saveComment = async (comment) => {

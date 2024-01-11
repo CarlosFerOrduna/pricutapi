@@ -1,9 +1,9 @@
-import { UserDAO } from '../../dao/index.js'
+import { userDAO } from '../../dao/index.js'
 import { CreateUser, SelectUser, UpdateUser } from '../../dao/dtos/index.js'
 
 export class UsersRepository {
     constructor() {
-        this.dao = new UserDAO()
+        this.dao = userDAO
     }
 
     saveUser = async (user) => {

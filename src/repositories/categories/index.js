@@ -1,9 +1,9 @@
-import { CategoryDAO } from '../../dao/index.js'
+import { categoryDAO } from '../../dao/index.js'
 import { CreateCategory, SelectCategory, UpdateCategory } from '../../dao/dtos/index.js'
 
 export class CategoryRepository {
     constructor() {
-        this.dao = new CategoryDAO()
+        this.dao = categoryDAO
     }
 
     saveCategory = async (category) => {

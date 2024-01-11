@@ -1,9 +1,9 @@
-import { MaterialDAO } from '../../dao/index.js'
+import { materialDAO } from '../../dao/index.js'
 import { CreateMaterial, SelectMaterial, UpdateMaterial } from '../../dao/dtos/index.js'
 
 export class MaterialRepository {
     constructor() {
-        this.dao = new MaterialDAO()
+        this.dao = materialDAO
     }
 
     saveMaterial = async (material) => {

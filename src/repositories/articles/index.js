@@ -1,9 +1,9 @@
-import { ArticleDAO } from '../../dao/index.js'
+import { articleDAO } from '../../dao/index.js'
 import { CreateArticle, SelectArticle, UpdateArticle } from '../../dao/dtos/index.js'
 
 export class ArticleRepository {
     constructor() {
-        this.dao = new ArticleDAO()
+        this.dao = articleDAO
     }
 
     saveArticle = async (article) => {

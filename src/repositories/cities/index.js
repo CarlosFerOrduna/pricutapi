@@ -1,9 +1,9 @@
-import { CityDAO } from '../../dao/index.js'
+import { cityDAO } from '../../dao/index.js'
 import { CreateCity, SelectCity, UpdateCity } from '../../dao/dtos/index.js'
 
 export class CityRepository {
     constructor() {
-        this.dao = new CityDAO()
+        this.dao = cityDAO
     }
 
     saveCity = async (city) => {

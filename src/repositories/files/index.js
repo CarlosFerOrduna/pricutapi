@@ -1,9 +1,9 @@
-import { FileDAO } from '../../dao/index.js'
+import { fileDAO } from '../../dao/index.js'
 import { CreateFile, SelectFile, UpdateFile } from '../../dao/dtos/index.js'
 
 export class FileRepository {
     constructor() {
-        this.dao = new FileDAO()
+        this.dao = fileDAO
     }
 
     saveFile = async (file) => {
