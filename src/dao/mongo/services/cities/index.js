@@ -2,54 +2,34 @@ import { citiesModel } from '../../models/index.js'
 
 export class CityService {
     saveCity = async (cities) => {
-        try {
-            const newCities = new citiesModel(cities)
-            await newCities.validate()
+        const newCities = new citiesModel(cities)
+        await newCities.validate()
 
-            return await newCities.save()
-        } catch (error) {
-            throw new Error('citiesService: ' + error)
-        }
+        return await newCities.save()
     }
 
     getCityById = async (cid) => {
-        try {
-            const result = await citiesModel.findById(cid)
-            if (!result) throw new Error('cities not exists')
+        const result = await citiesModel.findById(cid)
+        if (!result) throw new Error('cities not exists')
 
-            return result
-        } catch (error) {
-            throw new Error('getCitiesById: ' + error)
-        }
+        return result
     }
 
-    searchCities = async () => {
-        try {
-            return await citiesModel.find({})
-        } catch (error) {
-            throw new Error('searchCities: ' + error)
-        }
+    searchCities = async (limit, page, query) => {
+        return await citiesModel.paginate(query, { limit: limit ?? 25, page: page ?? 1 })
     }
 
     updateCity = async (city) => {
-        try {
-            const result = await citiesModel.findByIdAndUpdate(city._id, city)
-            if (!result) throw new Error('cities not exists')
+        const result = await citiesModel.findByIdAndUpdate(city._id, city)
+        if (!result) throw new Error('cities not exists')
 
-            return result
-        } catch (error) {
-            throw new Error('updatecities: ' + error)
-        }
+        return result
     }
 
     deleteCity = async (cid) => {
-        try {
-            const result = await citiesModel.findByIdAndDelete(cid)
-            if (!result) throw new Error('cities not exists')
+        const result = await citiesModel.findByIdAndDelete(cid)
+        if (!result) throw new Error('cities not exists')
 
-            return result
-        } catch (error) {
-            throw new Error('deletecities: ' + error)
-        }
+        return result
     }
 }

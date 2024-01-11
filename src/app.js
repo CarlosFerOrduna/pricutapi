@@ -45,7 +45,7 @@ const corsOptions = {
 
 app.use(handlerLogs)
 app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
-app.use(cors(/*corsOptions*/))
+app.use(cors(corsOptions))
 app.use(compression({ brotli: { enabled: true, zlib: {} } }))
 app.use(json())
 app.use(urlencoded({ extended: true }))
