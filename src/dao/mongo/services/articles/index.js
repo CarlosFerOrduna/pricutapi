@@ -6,18 +6,18 @@ import {
 import { articleModel } from '../../models/index.js'
 
 export class ArticleService {
-    saveArticle = async (article) => {
+    saveArticle = async ({ article }) => {
         const newArticle = new articleModel(article)
         await newArticle.validate()
 
         return await newArticle.save()
     }
 
-    searchArticles = async (limit = 10, page = 1, query) => {
+    searchArticles = async ({ limit = 10, page = 1, query }) => {
         return await articleModel.paginate(query, { limit, page })
     }
 
-    getArticleById = async (aid) => {
+    getArticleById = async ({ aid }) => {
         const result = await articleModel.findById(aid)
         if (!result) {
             ErrorWrapper.createError({
@@ -35,8 +35,10 @@ export class ArticleService {
         return result
     }
 
-    updateArticle = async (article) => {
-        const result = await articleModel.findByIdAndUpdate(article._id, article)
+    updateArticle = async ({ article }) => {
+        const result = await articleModel.findByIdAndUpdate(article._id, article, {
+            new: true,
+        })
         if (!result) {
             ErrorWrapper.createError({
                 name: 'article not exists',

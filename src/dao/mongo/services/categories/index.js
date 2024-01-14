@@ -6,14 +6,14 @@ import {
 import { categoryModel } from '../../models/index.js'
 
 export class CategoryService {
-    saveCategory = async (category) => {
+    saveCategory = async ({ category }) => {
         const newCategory = new categoryModel(category)
         await newCategory.validate()
 
         return await newCategory.save()
     }
 
-    getCategoryById = async (cid) => {
+    getCategoryById = async ({ cid }) => {
         const result = await categoryModel.findById(cid)
         if (!result) {
             ErrorWrapper.createError({
@@ -31,11 +31,11 @@ export class CategoryService {
         return result
     }
 
-    searchCategories = async (limit = 10, page = 1, query) => {
+    searchCategories = async ({ limit = 10, page = 1, query }) => {
         return await categoryModel.paginate(query, { limit, page })
     }
 
-    updateCategory = async (category) => {
+    updateCategory = async ({ category }) => {
         const result = await categoryModel.findByIdAndUpdate(category._id, category, {
             new: true,
         })
@@ -55,7 +55,7 @@ export class CategoryService {
         return result
     }
 
-    deleteCategory = async (cid) => {
+    deleteCategory = async ({ cid }) => {
         const category = await categoryModel.findById(cid)
         if (!result) {
             ErrorWrapper.createError({

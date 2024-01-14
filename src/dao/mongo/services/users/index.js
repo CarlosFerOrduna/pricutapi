@@ -1,70 +1,93 @@
+import {
+    ErrorWrapper,
+    codes,
+    invalidFieldErrorInfo,
+} from '../../../../middlewares/errors/index.js'
 import { userModel } from '../../models/index.js'
 
 export class UserService {
-    createUser = async (user) => {
-        try {
-            const newUser = new userModel(user)
-            await newUser.validate()
+    createUser = async ({ user }) => {
+        const newUser = new userModel(user)
+        await newUser.validate()
 
-            return await newUser.save()
-        } catch (error) {
-            throw new Error('insertUser: ' + error)
-        }
+        return await newUser.save()
     }
 
-    getUserById = async (uid) => {
-        try {
-            const user = await userModel.findById(uid).populate('files.file')
-            if (!user) throw new Error('user not exists')
-
-            return user
-        } catch (error) {
-            throw new Error('getUserById: ' + error)
-        }
-    }
-
-    getUserByEmail = async (email) => {
-        try {
-            const user = await userModel.findOne({ email }).populate('files.file')
-            if (!user) throw new Error('user not exists')
-
-            return user
-        } catch (error) {
-            throw new Error('getUserByEmail: ' + error)
-        }
-    }
-
-    searchUsers = async (limit, page, query) => {
-        try {
-            return await userModel.paginate(query, {
-                limit: limit ?? 10,
-                page: page ?? 1,
-                populate: 'file'
+    getUserById = async ({ uid }) => {
+        const result = await userModel.findById(uid).populate('file')
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'user not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'user',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to get users',
+                code: codes.DATABASE_ERROR,
             })
-        } catch (error) {
-            throw new Error('getUsers: ' + error)
         }
+
+        return result
     }
 
-    updateUser = async (user) => {
-        try {
-            const userUpdated = await userModel.findByIdAndUpdate(user._id, user)
-            if (!userUpdated) throw new Error('user not exists')
-
-            return userUpdated
-        } catch (error) {
-            throw new Error('updateUser: ' + error)
+    getUserByEmail = async ({ email }) => {
+        const result = await userModel.findOne({ email }).populate('file')
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'user not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'user',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to get users',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
     }
 
-    deleteUser = async (uid) => {
-        try {
-            const user = await userModel.findByIdAndDelete(uid)
-            if (!user) throw new Error('user not exists')
+    searchUsers = async ({ limit = 10, page = 1, query }) => {
+        return await userModel.paginate(query, { limit, page, populate: 'file' })
+    }
 
-            return user
-        } catch (error) {
-            throw new Error('deleteUser: ' + error)
+    updateUser = async ({ user }) => {
+        const result = await userModel.findByIdAndUpdate(user._id, user, { new: true })
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'user not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'user',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to update users',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
+    }
+
+    deleteUser = async ({ uid }) => {
+        const user = await userModel.findByIdAndDelete(uid)
+        if (!user) {
+            ErrorWrapper.createError({
+                name: 'user not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'user',
+                    type: 'string',
+                    value: user,
+                }),
+                message: 'Error to delete users',
+                code: codes.DATABASE_ERROR,
+            })
+        }
+
+        const result = await userModel.softDelete()
+
+        return result
     }
 }

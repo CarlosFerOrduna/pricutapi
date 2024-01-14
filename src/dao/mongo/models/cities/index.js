@@ -25,4 +25,4 @@ citiesSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
-export const citiesModel = model('cities', citiesSchema)
+export const cityModel = model('cities', citiesSchema)

@@ -1,54 +1,75 @@
+import {
+    ErrorWrapper,
+    codes,
+    invalidFieldErrorInfo,
+} from '../../../../middlewares/errors/index.js'
 import { fileModel } from '../../models/index.js'
 
 export class FileService {
-    saveFile = async (file) => {
-        try {
-            const newFile = new fileModel(file)
-            await newFile.validate()
-            return await newFile.save()
-        } catch (error) {
-            throw new Error('fileService: ' + error)
-        }
+    saveFile = async ({ file }) => {
+        const newFile = new fileModel(file)
+        await newFile.validate()
+
+        return await newFile.save()
     }
 
-    getFileById = async (fid) => {
-        try {
-            const result = await fileModel.findById(fid)
-            if (!result) throw new Error('file not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('getFileById: ' + error)
+    getFileById = async ({ fid }) => {
+        const result = await fileModel.findById(fid)
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'file not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'file',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to get file',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
     }
 
-    searchFiles = async (limit, page, query) => {
-        try {
-            return await fileModel.paginate(query, { limit: limit ?? 10, page: page ?? 1 })
-        } catch (error) {
-            throw new Error('getFiles: ' + error)
-        }
+    searchFiles = async ({ limit = 10, page = 1, query }) => {
+        return await fileModel.paginate(query, { limit, page })
     }
 
-    updateFile = async (file) => {
-        try {
-            const result = await fileModel.findByIdAndUpdate(file._id, file)
-            if (!result) throw new Error('file not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('updateFile: ' + error)
+    updateFile = async ({ file }) => {
+        const result = await fileModel.findByIdAndUpdate(file._id, file, { new: true })
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'file not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'file',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to update file',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
     }
 
-    deleteFile = async (fid) => {
-        try {
-            const result = await fileModel.findByIdAndDelete(fid)
-            if (!result) throw new Error('file not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('deleteFile: ' + error)
+    deleteFile = async ({ fid }) => {
+        const file = await fileModel.findById(fid)
+        if (!file) {
+            ErrorWrapper.createError({
+                name: 'file not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'file',
+                    type: 'string',
+                    value: file,
+                }),
+                message: 'Error to delete file',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        const result = await file.softDelete()
+
+        return result
     }
 }

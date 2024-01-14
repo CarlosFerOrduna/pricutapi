@@ -1,59 +1,73 @@
+import { ErrorWrapper, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { materialModel } from '../../models/index.js'
 
 export class MaterialService {
-    saveMaterial = async (material) => {
-        try {
-            const newMaterial = new materialModel(material)
-            await newMaterial.validate()
+    saveMaterial = async ({ material }) => {
+        const newMaterial = new materialModel(material)
+        await newMaterial.validate()
 
-            return await newMaterial.save()
-        } catch (error) {
-            throw new Error('saveMaterial: ' + error)
-        }
+        return await newMaterial.save()
     }
 
-    getMaterialById = async (mid) => {
-        try {
-            const result = await materialModel.findById(mid).populate('categories.category')
-            if (!result) throw new Error('material not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('getMaterialById: ' + error)
-        }
-    }
-
-    searchMaterials = async (limit, page, query) => {
-        try {
-            return await materialModel.paginate(query, {
-                // limit: limit ?? 5,
-                page: page ?? 1,
-                populate: 'category'
+    getMaterialById = async ({ mid }) => {
+        const result = await materialModel.findById(mid).populate('category')
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'material not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'material',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to get material',
+                code: codes.DATABASE_ERROR,
             })
-        } catch (error) {
-            throw new Error('searchMaterials: ' + error)
         }
+
+        return result
     }
 
-    updateMaterial = async (material) => {
-        try {
-            const result = await materialModel.findByIdAndUpdate(material._id, material)
-            if (!result) throw new Error('material not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('updateMaterial: ' + error)
-        }
+    searchMaterials = async ({ limit = 10, page = 1, query }) => {
+        return await materialModel.paginate(query, { limit, page, populate: 'category' })
     }
 
-    deleteMaterial = async (mid) => {
-        try {
-            const result = await materialModel.findByIdAndDelete(mid)
-            if (!result) throw new Error('material not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('deleteMaterial: ' + error)
+    updateMaterial = async ({ material }) => {
+        const result = await materialModel.findByIdAndUpdate(material._id, material, {
+            new: true,
+        })
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'material not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'material',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to update material',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
+    }
+
+    deleteMaterial = async ({ mid }) => {
+        const material = await materialModel.findById(mid)
+        if (!material) {
+            ErrorWrapper.createError({
+                name: 'material not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'material',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to delete material',
+                code: codes.DATABASE_ERROR,
+            })
+        }
+
+        const result = await this.material.softDelete()
+
+        return result
     }
 }

@@ -1,59 +1,77 @@
-import { materialModel } from '../../models/index.js'
+import {
+    ErrorWrapper,
+    codes,
+    invalidFieldErrorInfo,
+} from '../../../../middlewares/errors/index.js'
+import { serviceModel } from '../../models/index.js'
 
-export class MaterialService {
-    saveMaterial = async (material) => {
-        try {
-            const newMaterial = new materialModel(material)
-            await newMaterial.validate()
+export class ServiceService {
+    saveService = async ({ service }) => {
+        const newService = new serviceModel(service)
+        await newService.validate()
 
-            return await newMaterial.save()
-        } catch (error) {
-            throw new Error('saveMaterial: ' + error)
-        }
+        return await newService.save()
     }
 
-    getMaterialById = async (mid) => {
-        try {
-            const result = await materialModel.findById(mid).populate('categories.category')
-            if (!result) throw new Error('material not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('getMaterialById: ' + error)
-        }
-    }
-
-    searchMaterials = async (limit, page, query) => {
-        try {
-            return await materialModel.paginate(query, {
-                // limit: limit ?? 5,
-                page: page ?? 1,
-                populate: 'category'
+    getServiceById = async ({ mid }) => {
+        const result = await serviceModel.findById(mid)
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'service not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'service',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to get product',
+                code: codes.DATABASE_ERROR,
             })
-        } catch (error) {
-            throw new Error('searchMaterials: ' + error)
         }
+
+        return result
     }
 
-    updateMaterial = async (material) => {
-        try {
-            const result = await materialModel.findByIdAndUpdate(material._id, material)
-            if (!result) throw new Error('material not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('updateMaterial: ' + error)
-        }
+    searchServices = async ({ limit = 10, page = 1, query }) => {
+        return await serviceModel.paginate(query, { limit, page, populate: 'category' })
     }
 
-    deleteMaterial = async (mid) => {
-        try {
-            const result = await materialModel.findByIdAndDelete(mid)
-            if (!result) throw new Error('material not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('deleteMaterial: ' + error)
+    updateService = async ({ service }) => {
+        const result = await serviceModel.findByIdAndUpdate(service._id, service, {
+            new: true,
+        })
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'service not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'service',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to update product',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
+    }
+
+    deleteService = async ({ mid }) => {
+        const service = await serviceModel.findById(mid)
+        if (!service) {
+            ErrorWrapper.createError({
+                name: 'service not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'service',
+                    type: 'string',
+                    value: service,
+                }),
+                message: 'Error to get product',
+                code: codes.DATABASE_ERROR,
+            })
+        }
+
+        const result = await service.softDelete()
+
+        return result
     }
 }
