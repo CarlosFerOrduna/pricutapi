@@ -6,20 +6,20 @@ export class CommentRepository {
         this.dao = commentDAO
     }
 
-    saveComment = async (comment) => {
+    saveComment = async ({ comment }) => {
         const createComment = new CreateComment(comment)
-        const commentCreated = await this.dao.saveComment(createComment)
+        const commentCreated = await this.dao.saveComment({ createComment })
 
         return new SelectComment(commentCreated)
     }
 
-    getCommentById = async (cid) => {
-        const comment = await this.dao.getCommentById(cid)
+    getCommentById = async ({ cid }) => {
+        const comment = await this.dao.getCommentById({ cid })
 
         return new SelectComment(comment)
     }
 
-    searchComments = async (limit, page, query) => {
+    searchComments = async ({ limit, page, query }) => {
         const {
             docs,
             totalPages,
@@ -27,8 +27,8 @@ export class CommentRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
-        } = await this.dao.searchComments(limit, page, query)
+            nextPage,
+        } = await this.dao.searchComments({ limit, page, query })
 
         return {
             comments: docs.map((c) => new SelectComment(c)),
@@ -38,18 +38,18 @@ export class CommentRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
+            nextPage,
         }
     }
 
-    updateComment = async (comment) => {
+    updateComment = async ({ comment }) => {
         const updateComment = new UpdateComment(comment)
-        const commentUpdated = await this.dao.updateComment(updateComment)
+        const commentUpdated = await this.dao.updateComment({ updateComment })
 
         return new SelectComment(commentUpdated)
     }
 
-    deleteComment = async (cid) => {
-        return await this.dao.deleteComment(cid)
+    deleteComment = async ({ cid }) => {
+        return await this.dao.deleteComment({ cid })
     }
 }

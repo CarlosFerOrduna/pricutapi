@@ -6,20 +6,20 @@ export class CategoryRepository {
         this.dao = categoryDAO
     }
 
-    saveCategory = async (category) => {
+    saveCategory = async ({ category }) => {
         const createCategory = new CreateCategory(category)
-        const categoryCreated = await this.dao.saveCategory(createCategory)
+        const categoryCreated = await this.dao.saveCategory({ createCategory })
 
         return new SelectCategory(categoryCreated)
     }
 
-    getCategoryById = async (cid) => {
-        const category = await this.dao.getCategoryById(cid)
+    getCategoryById = async ({ cid }) => {
+        const category = await this.dao.getCategoryById({ cid })
 
         return new SelectCategory(category)
     }
 
-    searchCategories = async (limit, page, query) => {
+    searchCategories = async ({ limit, page, query }) => {
         const {
             docs,
             totalPages,
@@ -27,8 +27,8 @@ export class CategoryRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
-        } = await this.dao.searchCategories(limit, page, query)
+            nextPage,
+        } = await this.dao.searchCategories({ limit, page, query })
 
         return {
             categories: docs.map((c) => new SelectCategory(c)),
@@ -38,18 +38,18 @@ export class CategoryRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
+            nextPage,
         }
     }
 
-    updateCategory = async (category) => {
+    updateCategory = async ({ category }) => {
         const updateCategory = new UpdateCategory(category)
-        const categoryUpdated = await this.dao.updateCategory(updateCategory)
+        const categoryUpdated = await this.dao.updateCategory({ updateCategory })
 
         return new SelectCategory(categoryUpdated)
     }
 
-    deleteCategory = async (cid) => {
-        return await this.dao.deleteCategory(cid)
+    deleteCategory = async ({ cid }) => {
+        return await this.dao.deleteCategory({ cid })
     }
 }

@@ -6,20 +6,20 @@ export class CityRepository {
         this.dao = cityDAO
     }
 
-    saveCity = async (city) => {
+    saveCity = async ({ city }) => {
         const createCity = new CreateCity(city)
-        const cityCreated = await this.dao.saveCity(createCity)
+        const cityCreated = await this.dao.saveCity({ createCity })
 
         return new SelectCity(cityCreated)
     }
 
-    getCityById = async (cid) => {
-        const city = await this.dao.getCityById(cid)
+    getCityById = async ({ cid }) => {
+        const city = await this.dao.getCityById({ cid })
 
         return new SelectCity(city)
     }
 
-    searchCities = async (limit, page, query) => {
+    searchCities = async ({ limit, page, query }) => {
         const {
             docs,
             totalPages,
@@ -27,8 +27,8 @@ export class CityRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
-        } = await this.dao.searchCities(limit, page, query)
+            nextPage,
+        } = await this.dao.searchCities({ limit, page, query })
 
         return {
             cities: docs.map((c) => new SelectCity(c)),
@@ -38,18 +38,18 @@ export class CityRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
+            nextPage,
         }
     }
 
-    updateCity = async (city) => {
+    updateCity = async ({ city }) => {
         const updateCity = new UpdateCity(city)
-        const cityUpdated = await this.dao.updateCity(updateCity)
+        const cityUpdated = await this.dao.updateCity({ updateCity })
 
         return new SelectCity(cityUpdated)
     }
 
-    deleteCity = async (aid) => {
-        return await this.dao.deleteCity(aid)
+    deleteCity = async ({ aid }) => {
+        return await this.dao.deleteCity({ aid })
     }
 }

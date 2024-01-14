@@ -6,20 +6,20 @@ export class FileRepository {
         this.dao = fileDAO
     }
 
-    saveFile = async (file) => {
+    saveFile = async ({ file }) => {
         const createFile = new CreateFile(file)
-        const fileCreated = await this.dao.saveFile(createFile)
+        const fileCreated = await this.dao.saveFile({ createFile })
 
         return new SelectFile(fileCreated)
     }
 
-    getFileById = async (fid) => {
-        const file = await this.dao.getFileById(fid)
+    getFileById = async ({ fid }) => {
+        const file = await this.dao.getFileById({ fid })
 
         return new SelectFile(file)
     }
 
-    searchFiles = async (limit, page, query) => {
+    searchFiles = async ({ limit, page, query }) => {
         const {
             docs,
             totalPages,
@@ -27,8 +27,8 @@ export class FileRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
-        } = await this.dao.searchFiles(limit, page, query)
+            nextPage,
+        } = await this.dao.searchFiles({ limit, page, query })
 
         return {
             files: docs.map((f) => new SelectFile(f)),
@@ -38,18 +38,18 @@ export class FileRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
+            nextPage,
         }
     }
 
-    updateFile = async (file) => {
+    updateFile = async ({ file }) => {
         const updateFile = new UpdateFile(file)
-        const fileUpdated = await this.dao.updateFile(updateFile)
+        const fileUpdated = await this.dao.updateFile({ updateFile })
 
         return new SelectFile(fileUpdated)
     }
 
-    deleteFile = async (aid) => {
-        return await this.dao.deleteFile(aid)
+    deleteFile = async ({ aid }) => {
+        return await this.dao.deleteFile({ aid })
     }
 }

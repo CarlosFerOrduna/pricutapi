@@ -6,20 +6,20 @@ export class MaterialRepository {
         this.dao = materialDAO
     }
 
-    saveMaterial = async (material) => {
+    saveMaterial = async ({ material }) => {
         const createMaterial = new CreateMaterial(material)
-        const materialCreated = await this.dao.saveMaterial(createMaterial)
+        const materialCreated = await this.dao.saveMaterial({ createMaterial })
 
         return new SelectMaterial(materialCreated)
     }
 
-    getMaterialById = async (mid) => {
-        const material = await this.dao.getMaterialById(mid)
+    getMaterialById = async ({ mid }) => {
+        const material = await this.dao.getMaterialById({ mid })
 
         return new SelectMaterial(material)
     }
 
-    searchMaterials = async (limit, page, query) => {
+    searchMaterials = async ({ limit, page, query }) => {
         const {
             docs,
             totalPages,
@@ -27,8 +27,8 @@ export class MaterialRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
-        } = await this.dao.searchMaterials(limit, page, query)
+            nextPage,
+        } = await this.dao.searchMaterials({ limit, page, query })
 
         return {
             materials: docs.map((m) => new SelectMaterial(m)),
@@ -38,18 +38,18 @@ export class MaterialRepository {
             hasPrevPage,
             hasNextPage,
             prevPage,
-            nextPage
+            nextPage,
         }
     }
 
-    updateMaterial = async (material) => {
+    updateMaterial = async ({ material }) => {
         const updateMaterial = new UpdateMaterial(material)
-        const materialUpdated = await this.dao.updateMaterial(updateMaterial)
+        const materialUpdated = await this.dao.updateMaterial({ updateMaterial })
 
         return new SelectMaterial(materialUpdated)
     }
 
-    deleteMaterial = async (aid) => {
-        return await this.dao.deleteMaterial(aid)
+    deleteMaterial = async ({ aid }) => {
+        return await this.dao.deleteMaterial({ aid })
     }
 }
