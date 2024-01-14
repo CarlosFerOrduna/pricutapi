@@ -16,7 +16,7 @@ export class MaterialController {
             commonUses,
             commonUsesImage,
             urlImageSmall,
-            urlImageLarge
+            urlImageLarge,
         } = req.body
         if (!name) {
             ErrorWrapper.createError({
@@ -24,10 +24,10 @@ export class MaterialController {
                 cause: invalidFieldErrorInfo({
                     name: 'name',
                     type: 'string',
-                    value: name
+                    value: name,
                 }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!description) {
@@ -36,10 +36,10 @@ export class MaterialController {
                 cause: invalidFieldErrorInfo({
                     name: 'description',
                     type: 'string',
-                    value: description
+                    value: description,
                 }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!category) {
@@ -48,29 +48,31 @@ export class MaterialController {
                 cause: invalidFieldErrorInfo({
                     name: 'category',
                     type: 'string',
-                    value: category
+                    value: category,
                 }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
         const result = await this.materialRepository.saveMaterial({
-            name,
-            description,
-            about,
-            aboutImage,
-            category,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge
+            material: {
+                name,
+                description,
+                about,
+                aboutImage,
+                category,
+                commonUses,
+                commonUsesImage,
+                urlImageSmall,
+                urlImageLarge,
+            },
         })
 
         return res.status(201).send({
             status: 'success',
             message: 'material successfully created',
-            data: result
+            data: result,
         })
     }
 
@@ -82,19 +84,19 @@ export class MaterialController {
                 cause: invalidFieldErrorInfo({
                     name: 'mid',
                     type: 'string',
-                    value: mid
+                    value: mid,
                 }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.materialRepository.getMaterialById(mid)
+        const result = await this.materialRepository.getMaterialById({ mid })
 
         return res.status(200).send({
             status: 'success',
             message: 'material successfully found',
-            data: result
+            data: result,
         })
     }
 
@@ -110,7 +112,7 @@ export class MaterialController {
             commonUses,
             commonUsesImage,
             urlImageSmall,
-            urlImageLarge
+            urlImageLarge,
         } = req.query
 
         let query = {}
@@ -124,12 +126,12 @@ export class MaterialController {
         if (urlImageSmall) query.urlImageSmall = urlImageSmall
         if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
-        const result = await this.materialRepository.searchMaterials(limit, page, query)
+        const result = await this.materialRepository.searchMaterials({ limit, page, query })
 
         return res.status(200).send({
             status: 'success',
             message: 'all material',
-            data: result
+            data: result,
         })
     }
 
@@ -143,19 +145,21 @@ export class MaterialController {
             commonUses,
             commonUsesImage,
             urlImageSmall,
-            urlImageLarge
+            urlImageLarge,
         } = req.body
         const { mid } = req.params
-        ErrorWrapper.createError({
-            name: 'mid is not valid',
-            cause: invalidFieldErrorInfo({
-                name: 'mid',
-                type: 'string',
-                value: mid
-            }),
-            message: 'Error to update material',
-            code: codes.INVALID_TYPES_ERROR
-        })
+        if (!mid || !isNaN(mid)) {
+            ErrorWrapper.createError({
+                name: 'mid is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'mid',
+                    type: 'string',
+                    value: mid,
+                }),
+                message: 'Error to update article',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
 
         let query = { _id: mid }
 
@@ -169,18 +173,31 @@ export class MaterialController {
         if (urlImageSmall) query.urlImageSmall = urlImageSmall
         if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
-        const result = await this.materialRepository.updateMaterial(query)
+        const result = await this.materialRepository.updateMaterial({ query })
 
         return res.status(200).send({
             status: 'success',
             message: 'material successfully updated',
-            data: result
+            data: result,
         })
     }
 
     deleteMaterial = async (req, res) => {
         const { mid } = req.params
-        await this.materialRepository.deleteMaterial(mid)
+        if (!mid || !isNaN(mid)) {
+            ErrorWrapper.createError({
+                name: 'mid is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'mid',
+                    type: 'string',
+                    value: mid,
+                }),
+                message: 'Error to delete article',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+
+        await this.materialRepository.deleteMaterial({ mid })
 
         return res.status(204).send({})
     }

@@ -18,10 +18,10 @@ const swaggerOptions = {
         openapi: '3.0.3',
         info: {
             title: 'pricut',
-            description: 'Documentation for API pricut'
-        }
+            description: 'Documentation for API pricut',
+        },
     },
-    apis: ['../docs/**/*.yaml']
+    apis: ['../docs/**/*.yaml'],
 }
 
 const specs = swaggerJSDoc(swaggerOptions)
@@ -32,7 +32,7 @@ const corsOptions = {
         else callback(new Error('internal server error'))
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: false
+    credentials: false,
 }
 
 app.use(handlerLogs)
@@ -50,11 +50,9 @@ app.use('*', (req, res) => {
         name: 'invalid route',
         cause: 'invalid route',
         message: 'invalid route',
-        code: codes.ROUTING_ERROR
+        code: codes.ROUTING_ERROR,
     })
 })
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
-
-// TODO: Agregar a todos los modelos createdAt, updatedAt y deletedAt --articles

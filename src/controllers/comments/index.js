@@ -1,3 +1,4 @@
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { CommentRepository } from '../../repositories/index.js'
 
 export class CommentController {
@@ -6,108 +7,129 @@ export class CommentController {
     }
 
     saveComment = async (req, res) => {
-        try {
-            const { author, details } = req.body
-            if (!author) throw new Error('name is not valid')
-            if (!details) throw new Error('description is not valid')
-
-            const result = await this.commentRepository.saveComment({ author, details })
-
-            return res.status(201).send({
-                status: 'success',
-                message: 'comment successfully created',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { author, details } = req.body
+        if (!author || !isNaN(author)) {
+            ErrorWrapper.createError({
+                name: 'author is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'author',
+                    type: 'string',
+                    value: author,
+                }),
+                message: 'Error to create commente',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+        if (!details || !isNaN(details)) {
+            ErrorWrapper.createError({
+                name: 'details is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'details',
+                    type: 'string',
+                    value: details,
+                }),
+                message: 'Error to create commente',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+
+        const result = await this.commentRepository.saveComment({
+            commant: { author, details },
+        })
+
+        return res.status(201).send({
+            status: 'success',
+            message: 'comment successfully created',
+            data: result,
+        })
     }
 
     getCommentById = async (req, res) => {
-        try {
-            const { cid } = req.params
-            if (!cid || !isNaN(cid)) throw new Error('cid is required, or is not valid')
-
-            const result = await this.commentRepository.getCommentById(cid)
-
-            return res.status(200).send({
-                status: 'success',
-                message: 'comment successfully found',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { cid } = req.params
+        if (!cid || !isNaN(cid)) {
+            ErrorWrapper.createError({
+                name: 'cid is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'cid',
+                    type: 'string',
+                    value: cid,
+                }),
+                message: 'Error to get commente',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        const result = await this.commentRepository.getCommentById({ cid })
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'comment successfully found',
+            data: result,
+        })
     }
 
     searchComments = async (req, res) => {
-        try {
-            const { limit, page, author, details } = req.query
+        const { limit, page, author, details } = req.query
 
-            let query = {}
-            if (author) query.author = author
-            if (details) query.details = details
+        let query = {}
+        if (author) query.author = author
+        if (details) query.details = details
 
-            const result = await this.commentRepository.searchComments(limit, page, query)
+        const result = await this.commentRepository.searchComments({ limit, page, query })
 
-            return res.status(200).send({
-                status: 'success',
-                message: 'all comment',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
-            })
-        }
+        return res.status(200).send({
+            status: 'success',
+            message: 'all comment',
+            data: result,
+        })
     }
 
     updateComment = async (req, res) => {
-        try {
-            const { author, details } = req.body
-            let newComment = {}
-
-            if (author) newComment.author = author
-            if (details) newComment.details = details
-
-            const result = await this.commentRepository.updateComment(newComment)
-
-            return res.status(200).send({
-                status: 'success',
-                message: 'comment successfully updated',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { author, details } = req.body
+        const { cid } = req.params
+        if (!cid || !isNaN(cid)) {
+            ErrorWrapper.createError({
+                name: 'cid is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'cid',
+                    type: 'string',
+                    value: cid,
+                }),
+                message: 'Error to update commente',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        let query = { _id: cid }
+        if (author) query.author = author
+        if (details) query.details = details
+
+        const result = await this.commentRepository.updateComment({ query })
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'comment successfully updated',
+            data: result,
+        })
     }
 
     deleteComment = async (req, res) => {
-        try {
-            const { cid } = req.params
-            await this.commentRepository.deleteComment(cid)
-
-            return res.status(204).send({})
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { cid } = req.params
+        if (!cid || !isNaN(cid)) {
+            ErrorWrapper.createError({
+                name: 'cid is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'cid',
+                    type: 'string',
+                    value: cid,
+                }),
+                message: 'Error to delete category',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        await this.commentRepository.deleteComment({ cid })
+
+        return res.status(204).send()
     }
 }

@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import moment from 'moment'
 import { model, Schema } from 'mongoose'
 
 const serviceSchema = new Schema(

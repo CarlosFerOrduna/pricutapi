@@ -17,14 +17,14 @@ export class ServiceController {
             commonUses,
             commonUsesImage,
             urlImageSmall,
-            urlImageLarge
+            urlImageLarge,
         } = req.body
         if (!name) {
             ErrorWrapper.createError({
                 name: 'name is not valid',
                 cause: invalidFieldErrorInfo({ name: 'name', type: 'string', value: name }),
                 message: 'Error to save service',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!description) {
@@ -33,10 +33,10 @@ export class ServiceController {
                 cause: invalidFieldErrorInfo({
                     name: 'description',
                     type: 'string',
-                    value: description
+                    value: description,
                 }),
                 message: 'Error to save service',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!cuttingCapacity) {
@@ -45,10 +45,10 @@ export class ServiceController {
                 cause: invalidFieldErrorInfo({
                     name: 'cuttingCapacity',
                     type: 'string',
-                    value: cuttingCapacity
+                    value: cuttingCapacity,
                 }),
                 message: 'Error to save service',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!supportedThickness) {
@@ -57,30 +57,32 @@ export class ServiceController {
                 cause: invalidFieldErrorInfo({
                     name: 'supportedThickness',
                     type: 'string',
-                    value: supportedThickness
+                    value: supportedThickness,
                 }),
                 message: 'Error to save service',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
         const result = await this.serviceRepository.saveService({
-            name,
-            description,
-            cuttingCapacity,
-            supportedThickness,
-            about,
-            aboutImage,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge
+            service: {
+                name,
+                description,
+                cuttingCapacity,
+                supportedThickness,
+                about,
+                aboutImage,
+                commonUses,
+                commonUsesImage,
+                urlImageSmall,
+                urlImageLarge,
+            },
         })
 
         return res.status(201).send({
             status: 'success',
             message: 'service successfully created',
-            data: result
+            data: result,
         })
     }
 
@@ -91,16 +93,16 @@ export class ServiceController {
                 name: 'sid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
                 message: 'Error to get service',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.serviceRepository.getServiceById(sid)
+        const result = await this.serviceRepository.getServiceById({ sid })
 
         return res.status(200).send({
             status: 'success',
             message: 'service successfully found',
-            data: result
+            data: result,
         })
     }
 
@@ -117,7 +119,7 @@ export class ServiceController {
             commonUses,
             commonUsesImage,
             urlImageSmall,
-            urlImageLarge
+            urlImageLarge,
         } = req.query
 
         let query = {}
@@ -132,12 +134,12 @@ export class ServiceController {
         if (urlImageSmall) query.urlImageSmall = urlImageSmall
         if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
-        const result = await this.serviceRepository.searchServices(limit, page, query)
+        const result = await this.serviceRepository.searchServices({ limit, page, query })
 
         return res.status(200).send({
             status: 'success',
             message: 'all service',
-            data: result
+            data: result,
         })
     }
 
@@ -152,7 +154,7 @@ export class ServiceController {
             commonUses,
             commonUsesImage,
             urlImageSmall,
-            urlImageLarge
+            urlImageLarge,
         } = req.query
         const { sid } = req.params
         if (!sid || !isNaN(sid)) {
@@ -160,7 +162,7 @@ export class ServiceController {
                 name: 'sid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
                 message: 'Error to update service',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
@@ -176,12 +178,12 @@ export class ServiceController {
         if (urlImageSmall) query.urlImageSmall = urlImageSmall
         if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
-        const result = await this.serviceRepository.updateService(query)
+        const result = await this.serviceRepository.updateService({ query })
 
         return res.status(200).send({
             status: 'success',
             message: 'service successfully updated',
-            data: result
+            data: result,
         })
     }
 
@@ -193,14 +195,14 @@ export class ServiceController {
                 cause: invalidFieldErrorInfo({
                     name: 'sid',
                     type: 'string',
-                    value: sid
+                    value: sid,
                 }),
-                message: 'Error to delete category',
-                code: codes.INVALID_TYPES_ERROR
+                message: 'Error to delete service',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        await this.serviceRepository.deleteService(sid)
+        await this.serviceRepository.deleteService({ sid })
 
         return res.status(204).send()
     }

@@ -1,3 +1,4 @@
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { FileRepository } from '../../repositories/index.js'
 import { calculateDimensions, calculatePrice } from '../../utils/dxfParser.util.js'
 import { ConvertDxfToSvg } from '../../utils/dxfToSvg.util.js'
@@ -9,181 +10,221 @@ export class FileController {
     }
 
     saveFile = async (req, res) => {
-        try {
-            const { originalname, buffer } = req.file
-            if (!originalname) throw new Error('filename is not valid')
-            if (!buffer) throw new Error('file is not valid')
-
-            const svg = ConvertDxfToSvg(buffer)
-            const urlImage = await uploadImage(svg)
-
-            const result = await this.fileRepository.saveFile({
-                name: originalname,
-                file: buffer,
-                url: urlImage
-            })
-
-            return res.status(201).send({
-                status: 'success',
-                message: 'file successfully created',
-                data: {
-                    _id: result._id,
-                    name: result.name,
-                    url: result.url,
-                    dimensions: calculateDimensions(result.file),
-                    file: result.file
-                }
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { originalname, buffer } = req.file
+        if (!originalname) {
+            ErrorWrapper.createError({
+                name: 'originalname is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'originalname',
+                    type: 'string',
+                    value: originalname,
+                }),
+                message: 'Error to create file',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+        if (!buffer) {
+            ErrorWrapper.createError({
+                name: 'buffer is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'buffer',
+                    type: 'string',
+                    value: buffer,
+                }),
+                message: 'Error to create file',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+
+        const svg = ConvertDxfToSvg(buffer)
+        const urlImage = await uploadImage(svg)
+
+        const result = await this.fileRepository.saveFile({
+            file: {
+                name: originalname,
+                file: buffer,
+                url: urlImage,
+            },
+        })
+
+        return res.status(201).send({
+            status: 'success',
+            message: 'file successfully created',
+            data: {
+                _id: result._id,
+                name: result.name,
+                url: result.url,
+                dimensions: calculateDimensions(result.file),
+                file: result.file,
+            },
+        })
     }
 
     getFileByIdWithPrice = async (req, res) => {
-        try {
-            const { fid, mid } = req.params
-            if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
-            if (!mid || !isNaN(mid)) throw new Error('pid is required, or is not valid')
-
-            const result = await this.fileRepository.getFileById(fid)
-
-            const dimensions = calculateDimensions(result.file)
-            const price = await calculatePrice(dimensions, mid)
-
-            return res.status(200).send({
-                status: 'success',
-                message: 'file successfully found',
-                data: {
-                    _id: result._id,
-                    filename: result.name,
-                    price,
-                    urlImage: result.url,
-                    dimensions,
-                    file: result.file
-                }
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { fid, mid } = req.params
+        if (!fid || !isNaN(fid)) {
+            ErrorWrapper.createError({
+                name: 'fid is required, or is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'fid',
+                    type: 'string',
+                    value: fid,
+                }),
+                message: 'Error to get file',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+        if (!mid || !isNaN(mid)) {
+            ErrorWrapper.createError({
+                name: 'mid is required, or is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'mid',
+                    type: 'string',
+                    value: mid,
+                }),
+                message: 'Error to get file',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+
+        const result = await this.fileRepository.getFileById({ fid })
+
+        const dimensions = calculateDimensions(result.file)
+        const price = await calculatePrice(dimensions, mid)
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'file successfully found',
+            data: {
+                _id: result._id,
+                filename: result.name,
+                price,
+                urlImage: result.url,
+                dimensions,
+                file: result.file,
+            },
+        })
     }
 
     getFileById = async (req, res) => {
-        try {
-            const { fid } = req.params
-            if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
-
-            const result = await this.fileRepository.getFileById(fid)
-
-            const dimensions = calculateDimensions(result.file)
-
-            return res.status(200).send({
-                status: 'success',
-                message: 'file successfully found',
-                data: {
-                    _id: result._id,
-                    filename: result.name,
-                    urlImage: result.url,
-                    dimensions,
-                    file: result.file
-                }
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { fid } = req.params
+        if (!fid || !isNaN(fid)) {
+            ErrorWrapper.createError({
+                name: 'fid is required, or is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'fid',
+                    type: 'string',
+                    value: fid,
+                }),
+                message: 'Error to get file',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        const result = await this.fileRepository.getFileById({ fid })
+
+        const dimensions = calculateDimensions(result.file)
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'file successfully found',
+            data: {
+                _id: result._id,
+                filename: result.name,
+                urlImage: result.url,
+                dimensions,
+                file: result.file,
+            },
+        })
     }
 
     downloadFileById = async (req, res) => {
-        try {
-            const { fid } = req.params
-            if (!fid || !isNaN(fid)) throw new Error('fid is not valid')
-
-            const result = await this.fileRepository.getFileById(fid)
-
-            res.setHeader('Content-Type', 'application/octet-stream')
-            res.setHeader('Content-Disposition', 'attachment; filename=' + result.name)
-
-            return res.send(result.file)
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { fid } = req.params
+        if (!fid || !isNaN(fid)) {
+            ErrorWrapper.createError({
+                name: 'fid is required, or is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'fid',
+                    type: 'string',
+                    value: fid,
+                }),
+                message: 'Error to get file',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        const result = await this.fileRepository.getFileById({ fid })
+
+        res.setHeader('Content-Type', 'application/octet-stream')
+        res.setHeader('Content-Disposition', 'attachment; filename=' + result.name)
+
+        return res.send(result.file)
     }
 
     searchFiles = async (req, res) => {
-        try {
-            const { limit, page, name } = req.query
+        const { limit, page, name } = req.query
 
-            let query = {}
-            if (name) query.name = name
+        let query = {}
+        if (name) query.name = name
+        if (file) query.file = file
+        if (url) query.url = url
 
-            let result = await this.fileRepository.searchFiles(limit, page, query)
+        let result = await this.fileRepository.searchFiles({ limit, page, query })
 
-            return res.status(200).send({
-                status: 'success',
-                message: 'all files',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
-            })
-        }
+        return res.status(200).send({
+            status: 'success',
+            message: 'all files',
+            data: result,
+        })
     }
 
     updateFile = async (req, res) => {
-        try {
-            const { name, file, url } = req.body
-            let newFile = {}
-
-            if (name) newFile.name = name
-            if (file) newFile.file = file
-            if (url) newFile.url = url
-
-            const result = await this.fileRepository.updateFile(newFile)
-
-            return res.status(200).send({
-                status: 'success',
-                message: 'file successfully updated',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { name, file, url } = req.body
+        const { fid } = req.params
+        if (!fid || !isNaN(fid)) {
+            ErrorWrapper.createError({
+                name: 'fid is required, or is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'fid',
+                    type: 'string',
+                    value: fid,
+                }),
+                message: 'Error to update file',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        let query = { _id: fid }
+        if (name) query.name = name
+        if (file) query.file = file
+        if (url) query.url = url
+
+        const result = await this.fileRepository.updateFile({ query })
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'file successfully updated',
+            data: result,
+        })
     }
 
     deleteFile = async (req, res) => {
-        try {
-            const { cid } = req.params
-            await this.fileRepository.deleteFile(cid)
-
-            return res.status(204).send({})
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { fid } = req.params
+        if (!fid || !isNaN(fid)) {
+            ErrorWrapper.createError({
+                name: 'fid is required, or is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'fid',
+                    type: 'string',
+                    value: fid,
+                }),
+                message: 'Error to delete file',
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
+
+        await this.fileRepository.deleteFile({ cid })
+
+        return res.status(204).send({})
     }
 }

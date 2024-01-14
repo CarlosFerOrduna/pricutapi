@@ -1,8 +1,8 @@
+import moment from 'moment'
 import { Schema, model } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import { createHash } from '../../../../utils/bcrypt.util.js'
-import moment from 'moment/moment.js'
 
 const userSchema = new Schema(
     {

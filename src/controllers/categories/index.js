@@ -14,10 +14,10 @@ export class CategoryController {
                 cause: invalidFieldErrorInfo({
                     name: 'name',
                     type: 'string',
-                    value: name
+                    value: name,
                 }),
                 message: 'Error to save category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!description) {
@@ -26,19 +26,21 @@ export class CategoryController {
                 cause: invalidFieldErrorInfo({
                     name: 'description',
                     type: 'string',
-                    value: description
+                    value: description,
                 }),
                 message: 'Error to save category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.categoryRepository.saveCategory({ name, description })
+        const result = await this.categoryRepository.saveCategory({
+            category: { name, description },
+        })
 
         return res.status(201).send({
             status: 'success',
             message: 'category successfully created',
-            data: result
+            data: result,
         })
     }
 
@@ -50,19 +52,19 @@ export class CategoryController {
                 cause: invalidFieldErrorInfo({
                     name: 'cid',
                     type: 'string',
-                    value: cid
+                    value: cid,
                 }),
                 message: 'Error to get category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.categoryRepository.getCategoryById(cid)
+        const result = await this.categoryRepository.getCategoryById({ cid })
 
         return res.status(200).send({
             status: 'success',
             message: 'category successfully found',
-            data: result
+            data: result,
         })
     }
 
@@ -73,28 +75,29 @@ export class CategoryController {
         if (name) query.name = name
         if (description) query.description = description
 
-        const result = await this.categoryRepository.searchCategories(limit, page, query)
+        const result = await this.categoryRepository.searchCategories({ limit, page, query })
 
         return res.status(200).send({
             status: 'success',
             message: 'all category',
-            data: result
+            data: result,
         })
     }
 
     updateCategory = async (req, res) => {
         const { name, description } = req.body
+        const { cid } = req.params
 
-        let query = {}
+        let query = { _id: cid }
         if (name) query.name = name
         if (description) query.description = description
 
-        const result = await this.categoryRepository.updateCategory(query)
+        const result = await this.categoryRepository.updateCategory({ query })
 
         return res.status(200).send({
             status: 'success',
             message: 'category successfully updated',
-            data: result
+            data: result,
         })
     }
 
@@ -107,14 +110,14 @@ export class CategoryController {
                 cause: invalidFieldErrorInfo({
                     name: 'cid',
                     type: 'string',
-                    value: cid
+                    value: cid,
                 }),
                 message: 'Error to get category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        await this.categoryRepository.deleteCategory(cid)
+        await this.categoryRepository.deleteCategory({ cid })
 
         return res.status(204).send()
     }

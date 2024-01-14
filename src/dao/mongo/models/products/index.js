@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import moment from 'moment'
 import { model, Schema } from 'mongoose'
 
 const productSchema = new Schema(
@@ -14,9 +14,9 @@ const productSchema = new Schema(
         volume: { type: Number, require: true },
         specificWeight: { type: Number, require: true },
         priceSquareCm: { type: Number, require: true },
-        fiberLaser: { type: Boolean, default: false, require: true },
-        CO2Laser: { type: Boolean, default: false, require: true },
-        CNCRouter: { type: Boolean, default: false, require: true },
+        fiberLaser: { type: Boolean, default: false },
+        CO2Laser: { type: Boolean, default: false },
+        CNCRouter: { type: Boolean, default: false },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date },
     },

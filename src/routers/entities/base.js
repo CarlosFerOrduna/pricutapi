@@ -23,9 +23,8 @@ export default class BaseRouter {
         this.router.post(
             path,
             this.handlePolicies(policies),
-            uploader.single('file'),
-
-            this.applyCallbacks(callbacks)
+            uploader.array('files'),
+            this.applyCallbacks(callbacks),
         )
     }
 
@@ -33,8 +32,8 @@ export default class BaseRouter {
         this.router.put(
             path,
             this.handlePolicies(policies),
-            uploader.single('file'),
-            this.applyCallbacks(callbacks)
+            uploader.array('files'),
+            this.applyCallbacks(callbacks),
         )
     }
 
@@ -44,38 +43,27 @@ export default class BaseRouter {
 
     applyCallbacks(callbacks) {
         return callbacks.map((callback) => async (...params) => {
-            try {
-                await callback.apply(this, params)
-            } catch (error) {
-                params[1].status(500).send(error.message)
-            }
+            await callback.apply(this, params)
         })
     }
 
     handlePolicies(policies) {
         return (req, res, next) => {
-            try {
-                if (policies.includes('public')) return next()
+            if (policies.includes('public')) return next()
 
-                const { authorization } = req.headers
-                const result = authToken(authorization)
+            const { authorization } = req.headers
+            const result = authToken(authorization)
 
-                if (result?.code) {
-                    return res.status(result.code).send({
-                        status: 'error',
-                        message: result.message
-                    })
-                }
-
-                req.user = result
-
-                next()
-            } catch (error) {
-                return res.status(500).send({
+            if (result?.code) {
+                return res.status(result.code).send({
                     status: 'error',
-                    message: error.message
+                    message: result.message,
                 })
             }
+
+            req.user = result
+
+            next()
         }
     }
 }

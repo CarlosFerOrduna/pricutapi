@@ -7,13 +7,14 @@ export class ArticleController {
     }
 
     saveArticle = async (req, res) => {
-        const { title, summary, body, urlImageSmall, urlImageLarge, link } = req.body
+        const { title, summary, body, link } = req.body
+        const { urlImageSmall, urlImageLarge } = req.files
         if (!title) {
             ErrorWrapper.createError({
                 name: 'title is not valid',
                 cause: invalidFieldErrorInfo({ name: 'title', type: 'string', value: title }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!body) {
@@ -21,7 +22,7 @@ export class ArticleController {
                 name: 'body is not valid',
                 cause: invalidFieldErrorInfo({ name: 'body', type: 'string', value: body }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!summary) {
@@ -29,23 +30,25 @@ export class ArticleController {
                 name: 'body is not valid',
                 cause: invalidFieldErrorInfo({ name: 'body', type: 'string', value: body }),
                 message: 'Error to save article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
         const result = await this.articleRepository.saveArticle({
-            title,
-            summary,
-            body,
-            urlImageSmall,
-            urlImageLarge,
-            link
+            article: {
+                title,
+                summary,
+                body,
+                urlImageSmall,
+                urlImageLarge,
+                link, // todo: esto creo que lo va a crear el dto
+            },
         })
 
         return res.status(201).send({
             status: 'success',
             message: 'article successfully created',
-            data: result
+            data: result,
         })
     }
 
@@ -56,16 +59,16 @@ export class ArticleController {
                 name: 'aid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'aid', type: 'string', value: aid }),
                 message: 'Error to get article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.articleRepository.getArticleById(aid)
+        const result = await this.articleRepository.getArticleById({ aid })
 
         return res.status(200).send({
             status: 'success',
             message: 'article successfully found',
-            data: result
+            data: result,
         })
     }
 
@@ -81,12 +84,12 @@ export class ArticleController {
         if (urlImageLarge) query.urlImageLarge = urlImageLarge
         if (link) query.link = link
 
-        const result = await this.articleRepository.searchArticles(limit, page, query)
+        const result = await this.articleRepository.searchArticles({ limit, page, query })
 
         return res.status(200).send({
             status: 'success',
             message: 'all article',
-            data: result
+            data: result,
         })
     }
 
@@ -98,7 +101,7 @@ export class ArticleController {
                 name: 'aid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'aid', type: 'string', value: aid }),
                 message: 'Error to update article',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
@@ -110,12 +113,12 @@ export class ArticleController {
         if (urlImageLarge) query.urlImageLarge = urlImageLarge
         if (link) query.link = link
 
-        const result = await this.articleRepository.updateArticle(query)
+        const result = await this.articleRepository.updateArticle({ query })
 
         return res.status(200).send({
             status: 'success',
             message: 'article successfully updated',
-            data: result
+            data: result,
         })
     }
 
@@ -127,14 +130,14 @@ export class ArticleController {
                 cause: invalidFieldErrorInfo({
                     name: 'aid',
                     type: 'string',
-                    value: aid
+                    value: aid,
                 }),
                 message: 'Error to delete category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        await this.articleRepository.deleteArticle(aid)
+        await this.articleRepository.deleteArticle({ aid })
 
         return res.status(204).send()
     }

@@ -1,24 +1,22 @@
 import cloudinary from 'cloudinary'
+import config from '../config/index.js'
 
-export const uploadImage = async (svgCode) => {
+export const uploadImage = async ({ svgCode = null, image = null }) => {
     try {
         cloudinary.v2.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.API_KEY,
-            api_secret: process.env.API_SECRET
+            cloud_name: config.cloudName,
+            api_key: config.apiKey,
+            api_secret: config.apiSecret,
         })
 
-        const result = await new Promise((resolve, reject) => {
+        if (svgCode && !image) {
             const buffer = Buffer.from(svgCode).toString('base64')
-            const image = `data:image/svg+xml;base64,${buffer}`
+            image = `data:image/svg+xml;base64,${buffer}`
+        }
 
-            cloudinary.v2.uploader.upload(image, (error, result) => {
-                if (error) reject(error)
-                else resolve(result)
-            })
-        })
+        const { secure_url } = await cloudinary.v2.uploader.upload(image)
 
-        return result.secure_url
+        return secure_url
     } catch (error) {
         throw new Error(`Error al cargar la imagen en Cloudinary: ${error.message}`)
     }

@@ -14,10 +14,10 @@ export class CitiesController {
                 cause: invalidFieldErrorInfo({
                     name: 'key',
                     type: 'string',
-                    value: key
+                    value: key,
                 }),
                 message: 'Error to create category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
         if (!value || !isNaN(value)) {
@@ -26,19 +26,19 @@ export class CitiesController {
                 cause: invalidFieldErrorInfo({
                     name: 'value',
                     type: 'string',
-                    value: value
+                    value: value,
                 }),
                 message: 'Error to create category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.citiesRepository.saveCity({ key, value })
+        const result = await this.citiesRepository.saveCity({ city: { key, value } })
 
         return res.status(201).send({
             status: 'success',
             message: 'cities successfully created',
-            data: result
+            data: result,
         })
     }
 
@@ -50,19 +50,19 @@ export class CitiesController {
                 cause: invalidFieldErrorInfo({
                     name: 'cid',
                     type: 'string',
-                    value: cid
+                    value: cid,
                 }),
                 message: 'Error to create category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.citiesRepository.getCityById(cid)
+        const result = await this.citiesRepository.getCityById({ cid })
 
         return res.status(200).send({
             status: 'success',
             message: 'cities successfully found',
-            data: result
+            data: result,
         })
     }
 
@@ -73,28 +73,28 @@ export class CitiesController {
         if (key) query.key = key
         if (value) query.value = value
 
-        const result = await this.citiesRepository.searchCities(limit, page, query)
+        const result = await this.citiesRepository.searchCities({ limit, page, query })
 
         return res.status(200).send({
             status: 'success',
             message: 'all cities',
-            data: result
+            data: result,
         })
     }
 
     updateCity = async (req, res) => {
-        const { cid } = req.params
         const { key, value } = req.body
+        const { cid } = req.params
         if (!cid || !isNaN(cid)) {
             ErrorWrapper.createError({
                 name: 'cid is not valid',
                 cause: invalidFieldErrorInfo({
                     name: 'cid',
                     type: 'string',
-                    value: cid
+                    value: cid,
                 }),
                 message: 'Error to create category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
@@ -102,12 +102,12 @@ export class CitiesController {
         if (key) query.key = key
         if (value) query.value = value
 
-        const result = await this.citiesRepository.updateCity(query)
+        const result = await this.citiesRepository.updateCity({ query })
 
         return res.status(200).send({
             status: 'success',
             message: 'cities successfully updated',
-            data: result
+            data: result,
         })
     }
 
@@ -119,14 +119,14 @@ export class CitiesController {
                 cause: invalidFieldErrorInfo({
                     name: 'cid',
                     type: 'string',
-                    value: cid
+                    value: cid,
                 }),
                 message: 'Error to create category',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        await this.citiesRepository.deleteCity(cid)
+        await this.citiesRepository.deleteCity({ cid })
 
         return res.status(204).send()
     }
