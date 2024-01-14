@@ -25,5 +25,6 @@ export default {
     cloudName: process.env.CLOUD_NAME,
     urlQuote: process.env.URL_QUOTE,
     persistence: process.env.PERSISTENCE,
-    logger: process.env.LOGGER
+    logger: process.env.LOGGER,
+    allowlist: process.env.ALLOW_LIST.split(',')
 }

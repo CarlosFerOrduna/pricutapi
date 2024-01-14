@@ -7,7 +7,7 @@ export class ArticleController {
     }
 
     saveArticle = async (req, res) => {
-        const { title, body } = req.body
+        const { title, summary, body, urlImageSmall, urlImageLarge, link } = req.body
         if (!title) {
             ErrorWrapper.createError({
                 name: 'title is not valid',
@@ -24,8 +24,23 @@ export class ArticleController {
                 code: codes.INVALID_TYPES_ERROR
             })
         }
+        if (!summary) {
+            ErrorWrapper.createError({
+                name: 'body is not valid',
+                cause: invalidFieldErrorInfo({ name: 'body', type: 'string', value: body }),
+                message: 'Error to save article',
+                code: codes.INVALID_TYPES_ERROR
+            })
+        }
 
-        const result = await this.articleRepository.saveArticle({ title, body })
+        const result = await this.articleRepository.saveArticle({
+            title,
+            summary,
+            body,
+            urlImageSmall,
+            urlImageLarge,
+            link
+        })
 
         return res.status(201).send({
             status: 'success',
@@ -55,11 +70,16 @@ export class ArticleController {
     }
 
     searchArticles = async (req, res) => {
-        const { limit, page, title, body } = req.query
+        const { limit, page, title, summary, body, urlImageSmall, urlImageLarge, link } =
+            req.query
 
         let query = {}
         if (title) query.title = title
+        if (summary) query.summary = summary
         if (body) query.body = body
+        if (urlImageSmall) query.urlImageSmall = urlImageSmall
+        if (urlImageLarge) query.urlImageLarge = urlImageLarge
+        if (link) query.link = link
 
         const result = await this.articleRepository.searchArticles(limit, page, query)
 
@@ -71,24 +91,24 @@ export class ArticleController {
     }
 
     updateArticle = async (req, res) => {
+        const { title, summary, body, urlImageSmall, urlImageLarge, link } = req.body
         const { aid } = req.query
-        const { title, body } = req.body
-        if (!aid) {
+        if (!aid || !isNaN(aid)) {
             ErrorWrapper.createError({
-                name: 'aid is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'aid',
-                    type: 'string',
-                    value: aid
-                }),
-                message: 'Error to update category',
+                name: 'aid is required, or is not valid',
+                cause: invalidFieldErrorInfo({ name: 'aid', type: 'string', value: aid }),
+                message: 'Error to update article',
                 code: codes.INVALID_TYPES_ERROR
             })
         }
 
         let query = { _id: aid }
         if (title) query.title = title
+        if (summary) query.summary = summary
         if (body) query.body = body
+        if (urlImageSmall) query.urlImageSmall = urlImageSmall
+        if (urlImageLarge) query.urlImageLarge = urlImageLarge
+        if (link) query.link = link
 
         const result = await this.articleRepository.updateArticle(query)
 

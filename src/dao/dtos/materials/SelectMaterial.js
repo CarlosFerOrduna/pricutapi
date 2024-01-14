@@ -5,12 +5,12 @@ export class SelectMaterial {
         this._id = material._id || null
         this.name = material.name || null
         this.description = material.description || null
-        this.category = new SelectCategory(material.category)
-        this.price = material.price || null
-        this.thickness = material.thickness || null
-        this.areaStandard = material.areaStandard || null
-        this.weightAtomic = material.weightAtomic || null
-        this.characteristics = material.characteristics || null
-        this.urlImage = material.urlImage || null
+        this.about = material.about
+        this.aboutImage = material.aboutImage || null
+        this.category = new SelectCategory(material.category) || null
+        this.commonUses = material.commonUses || null
+        this.commonUsesImage = material.commonUsesImage || null
+        this.urlImageSmall = material.urlImageSmall || null
+        this.urlImageLarge = material.urlImageLarge || null
     }
 }

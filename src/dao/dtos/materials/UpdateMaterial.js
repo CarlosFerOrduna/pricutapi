@@ -1,27 +1,14 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo
-} from '../../../middlewares/errors/index.js'
-
 export class UpdateMaterial {
     constructor(material) {
-        this._id =
-            material._id ||
-            ErrorWrapper.createError({
-                name: '_id is not valid',
-                cause: invalidFieldErrorInfo({ name: '_id', type: 'string', value: _id }),
-                message: 'Error to update material',
-                code: codes.INVALID_TYPES_ERROR
-            })
+        this._id = material._id
         if (material.name) this.name = material.name
         if (material.description) this.description = material.description
+        if (material.about) this.about = material.about
+        if (material.aboutImage) this.aboutImage = material.aboutImage
         if (material.category) this.category = material.category
-        if (material.price) this.price = material.price
-        if (material.thickness) this.thickness = material.thickness
-        if (material.areaStandard) this.areaStandard = material.areaStandard
-        if (material.weightAtomic) this.weightAtomic = material.weightAtomic
-        if (material.characteristics) this.characteristics = material.characteristics
-        if (material.urlImage) this.urlImage = material.urlImage
+        if (material.commonUses) this.commonUses = material.commonUses
+        if (material.commonUsesImage) this.commonUsesImage = material.commonUsesImage
+        if (material.urlImageSmall) this.urlImageSmall = material.urlImageSmall
+        if (material.urlImageLarge) this.urlImageLarge = material.urlImageLarge
     }
 }

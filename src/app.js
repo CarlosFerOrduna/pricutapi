@@ -26,26 +26,18 @@ const swaggerOptions = {
 
 const specs = swaggerJSDoc(swaggerOptions)
 
-const allowed = [
-    'http://localhost:8080',
-    'http://localhost:3000',
-    'https://pricut-demo.vercel.app'
-]
 const corsOptions = {
     origin: (origin, callback) => {
-        if (allowed.some((s) => s === origin)) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
+        if (config.allowlist.some((s) => s === origin)) callback(null, true)
+        else callback(new Error('internal server error'))
     },
-    methods: ['GET', 'POST', 'PUT'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: false
 }
 
 app.use(handlerLogs)
-app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 app.use(cors(corsOptions))
+app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 app.use(compression({ brotli: { enabled: true, zlib: {} } }))
 app.use(json())
 app.use(urlencoded({ extended: true }))
@@ -64,3 +56,5 @@ app.use('*', (req, res) => {
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
+
+// TODO: Agregar a todos los modelos createdAt, updatedAt y deletedAt --articles

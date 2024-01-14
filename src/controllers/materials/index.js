@@ -1,3 +1,4 @@
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { MaterialRepository } from '../../repositories/index.js'
 
 export class MaterialController {
@@ -6,135 +7,181 @@ export class MaterialController {
     }
 
     saveMaterial = async (req, res) => {
-        try {
-            const { name, description, category, price, thickness, areaStandard } = req.body
-            if (!name) throw new Error('name is not valid')
-            if (!description) throw new Error('description is not valid')
-            if (!category) throw new Error('category is not valid')
-            if (!price) throw new Error('price is not valid')
-            if (!thickness) throw new Error('thickness is not valid')
-
-            const result = await this.materialRepository.saveMaterial({
-                name,
-                description,
-                category,
-                price,
-                thickness,
-                areaStandard
-            })
-
-            return res.status(201).send({
-                status: 'success',
-                message: 'material successfully created',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const {
+            name,
+            description,
+            about,
+            aboutImage,
+            category,
+            commonUses,
+            commonUsesImage,
+            urlImageSmall,
+            urlImageLarge
+        } = req.body
+        if (!name) {
+            ErrorWrapper.createError({
+                name: 'name is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'name',
+                    type: 'string',
+                    value: name
+                }),
+                message: 'Error to save article',
+                code: codes.INVALID_TYPES_ERROR
             })
         }
+        if (!description) {
+            ErrorWrapper.createError({
+                name: 'description is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'description',
+                    type: 'string',
+                    value: description
+                }),
+                message: 'Error to save article',
+                code: codes.INVALID_TYPES_ERROR
+            })
+        }
+        if (!category) {
+            ErrorWrapper.createError({
+                name: 'category is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'category',
+                    type: 'string',
+                    value: category
+                }),
+                message: 'Error to save article',
+                code: codes.INVALID_TYPES_ERROR
+            })
+        }
+
+        const result = await this.materialRepository.saveMaterial({
+            name,
+            description,
+            about,
+            aboutImage,
+            category,
+            commonUses,
+            commonUsesImage,
+            urlImageSmall,
+            urlImageLarge
+        })
+
+        return res.status(201).send({
+            status: 'success',
+            message: 'material successfully created',
+            data: result
+        })
     }
 
     getMaterialById = async (req, res) => {
-        try {
-            const { fid } = req.params
-            if (!fid || !isNaN(fid)) throw new Error('fid is required, or is not valid')
-
-            const result = await this.materialRepository.getMaterialById(fid)
-
-            return res.status(200).send({
-                status: 'success',
-                message: 'material successfully found',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
+        const { mid } = req.params
+        if (!mid || !isNaN(mid)) {
+            ErrorWrapper.createError({
+                name: 'mid is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'mid',
+                    type: 'string',
+                    value: mid
+                }),
+                message: 'Error to save article',
+                code: codes.INVALID_TYPES_ERROR
             })
         }
+
+        const result = await this.materialRepository.getMaterialById(mid)
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'material successfully found',
+            data: result
+        })
     }
 
     searchMaterials = async (req, res) => {
-        try {
-            const {
-                limit,
-                page,
-                name,
-                description,
-                category,
-                price,
-                thickness,
-                areaStandard
-            } = req.query
+        const {
+            limit,
+            page,
+            name,
+            description,
+            about,
+            aboutImage,
+            category,
+            commonUses,
+            commonUsesImage,
+            urlImageSmall,
+            urlImageLarge
+        } = req.query
 
-            let query = {}
-            if (name) query.name = name
-            if (description) query.description = description
-            if (category) query.category = category
-            if (price) query.price = price
-            if (thickness) query.thickness = thickness
-            if (areaStandard) query.areaStandard = areaStandard
+        let query = {}
+        if (name) query.name = name
+        if (description) query.description = description
+        if (about) query.about = about
+        if (aboutImage) query.aboutImage = aboutImage
+        if (category) query.category = category
+        if (commonUses) query.commonUses = commonUses
+        if (commonUsesImage) query.commonUsesImage = commonUsesImage
+        if (urlImageSmall) query.urlImageSmall = urlImageSmall
+        if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
-            const result = await this.materialRepository.searchMaterials(limit, page, query)
+        const result = await this.materialRepository.searchMaterials(limit, page, query)
 
-            return res.status(200).send({
-                status: 'success',
-                message: 'all material',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
-            })
-        }
+        return res.status(200).send({
+            status: 'success',
+            message: 'all material',
+            data: result
+        })
     }
 
     updateMaterial = async (req, res) => {
-        try {
-            const { name, description, category, price, thickness, areaStandard } = req.body
-            let newMaterial = {}
+        const {
+            name,
+            description,
+            about,
+            aboutImage,
+            category,
+            commonUses,
+            commonUsesImage,
+            urlImageSmall,
+            urlImageLarge
+        } = req.body
+        const { mid } = req.params
+        ErrorWrapper.createError({
+            name: 'mid is not valid',
+            cause: invalidFieldErrorInfo({
+                name: 'mid',
+                type: 'string',
+                value: mid
+            }),
+            message: 'Error to update material',
+            code: codes.INVALID_TYPES_ERROR
+        })
 
-            if (name) newMaterial.name = name
-            if (description) newMaterial.description = description
-            if (category) newMaterial.category = category
-            if (price) newMaterial.price = price
-            if (thickness) newMaterial.thickness = thickness
-            if (areaStandard) newMaterial.areaStandard = areaStandard
+        let query = { _id: mid }
 
-            const result = await this.materialRepository.updateMaterial(newMaterial)
+        if (name) query.name = name
+        if (description) query.description = description
+        if (about) query.about = about
+        if (aboutImage) query.aboutImage = aboutImage
+        if (category) query.category = category
+        if (commonUses) query.commonUses = commonUses
+        if (commonUsesImage) query.commonUsesImage = commonUsesImage
+        if (urlImageSmall) query.urlImageSmall = urlImageSmall
+        if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
-            return res.status(200).send({
-                status: 'success',
-                message: 'material successfully updated',
-                data: result
-            })
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
-            })
-        }
+        const result = await this.materialRepository.updateMaterial(query)
+
+        return res.status(200).send({
+            status: 'success',
+            message: 'material successfully updated',
+            data: result
+        })
     }
 
     deleteMaterial = async (req, res) => {
-        try {
-            const { mid } = req.params
-            await this.materialRepository.deleteMaterial(mid)
+        const { mid } = req.params
+        await this.materialRepository.deleteMaterial(mid)
 
-            return res.status(204).send({})
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                message: error.message,
-                data: {}
-            })
-        }
+        return res.status(204).send({})
     }
 }

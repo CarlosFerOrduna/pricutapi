@@ -2,19 +2,36 @@ import { Schema, model } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import { createHash } from '../../../../utils/bcrypt.util.js'
+import moment from 'moment/moment.js'
 
-const userSchema = new Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    rol: { type: String, enum: ['admin', 'user'], default: 'user' },
-    files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] },
-    thumbnail: { type: String }
-})
+const userSchema = new Schema(
+    {
+        firstName: { type: String, required: true },
+        lastName: { type: String, required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        rol: { type: String, enum: ['admin', 'user'], default: 'user' },
+        files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] },
+        thumbnail: { type: String },
+        deleted: { type: Boolean, default: false },
+        deletedAt: { type: Date },
+    },
+    { timestamps: true },
+)
+
+userSchema.methods.softDelete = async function () {
+    this.delete = true
+    this.deletedAt = moment()
+
+    return this.save()
+}
 
 userSchema.pre('save', function () {
     this.password = createHash(this.password)
+})
+
+userSchema.pre('find', function () {
+    this.where({ createdAt: null })
 })
 
 userSchema.plugin(paginate)

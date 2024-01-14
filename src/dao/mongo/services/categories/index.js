@@ -1,55 +1,77 @@
+import {
+    ErrorWrapper,
+    codes,
+    invalidFieldErrorInfo,
+} from '../../../../middlewares/errors/index.js'
 import { categoryModel } from '../../models/index.js'
 
 export class CategoryService {
     saveCategory = async (category) => {
-        try {
-            const newCategory = new categoryModel(category)
-            await newCategory.validate()
+        const newCategory = new categoryModel(category)
+        await newCategory.validate()
 
-            return await newCategory.save()
-        } catch (error) {
-            throw new Error('categoryService: ' + error)
-        }
+        return await newCategory.save()
     }
 
     getCategoryById = async (cid) => {
-        try {
-            const result = await categoryModel.findById(cid)
-            if (!result) throw new Error('category not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('getCategoryById: ' + error)
+        const result = await categoryModel.findById(cid)
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'category not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'category',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to get category',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
     }
 
-    searchCategories = async (limit, page, query) => {
-        try {
-            return await categoryModel.paginate(query, { limit: limit ?? 6, page: page ?? 1 })
-        } catch (error) {
-            throw new Error('getCategorys: ' + error)
-        }
+    searchCategories = async (limit = 10, page = 1, query) => {
+        return await categoryModel.paginate(query, { limit, page })
     }
 
     updateCategory = async (category) => {
-        try {
-            const result = await categoryModel.findByIdAndUpdate(category._id, category)
-            if (!result) throw new Error('category not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('updatecategory: ' + error)
+        const result = await categoryModel.findByIdAndUpdate(category._id, category, {
+            new: true,
+        })
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'category not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'category',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to update category',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        return result
     }
 
     deleteCategory = async (cid) => {
-        try {
-            const result = await categoryModel.findByIdAndDelete(cid)
-            if (!result) throw new Error('category not exists')
-
-            return result
-        } catch (error) {
-            throw new Error('deletecategory: ' + error)
+        const category = await categoryModel.findById(cid)
+        if (!result) {
+            ErrorWrapper.createError({
+                name: 'category not exists',
+                cause: invalidFieldErrorInfo({
+                    name: 'category',
+                    type: 'string',
+                    value: result,
+                }),
+                message: 'Error to delete category',
+                code: codes.DATABASE_ERROR,
+            })
         }
+
+        const result = await category.softDelete()
+
+        return result
     }
 }

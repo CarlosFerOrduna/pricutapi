@@ -1,7 +1,7 @@
 import {
     ErrorWrapper,
     codes,
-    invalidFieldErrorInfo
+    invalidFieldErrorInfo,
 } from '../../../../middlewares/errors/index.js'
 import { articleModel } from '../../models/index.js'
 
@@ -13,8 +13,8 @@ export class ArticleService {
         return await newArticle.save()
     }
 
-    searchArticles = async (limit, page, query) => {
-        return await articleModel.paginate(query, { limit: limit ?? 3, page: page ?? 1 })
+    searchArticles = async (limit = 10, page = 1, query) => {
+        return await articleModel.paginate(query, { limit, page })
     }
 
     getArticleById = async (aid) => {
@@ -25,10 +25,10 @@ export class ArticleService {
                 cause: invalidFieldErrorInfo({
                     name: 'article',
                     type: 'string',
-                    value: result
+                    value: result,
                 }),
                 message: 'Error to get article',
-                code: codes.NOT_FOUND
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -43,10 +43,10 @@ export class ArticleService {
                 cause: invalidFieldErrorInfo({
                     name: 'article',
                     type: 'string',
-                    value: result
+                    value: result,
                 }),
                 message: 'Error to update article',
-                code: codes.NOT_FOUND
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -54,19 +54,21 @@ export class ArticleService {
     }
 
     deleteArticle = async (aid) => {
-        const result = await articleModel.findByIdAndDelete(aid)
-        if (!result) {
+        const article = await articleModel.findById(aid)
+        if (!article) {
             ErrorWrapper.createError({
                 name: 'article not exists',
                 cause: invalidFieldErrorInfo({
                     name: 'article',
                     type: 'string',
-                    value: result
+                    value: result,
                 }),
                 message: 'Error to delete article',
-                code: codes.NOT_FOUND
+                code: codes.NOT_FOUND,
             })
         }
+
+        const result = await article.softDelete()
 
         return result
     }
