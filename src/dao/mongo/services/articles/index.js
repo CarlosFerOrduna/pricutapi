@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { articleModel } from '../../models/index.js'
 
 export class ArticleService {
@@ -36,9 +32,7 @@ export class ArticleService {
     }
 
     updateArticle = async ({ article }) => {
-        const result = await articleModel.findByIdAndUpdate(article._id, article, {
-            new: true,
-        })
+        const result = await articleModel.findByIdAndUpdate(article._id, article, { new: true })
         if (!result) {
             ErrorWrapper.createError({
                 name: 'article not exists',
@@ -55,7 +49,7 @@ export class ArticleService {
         return result
     }
 
-    deleteArticle = async (aid) => {
+    deleteArticle = async ({ aid }) => {
         const article = await articleModel.findById(aid)
         if (!article) {
             ErrorWrapper.createError({

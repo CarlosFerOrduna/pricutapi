@@ -82,8 +82,7 @@ export class ArticleController {
     }
 
     searchArticles = async (req, res) => {
-        const { limit, page, title, summary, body, urlImageSmall, urlImageLarge, link } =
-            req.query
+        const { limit, page, title, summary, body, urlImageSmall, urlImageLarge, link } = req.query
 
         let query = {}
         if (title) query.title = title
@@ -103,15 +102,10 @@ export class ArticleController {
     }
 
     updateArticle = async (req, res) => {
-        const {
-            files: {
-                small: [small],
-                large: [large],
-            },
-        } = req
+        const { files } = req
         const { title, summary, body, link } = req.body
-        const { aid } = req.query
-        if (!aid || !isNaN(aid)) {
+        const { aid } = req.params
+        if (!aid) {
             ErrorWrapper.createError({
                 name: 'aid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'aid', type: 'string', value: aid }),
@@ -124,11 +118,17 @@ export class ArticleController {
         if (title) query.title = title
         if (summary) query.summary = summary
         if (body) query.body = body
-        if (small) query.urlImageSmall = await uploadImage({ image: small })
-        if (large) query.urlImageLarge = await uploadImage({ image: large })
+        if (files.small) {
+            const [small] = files.small
+            query.urlImageSmall = await uploadImage({ image: small })
+        }
+        if (files.large) {
+            const [large] = files.large
+            query.urlImageLarge = await uploadImage({ image: large })
+        }
         if (link) query.link = link
 
-        const result = await this.articleRepository.updateArticle({ query })
+        const result = await this.articleRepository.updateArticle({ article: query })
 
         return res.status(200).send({
             status: 'success',

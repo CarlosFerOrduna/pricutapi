@@ -20,15 +20,8 @@ export class ArticleRepository {
     }
 
     searchArticles = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchArticles({ limit, page, query })
+        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
+            await this.dao.searchArticles({ limit, page, query })
 
         return {
             articles: docs.map((a) => new SelectArticle(a)),
