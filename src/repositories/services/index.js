@@ -8,7 +8,7 @@ export class ServiceRepository {
 
     saveService = async ({ service }) => {
         const createService = new CreateService(service)
-        const serviceCreated = await this.dao.saveService({ createService })
+        const serviceCreated = await this.dao.saveService({ service: createService })
 
         return new SelectService(serviceCreated)
     }
@@ -44,7 +44,7 @@ export class ServiceRepository {
 
     updateService = async ({ service }) => {
         const updateService = new UpdateService(service)
-        const serviceUpdated = await this.dao.updateService({ updateService })
+        const serviceUpdated = await this.dao.updateService({ service: updateService })
 
         return new SelectService(serviceUpdated)
     }

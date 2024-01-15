@@ -9,7 +9,7 @@ const articleSchema = new Schema(
         body: { type: String, required: true },
         urlImageSmall: { type: String },
         urlImageLarge: { type: String },
-        link: { type: String },
+        link: { type: String }, // todo: preguntar a andy como quiere guardar esto
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date },
     },

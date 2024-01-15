@@ -7,22 +7,8 @@ export class ProductController {
     }
 
     saveProduct = async (req, res) => {
-        const {
-            material,
-            code,
-            pricePerPlank,
-            priceSalePlank,
-            width,
-            height,
-            thickness,
-            area,
-            volume,
-            specificWeight,
-            priceSquareCm,
-            fiberLaser,
-            CO2Laser,
-            CNCRouter,
-        } = req.body
+        const { material, pricePerPlank, width, height, thickness, specificWeight, fiberLaser, CO2Laser, CNCRouter } =
+            req.body
         if (!material) {
             ErrorWrapper.createError({
                 name: 'material is not valid',
@@ -35,14 +21,6 @@ export class ProductController {
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
-        if (!code) {
-            ErrorWrapper.createError({
-                name: 'code is not valid',
-                cause: invalidFieldErrorInfo({ name: 'code', type: 'string', value: code }),
-                message: 'Error to save product',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
         if (!pricePerPlank) {
             ErrorWrapper.createError({
                 name: 'pricePerPlank is not valid',
@@ -50,18 +28,6 @@ export class ProductController {
                     name: 'pricePerPlank',
                     type: 'string',
                     value: pricePerPlank,
-                }),
-                message: 'Error to save product',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!priceSalePlank) {
-            ErrorWrapper.createError({
-                name: 'priceSalePlank is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'priceSalePlank',
-                    type: 'string',
-                    value: priceSalePlank,
                 }),
                 message: 'Error to save product',
                 code: codes.INVALID_TYPES_ERROR,
@@ -99,26 +65,6 @@ export class ProductController {
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
-        if (!area) {
-            ErrorWrapper.createError({
-                name: 'area is not valid',
-                cause: invalidFieldErrorInfo({ name: 'area', type: 'string', value: area }),
-                message: 'Error to save product',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!volume) {
-            ErrorWrapper.createError({
-                name: 'volume is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'volume',
-                    type: 'string',
-                    value: volume,
-                }),
-                message: 'Error to save product',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
         if (!specificWeight) {
             ErrorWrapper.createError({
                 name: 'specificWeight is not valid',
@@ -131,32 +77,15 @@ export class ProductController {
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
-        if (!priceSquareCm) {
-            ErrorWrapper.createError({
-                name: 'priceSquareCm is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'priceSquareCm',
-                    type: 'string',
-                    value: priceSquareCm,
-                }),
-                message: 'Error to save product',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
 
         const result = await this.productRepository.saveProduct({
             product: {
                 material,
-                code,
                 pricePerPlank,
-                priceSalePlank,
                 width,
                 height,
                 thickness,
-                area,
-                volume,
                 specificWeight,
-                priceSquareCm,
                 fiberLaser,
                 CO2Laser,
                 CNCRouter,
@@ -234,22 +163,8 @@ export class ProductController {
     }
 
     updateProduct = async (req, res) => {
-        const {
-            material,
-            code,
-            pricePerPlank,
-            priceSalePlank,
-            width,
-            height,
-            thickness,
-            area,
-            volume,
-            specificWeight,
-            priceSquareCm,
-            fiberLaser,
-            CO2Laser,
-            CNCRouter,
-        } = req.query
+        const { material, pricePerPlank, width, height, thickness, specificWeight, fiberLaser, CO2Laser, CNCRouter } =
+            req.query
         const { pid } = req.params
         if (!pid || !isNaN(pid)) {
             ErrorWrapper.createError({
@@ -262,16 +177,11 @@ export class ProductController {
 
         let query = { _id: pid }
         if (material) query.material = material
-        if (code) query.code = code
         if (pricePerPlank) query.pricePerPlank = pricePerPlank
-        if (priceSalePlank) query.priceSalePlank = priceSalePlank
         if (width) query.width = width
         if (height) query.height = height
         if (thickness) query.thickness = thickness
-        if (area) query.area = area
-        if (volume) query.volume = volume
         if (specificWeight) query.specificWeight = specificWeight
-        if (priceSquareCm) query.priceSquareCm = priceSquareCm
         if (fiberLaser) query.fiberLaser = fiberLaser
         if (CO2Laser) query.CO2Laser = CO2Laser
         if (CNCRouter) query.CNCRouter = CNCRouter

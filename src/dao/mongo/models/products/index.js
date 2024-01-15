@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { model, Schema } from 'mongoose'
+import { categoryModel, materialModel } from '../index.js'
 
 const productSchema = new Schema(
     {
@@ -22,6 +23,20 @@ const productSchema = new Schema(
     },
     { timestamps: true },
 )
+
+productSchema.pre('save', async function () {
+    const material = await materialModel.findById(this.material).lean()
+    const category = await categoryModel.findById(material.category).lean()
+
+    const materialName = material.name.toUpperCase().substring(0, 3)
+    const categoryName = category.name.toUpperCase().replace(/\s/g, '')
+
+    this.code = `${materialName}-${categoryName}-${this.width}${this.height}-${this.thickness}`
+    this.priceSalePlank = this.pricePerPlank * 1.4
+    this.area = this.width * this.height
+    this.volume = this.width * this.height * this.thickness
+    this.priceSquareCm = this.priceSalePlank / this.area
+})
 
 productSchema.methods.softDelete = async function () {
     this.deleted = true

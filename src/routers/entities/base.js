@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { uploader } from '../../middlewares/multer/index.js'
+import { uploadMultipleImages } from '../../middlewares/multer/index.js'
 import { authToken } from '../../utils/jwt.util.js'
 
 export default class BaseRouter {
@@ -23,7 +23,7 @@ export default class BaseRouter {
         this.router.post(
             path,
             this.handlePolicies(policies),
-            uploader.array('files'),
+            uploadMultipleImages,
             this.applyCallbacks(callbacks),
         )
     }
@@ -32,7 +32,7 @@ export default class BaseRouter {
         this.router.put(
             path,
             this.handlePolicies(policies),
-            uploader.array('files'),
+            uploadMultipleImages,
             this.applyCallbacks(callbacks),
         )
     }

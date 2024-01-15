@@ -8,7 +8,7 @@ export class MaterialRepository {
 
     saveMaterial = async ({ material }) => {
         const createMaterial = new CreateMaterial(material)
-        const materialCreated = await this.dao.saveMaterial({ createMaterial })
+        const materialCreated = await this.dao.saveMaterial({ material: createMaterial })
 
         return new SelectMaterial(materialCreated)
     }
@@ -44,7 +44,7 @@ export class MaterialRepository {
 
     updateMaterial = async ({ material }) => {
         const updateMaterial = new UpdateMaterial(material)
-        const materialUpdated = await this.dao.updateMaterial({ updateMaterial })
+        const materialUpdated = await this.dao.updateMaterial({ material: updateMaterial })
 
         return new SelectMaterial(materialUpdated)
     }

@@ -8,7 +8,7 @@ export class CategoryRepository {
 
     saveCategory = async ({ category }) => {
         const createCategory = new CreateCategory(category)
-        const categoryCreated = await this.dao.saveCategory({ createCategory })
+        const categoryCreated = await this.dao.saveCategory({ category: createCategory })
 
         return new SelectCategory(categoryCreated)
     }
@@ -44,7 +44,7 @@ export class CategoryRepository {
 
     updateCategory = async ({ category }) => {
         const updateCategory = new UpdateCategory(category)
-        const categoryUpdated = await this.dao.updateCategory({ updateCategory })
+        const categoryUpdated = await this.dao.updateCategory({ category: updateCategory })
 
         return new SelectCategory(categoryUpdated)
     }

@@ -9,12 +9,16 @@ export const uploadImage = async ({ svgCode = null, image = null }) => {
             api_secret: config.apiSecret,
         })
 
-        if (svgCode && !image) {
+        let path
+        if (svgCode) {
             const buffer = Buffer.from(svgCode).toString('base64')
-            image = `data:image/svg+xml;base64,${buffer}`
+            path = `data:image/svg+xml;base64,${buffer}`
+        }
+        if (image?.buffer) {
+            path = `data:image/jpeg;base64,${image.buffer.toString('base64')}`
         }
 
-        const { secure_url } = await cloudinary.v2.uploader.upload(image)
+        const { secure_url } = await cloudinary.v2.uploader.upload(path)
 
         return secure_url
     } catch (error) {

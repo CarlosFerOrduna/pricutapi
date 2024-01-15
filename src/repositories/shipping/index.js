@@ -8,7 +8,7 @@ export class ShippingRepository {
 
     saveShipping = async ({ shipping }) => {
         const createShipping = new CreateShipping(shipping)
-        const shippingCreated = await this.dao.saveShipping({ createShipping })
+        const shippingCreated = await this.dao.saveShipping({ shipping: createShipping })
 
         return new SelectShipping(shippingCreated)
     }
@@ -44,7 +44,7 @@ export class ShippingRepository {
 
     updateShipping = async ({ shipping }) => {
         const updateShipping = new UpdateShipping(shipping)
-        const shippingUpdated = await this.dao.updateShipping({ updateShipping })
+        const shippingUpdated = await this.dao.updateShipping({ shipping: updateShipping })
 
         return new SelectShipping(shippingUpdated)
     }

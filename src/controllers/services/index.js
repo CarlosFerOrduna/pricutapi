@@ -8,17 +8,14 @@ export class ServiceController {
 
     saveService = async (req, res) => {
         const {
-            name,
-            description,
-            cuttingCapacity,
-            supportedThickness,
-            about,
-            aboutImage,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge,
-        } = req.body
+            files: {
+                small: [small],
+                large: [large],
+                aboutImage: [aboutImage],
+                commonUsesImage: [commonUsesImage],
+            },
+        } = req
+        const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.body
         if (!name) {
             ErrorWrapper.createError({
                 name: 'name is not valid',
@@ -64,6 +61,11 @@ export class ServiceController {
             })
         }
 
+        const urlImageSmall = await uploadImage({ image: small })
+        const urlImageLarge = await uploadImage({ image: large })
+        const urlImageAbout = await uploadImage({ image: aboutImage })
+        const urlImagecommonUses = await uploadImage({ image: commonUsesImage })
+
         const result = await this.serviceRepository.saveService({
             service: {
                 name,
@@ -71,9 +73,9 @@ export class ServiceController {
                 cuttingCapacity,
                 supportedThickness,
                 about,
-                aboutImage,
+                aboutImage: urlImageAbout,
                 commonUses,
-                commonUsesImage,
+                commonUsesImage: urlImagecommonUses,
                 urlImageSmall,
                 urlImageLarge,
             },
@@ -107,20 +109,7 @@ export class ServiceController {
     }
 
     searchServices = async (req, res) => {
-        const {
-            limit,
-            page,
-            name,
-            description,
-            cuttingCapacity,
-            supportedThickness,
-            about,
-            aboutImage,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge,
-        } = req.query
+        const { limit, page, name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
 
         let query = {}
         if (name) query.name = name
@@ -128,11 +117,7 @@ export class ServiceController {
         if (cuttingCapacity) query.cuttingCapacity = cuttingCapacity
         if (supportedThickness) query.supportedThickness = supportedThickness
         if (about) query.about = about
-        if (aboutImage) query.aboutImage = aboutImage
         if (commonUses) query.commonUses = commonUses
-        if (commonUsesImage) query.commonUsesImage = commonUsesImage
-        if (urlImageSmall) query.urlImageSmall = urlImageSmall
-        if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
         const result = await this.serviceRepository.searchServices({ limit, page, query })
 
@@ -145,17 +130,14 @@ export class ServiceController {
 
     updateService = async (req, res) => {
         const {
-            name,
-            description,
-            cuttingCapacity,
-            supportedThickness,
-            about,
-            aboutImage,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge,
-        } = req.query
+            files: {
+                small: [small],
+                large: [large],
+                aboutImage: [aboutImage],
+                commonUsesImage: [commonUsesImage],
+            },
+        } = req
+        const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
         const { sid } = req.params
         if (!sid || !isNaN(sid)) {
             ErrorWrapper.createError({
@@ -172,11 +154,11 @@ export class ServiceController {
         if (cuttingCapacity) query.cuttingCapacity = cuttingCapacity
         if (supportedThickness) query.supportedThickness = supportedThickness
         if (about) query.about = about
-        if (aboutImage) query.aboutImage = aboutImage
+        if (aboutImage) query.aboutImage = await uploadImage({ image: aboutImage })
         if (commonUses) query.commonUses = commonUses
-        if (commonUsesImage) query.commonUsesImage = commonUsesImage
-        if (urlImageSmall) query.urlImageSmall = urlImageSmall
-        if (urlImageLarge) query.urlImageLarge = urlImageLarge
+        if (commonUsesImage) query.commonUsesImage = await uploadImage({ image: commonUsesImage })
+        if (small) query.urlImageSmall = await uploadImage({ image: small })
+        if (large) query.urlImageLarge = await uploadImage({ image: large })
 
         const result = await this.serviceRepository.updateService({ query })
 

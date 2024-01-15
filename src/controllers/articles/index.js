@@ -1,5 +1,6 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { ArticleRepository } from '../../repositories/index.js'
+import { uploadImage } from '../../utils/uploadImage.util.js'
 
 export class ArticleController {
     constructor() {
@@ -7,8 +8,13 @@ export class ArticleController {
     }
 
     saveArticle = async (req, res) => {
+        const {
+            files: {
+                small: [small],
+                large: [large],
+            },
+        } = req
         const { title, summary, body, link } = req.body
-        const { urlImageSmall, urlImageLarge } = req.files
         if (!title) {
             ErrorWrapper.createError({
                 name: 'title is not valid',
@@ -34,6 +40,9 @@ export class ArticleController {
             })
         }
 
+        const urlImageSmall = await uploadImage({ image: small })
+        const urlImageLarge = await uploadImage({ image: large })
+
         const result = await this.articleRepository.saveArticle({
             article: {
                 title,
@@ -41,7 +50,7 @@ export class ArticleController {
                 body,
                 urlImageSmall,
                 urlImageLarge,
-                link, // todo: esto creo que lo va a crear el dto
+                link, // todo: preguntar a andy como quiere ver este campo
             },
         })
 
@@ -94,7 +103,13 @@ export class ArticleController {
     }
 
     updateArticle = async (req, res) => {
-        const { title, summary, body, urlImageSmall, urlImageLarge, link } = req.body
+        const {
+            files: {
+                small: [small],
+                large: [large],
+            },
+        } = req
+        const { title, summary, body, link } = req.body
         const { aid } = req.query
         if (!aid || !isNaN(aid)) {
             ErrorWrapper.createError({
@@ -109,8 +124,8 @@ export class ArticleController {
         if (title) query.title = title
         if (summary) query.summary = summary
         if (body) query.body = body
-        if (urlImageSmall) query.urlImageSmall = urlImageSmall
-        if (urlImageLarge) query.urlImageLarge = urlImageLarge
+        if (small) query.urlImageSmall = await uploadImage({ image: small })
+        if (large) query.urlImageLarge = await uploadImage({ image: large })
         if (link) query.link = link
 
         const result = await this.articleRepository.updateArticle({ query })

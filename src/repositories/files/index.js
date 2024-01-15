@@ -8,7 +8,7 @@ export class FileRepository {
 
     saveFile = async ({ file }) => {
         const createFile = new CreateFile(file)
-        const fileCreated = await this.dao.saveFile({ createFile })
+        const fileCreated = await this.dao.saveFile({ file: createFile })
 
         return new SelectFile(fileCreated)
     }
@@ -44,7 +44,7 @@ export class FileRepository {
 
     updateFile = async ({ file }) => {
         const updateFile = new UpdateFile(file)
-        const fileUpdated = await this.dao.updateFile({ updateFile })
+        const fileUpdated = await this.dao.updateFile({ file: updateFile })
 
         return new SelectFile(fileUpdated)
     }

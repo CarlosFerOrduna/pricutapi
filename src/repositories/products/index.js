@@ -8,7 +8,7 @@ export class ProductRepository {
 
     saveProduct = async ({ product }) => {
         const createProduct = new CreateProduct(product)
-        const productCreated = await this.dao.saveProduct({ createProduct })
+        const productCreated = await this.dao.saveProduct({ product: createProduct })
 
         return new SelectProduct(productCreated)
     }
@@ -44,7 +44,7 @@ export class ProductRepository {
 
     updateProduct = async ({ product }) => {
         const updateProduct = new UpdateProduct(product)
-        const productUpdated = await this.dao.updateProduct({ updateProduct })
+        const productUpdated = await this.dao.updateProduct({ product: updateProduct })
 
         return new SelectProduct(productUpdated)
     }

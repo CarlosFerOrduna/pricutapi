@@ -8,7 +8,7 @@ export class ArticleRepository {
 
     saveArticle = async ({ article }) => {
         const createArticle = new CreateArticle(article)
-        const articleCreated = await this.dao.saveArticle(createArticle)
+        const articleCreated = await this.dao.saveArticle({ article: createArticle })
 
         return new SelectArticle(articleCreated)
     }
@@ -44,7 +44,7 @@ export class ArticleRepository {
 
     updateArticle = async ({ article }) => {
         const updateArticle = new UpdateArticle(article)
-        const articleUpdated = await this.dao.updateArticle({ updateArticle })
+        const articleUpdated = await this.dao.updateArticle({ article: updateArticle })
 
         return new SelectArticle(articleUpdated)
     }

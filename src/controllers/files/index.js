@@ -10,7 +10,11 @@ export class FileController {
     }
 
     saveFile = async (req, res) => {
-        const { originalname, buffer } = req.file
+        const {
+            files: {
+                file: [{ originalname, buffer }],
+            },
+        } = req
         if (!originalname) {
             ErrorWrapper.createError({
                 name: 'originalname is not valid',
@@ -37,7 +41,7 @@ export class FileController {
         }
 
         const svg = ConvertDxfToSvg(buffer)
-        const urlImage = await uploadImage(svg)
+        const urlImage = await uploadImage({ svgCode: svg })
 
         const result = await this.fileRepository.saveFile({
             file: {
@@ -166,8 +170,6 @@ export class FileController {
 
         let query = {}
         if (name) query.name = name
-        if (file) query.file = file
-        if (url) query.url = url
 
         let result = await this.fileRepository.searchFiles({ limit, page, query })
 

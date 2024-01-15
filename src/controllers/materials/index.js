@@ -1,5 +1,6 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { MaterialRepository } from '../../repositories/index.js'
+import { uploadImage } from '../../utils/uploadImage.util.js'
 
 export class MaterialController {
     constructor() {
@@ -8,16 +9,14 @@ export class MaterialController {
 
     saveMaterial = async (req, res) => {
         const {
-            name,
-            description,
-            about,
-            aboutImage,
-            category,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge,
-        } = req.body
+            files: {
+                small: [small],
+                large: [large],
+                aboutImage: [aboutImage],
+                commonUsesImage: [commonUsesImage],
+            },
+        } = req
+        const { name, description, about, category, commonUses } = req.body
         if (!name) {
             ErrorWrapper.createError({
                 name: 'name is not valid',
@@ -55,15 +54,20 @@ export class MaterialController {
             })
         }
 
+        const urlImageSmall = await uploadImage({ image: small })
+        const urlImageLarge = await uploadImage({ image: large })
+        const urlImageAbout = await uploadImage({ image: aboutImage })
+        const urlImagecommonUses = await uploadImage({ image: commonUsesImage })
+
         const result = await this.materialRepository.saveMaterial({
             material: {
                 name,
                 description,
                 about,
-                aboutImage,
+                aboutImage: urlImageAbout,
                 category,
                 commonUses,
-                commonUsesImage,
+                commonUsesImage: urlImagecommonUses,
                 urlImageSmall,
                 urlImageLarge,
             },
@@ -101,30 +105,14 @@ export class MaterialController {
     }
 
     searchMaterials = async (req, res) => {
-        const {
-            limit,
-            page,
-            name,
-            description,
-            about,
-            aboutImage,
-            category,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge,
-        } = req.query
+        const { limit, page, name, description, about, category, commonUses } = req.query
 
         let query = {}
         if (name) query.name = name
         if (description) query.description = description
         if (about) query.about = about
-        if (aboutImage) query.aboutImage = aboutImage
         if (category) query.category = category
         if (commonUses) query.commonUses = commonUses
-        if (commonUsesImage) query.commonUsesImage = commonUsesImage
-        if (urlImageSmall) query.urlImageSmall = urlImageSmall
-        if (urlImageLarge) query.urlImageLarge = urlImageLarge
 
         const result = await this.materialRepository.searchMaterials({ limit, page, query })
 
@@ -137,16 +125,14 @@ export class MaterialController {
 
     updateMaterial = async (req, res) => {
         const {
-            name,
-            description,
-            about,
-            aboutImage,
-            category,
-            commonUses,
-            commonUsesImage,
-            urlImageSmall,
-            urlImageLarge,
-        } = req.body
+            files: {
+                small: [small],
+                large: [large],
+                aboutImage: [aboutImage],
+                commonUsesImage: [commonUsesImage],
+            },
+        } = req
+        const { name, description, about, category, commonUses } = req.body
         const { mid } = req.params
         if (!mid || !isNaN(mid)) {
             ErrorWrapper.createError({
@@ -166,12 +152,12 @@ export class MaterialController {
         if (name) query.name = name
         if (description) query.description = description
         if (about) query.about = about
-        if (aboutImage) query.aboutImage = aboutImage
+        if (aboutImage) query.aboutImage = await uploadImage({ image: aboutImage })
         if (category) query.category = category
         if (commonUses) query.commonUses = commonUses
-        if (commonUsesImage) query.commonUsesImage = commonUsesImage
-        if (urlImageSmall) query.urlImageSmall = urlImageSmall
-        if (urlImageLarge) query.urlImageLarge = urlImageLarge
+        if (commonUsesImage) query.commonUsesImage = await uploadImage({ image: commonUsesImage })
+        if (small) query.urlImageSmall = await uploadImage({ image: small })
+        if (large) query.urlImageLarge = await uploadImage({ image: large })
 
         const result = await this.materialRepository.updateMaterial({ query })
 

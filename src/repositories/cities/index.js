@@ -8,7 +8,7 @@ export class CityRepository {
 
     saveCity = async ({ city }) => {
         const createCity = new CreateCity(city)
-        const cityCreated = await this.dao.saveCity({ createCity })
+        const cityCreated = await this.dao.saveCity({ city: createCity })
 
         return new SelectCity(cityCreated)
     }
@@ -44,7 +44,7 @@ export class CityRepository {
 
     updateCity = async ({ city }) => {
         const updateCity = new UpdateCity(city)
-        const cityUpdated = await this.dao.updateCity({ updateCity })
+        const cityUpdated = await this.dao.updateCity({ city: updateCity })
 
         return new SelectCity(cityUpdated)
     }

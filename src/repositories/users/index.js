@@ -8,7 +8,7 @@ export class UsersRepository {
 
     saveUser = async ({ user }) => {
         const createUser = new CreateUser(user)
-        const userCreated = await this.dao.saveUser({ createUser })
+        const userCreated = await this.dao.saveUser({ user: createUser })
 
         return new SelectUser(userCreated)
     }
@@ -44,7 +44,7 @@ export class UsersRepository {
 
     updateUser = async ({ user }) => {
         const updateUser = new UpdateUser(user)
-        const userUpdated = await this.dao.updateUser({ updateUser })
+        const userUpdated = await this.dao.updateUser({ user: updateUser })
 
         return new SelectUser(userUpdated)
     }

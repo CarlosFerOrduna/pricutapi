@@ -8,7 +8,7 @@ export class CommentRepository {
 
     saveComment = async ({ comment }) => {
         const createComment = new CreateComment(comment)
-        const commentCreated = await this.dao.saveComment({ createComment })
+        const commentCreated = await this.dao.saveComment({ comment: createComment })
 
         return new SelectComment(commentCreated)
     }
@@ -44,7 +44,7 @@ export class CommentRepository {
 
     updateComment = async ({ comment }) => {
         const updateComment = new UpdateComment(comment)
-        const commentUpdated = await this.dao.updateComment({ updateComment })
+        const commentUpdated = await this.dao.updateComment({ comment: updateComment })
 
         return new SelectComment(commentUpdated)
     }
