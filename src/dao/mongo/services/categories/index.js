@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { categoryModel } from '../../models/index.js'
 
 export class CategoryService {
@@ -57,13 +53,13 @@ export class CategoryService {
 
     deleteCategory = async ({ cid }) => {
         const category = await categoryModel.findById(cid)
-        if (!result) {
+        if (!category) {
             ErrorWrapper.createError({
                 name: 'category not exists',
                 cause: invalidFieldErrorInfo({
                     name: 'category',
                     type: 'string',
-                    value: result,
+                    value: category,
                 }),
                 message: 'Error to delete category',
                 code: codes.DATABASE_ERROR,

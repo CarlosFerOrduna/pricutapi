@@ -104,7 +104,7 @@ export class CategoryController {
         if (name) query.name = name
         if (description) query.description = description
 
-        const result = await this.categoryRepository.updateCategory({ query })
+        const result = await this.categoryRepository.updateCategory({ category: query })
 
         return res.status(200).send({
             status: 'success',
