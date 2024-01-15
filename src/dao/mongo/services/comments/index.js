@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { commentModel } from '../../models/index.js'
 
 export class CommentService {
@@ -77,7 +73,7 @@ export class CommentService {
                 cause: invalidFieldErrorInfo({
                     name: 'comment',
                     type: 'string',
-                    value: result,
+                    value: comment,
                 }),
                 message: 'Error to delete comment',
                 code: codes.DATABASE_ERROR,

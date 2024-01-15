@@ -59,7 +59,7 @@ export class MaterialService {
                 cause: invalidFieldErrorInfo({
                     name: 'material',
                     type: 'string',
-                    value: result,
+                    value: material,
                 }),
                 message: 'Error to delete material',
                 code: codes.DATABASE_ERROR,

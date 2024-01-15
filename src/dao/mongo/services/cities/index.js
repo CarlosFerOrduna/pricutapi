@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { cityModel } from '../../models/index.js'
 
 export class CityService {
@@ -68,7 +64,7 @@ export class CityService {
             })
         }
 
-        const result = await this.softDelete()
+        const result = await city.softDelete()
 
         return result
     }

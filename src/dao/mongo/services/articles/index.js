@@ -57,7 +57,7 @@ export class ArticleService {
                 cause: invalidFieldErrorInfo({
                     name: 'article',
                     type: 'string',
-                    value: result,
+                    value: article,
                 }),
                 message: 'Error to delete article',
                 code: codes.NOT_FOUND,

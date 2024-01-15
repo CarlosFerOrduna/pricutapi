@@ -4,8 +4,8 @@ import paginate from 'mongoose-paginate-v2'
 
 const citiesSchema = new Schema(
     {
-        key: { type: Number, required: true },
-        value: { type: String, required: true },
+        key: { type: Number, required: true, unique: true },
+        value: { type: String, required: true, unix: true },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: String },
     },

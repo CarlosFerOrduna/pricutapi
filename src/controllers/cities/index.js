@@ -102,7 +102,7 @@ export class CityController {
         if (key) query.key = key
         if (value) query.value = value
 
-        const result = await this.citiesRepository.updateCity({ query })
+        const result = await this.citiesRepository.updateCity({ city: query })
 
         return res.status(200).send({
             status: 'success',

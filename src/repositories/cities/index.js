@@ -20,15 +20,8 @@ export class CityRepository {
     }
 
     searchCities = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchCities({ limit, page, query })
+        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
+            await this.dao.searchCities({ limit, page, query })
 
         return {
             cities: docs.map((c) => new SelectCity(c)),
@@ -49,7 +42,7 @@ export class CityRepository {
         return new SelectCity(cityUpdated)
     }
 
-    deleteCity = async ({ aid }) => {
-        return await this.dao.deleteCity({ aid })
+    deleteCity = async ({ cid }) => {
+        return await this.dao.deleteCity({ cid })
     }
 }
