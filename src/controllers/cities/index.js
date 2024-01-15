@@ -1,7 +1,7 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { CityRepository } from '../../repositories/index.js'
 
-export class CitiesController {
+export class CityController {
     constructor() {
         this.citiesRepository = new CityRepository()
     }
@@ -16,7 +16,7 @@ export class CitiesController {
                     type: 'string',
                     value: key,
                 }),
-                message: 'Error to create category',
+                message: 'Error to create city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -28,7 +28,7 @@ export class CitiesController {
                     type: 'string',
                     value: value,
                 }),
-                message: 'Error to create category',
+                message: 'Error to create city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -52,7 +52,7 @@ export class CitiesController {
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to create category',
+                message: 'Error to get city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -93,7 +93,7 @@ export class CitiesController {
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to create category',
+                message: 'Error to update city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -121,7 +121,7 @@ export class CitiesController {
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to create category',
+                message: 'Error to delete city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }

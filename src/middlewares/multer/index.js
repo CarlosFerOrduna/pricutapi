@@ -8,6 +8,5 @@ export const uploadMultipleImages = upload.fields([
     { name: 'commonUsesImage', maxCount: 1 },
     { name: 'large', maxCount: 1 },
     { name: 'small', maxCount: 1 },
-    { name: 'thumbnail', maxCount: 1 },
     { name: 'file', maxCount: 1 },
 ])

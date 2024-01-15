@@ -6,9 +6,9 @@ export class CategoryRouter extends BaseRouter {
         this.categoryController = new CategoryController()
 
         this.get('/', ['public'], this.categoryController.searchCategories)
-        this.get('/:fid', ['public'], this.categoryController.getCategoryById)
+        this.get('/:cid', ['public'], this.categoryController.getCategoryById)
         this.post('/', ['public'], this.categoryController.saveCategory)
-        this.put('/:fid', ['public'], this.categoryController.updateCategory)
-        this.delete('/:fid', ['public'], this.categoryController.deleteCategory)
+        this.put('/:cid', ['public'], this.categoryController.updateCategory)
+        this.delete('/:cid', ['public'], this.categoryController.deleteCategory)
     }
 }

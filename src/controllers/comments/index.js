@@ -16,7 +16,7 @@ export class CommentController {
                     type: 'string',
                     value: author,
                 }),
-                message: 'Error to create commente',
+                message: 'Error to create comment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -28,14 +28,12 @@ export class CommentController {
                     type: 'string',
                     value: details,
                 }),
-                message: 'Error to create commente',
+                message: 'Error to create comment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.commentRepository.saveComment({
-            commant: { author, details },
-        })
+        const result = await this.commentRepository.saveComment({ commant: { author, details } })
 
         return res.status(201).send({
             status: 'success',
@@ -54,7 +52,7 @@ export class CommentController {
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to get commente',
+                message: 'Error to get comment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -95,7 +93,7 @@ export class CommentController {
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to update commente',
+                message: 'Error to update comment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -123,7 +121,7 @@ export class CommentController {
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to delete category',
+                message: 'Error to delete comment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }

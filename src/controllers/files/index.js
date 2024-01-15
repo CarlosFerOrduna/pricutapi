@@ -152,7 +152,7 @@ export class FileController {
                     type: 'string',
                     value: fid,
                 }),
-                message: 'Error to get file',
+                message: 'Error to download file',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }

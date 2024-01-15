@@ -1,14 +1,14 @@
-import { CitiesController } from '../../../controllers/index.js'
+import { CityController } from '../../../controllers/index.js'
 import BaseRouter from '../../entities/base.js'
 
 export class CitiesRouter extends BaseRouter {
     init() {
-        this.citiesController = new CitiesController()
+        this.cityController = new CityController()
 
-        this.get('/', ['public'], this.citiesController.searchCities)
-        this.get('/:fid', ['public'], this.citiesController.getCityById)
-        this.post('/', ['public'], this.citiesController.saveCity)
-        this.put('/:fid', ['public'], this.citiesController.updateCity)
-        this.delete('/:fid', ['public'], this.citiesController.deleteCity)
+        this.get('/', ['public'], this.cityController.searchCities)
+        this.get('/:cid', ['public'], this.cityController.getCityById)
+        this.post('/', ['public'], this.cityController.saveCity)
+        this.put('/:cid', ['public'], this.cityController.updateCity)
+        this.delete('/:cid', ['public'], this.cityController.deleteCity)
     }
 }

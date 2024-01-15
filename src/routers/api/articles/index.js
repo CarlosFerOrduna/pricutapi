@@ -6,9 +6,9 @@ export class ArticleRouter extends BaseRouter {
         this.articleController = new ArticleController()
 
         this.get('/', ['public'], this.articleController.searchArticles)
-        this.get('/:fid', ['public'], this.articleController.getArticleById)
+        this.get('/:aid', ['public'], this.articleController.getArticleById)
         this.post('/', ['public'], this.articleController.saveArticle)
-        this.put('/:fid', ['public'], this.articleController.updateArticle)
-        this.delete('/:fid', ['public'], this.articleController.deleteArticle)
+        this.put('/:aid', ['public'], this.articleController.updateArticle)
+        this.delete('/:aid', ['public'], this.articleController.deleteArticle)
     }
 }

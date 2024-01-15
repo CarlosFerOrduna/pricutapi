@@ -87,6 +87,18 @@ export class CategoryController {
     updateCategory = async (req, res) => {
         const { name, description } = req.body
         const { cid } = req.params
+        if (!cid) {
+            ErrorWrapper.createError({
+                name: 'cid not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'cid',
+                    type: 'string',
+                    value: cid,
+                }),
+                message: 'Error to update category',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
 
         let query = { _id: cid }
         if (name) query.name = name
@@ -103,16 +115,15 @@ export class CategoryController {
 
     deleteCategory = async (req, res) => {
         const { cid } = req.params
-
         if (!cid) {
             ErrorWrapper.createError({
-                name: 'cid is required, or is not valid',
+                name: 'cid is not valid',
                 cause: invalidFieldErrorInfo({
                     name: 'cid',
                     type: 'string',
                     value: cid,
                 }),
-                message: 'Error to get category',
+                message: 'Error to delete category',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }

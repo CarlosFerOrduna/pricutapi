@@ -6,10 +6,9 @@ export class UserRouter extends BaseRouter {
         this.userController = new UserController()
 
         this.get('/', ['public'], this.userController.searchUsers)
-        this.get('/:pid', ['public'], this.userController.getUserById)
-        this.post('/register/', ['public'], this.userController.createUser)
-        this.post('/login/', ['public'], this.userController.login)
-        this.put('/:pid', ['public'], this.userController.updateUser)
-        this.delete('/:pid', ['public'], this.userController.deleteUser)
+        this.get('/:uid', ['public'], this.userController.getUserById)
+        this.post('/', ['public'], this.userController.saveUser)
+        this.put('/:uid', ['public'], this.userController.updateUser)
+        this.delete('/:uid', ['public'], this.userController.deleteUser)
     }
 }

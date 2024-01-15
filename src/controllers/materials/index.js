@@ -25,7 +25,7 @@ export class MaterialController {
                     type: 'string',
                     value: name,
                 }),
-                message: 'Error to save article',
+                message: 'Error to save material',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -37,7 +37,7 @@ export class MaterialController {
                     type: 'string',
                     value: description,
                 }),
-                message: 'Error to save article',
+                message: 'Error to save material',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -49,7 +49,7 @@ export class MaterialController {
                     type: 'string',
                     value: category,
                 }),
-                message: 'Error to save article',
+                message: 'Error to save material',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -90,7 +90,7 @@ export class MaterialController {
                     type: 'string',
                     value: mid,
                 }),
-                message: 'Error to save article',
+                message: 'Error to get material',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -142,7 +142,7 @@ export class MaterialController {
                     type: 'string',
                     value: mid,
                 }),
-                message: 'Error to update article',
+                message: 'Error to update material',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -178,7 +178,7 @@ export class MaterialController {
                     type: 'string',
                     value: mid,
                 }),
-                message: 'Error to delete article',
+                message: 'Error to delete material',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }

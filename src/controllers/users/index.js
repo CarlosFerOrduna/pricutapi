@@ -6,8 +6,8 @@ export class UserController {
         this.userRepository = new UsersRepository()
     }
 
-    createUser = async (req, res) => {
-        const { firstName, lastName, email, password, rol, files, thumbnail } = req.body
+    saveUser = async (req, res) => {
+        const { firstName, lastName, email, password, rol } = req.body
         if (!firstName || !isNaN(firstName)) {
             ErrorWrapper.createError({
                 name: 'cityOrigin is not valid',
@@ -56,46 +56,8 @@ export class UserController {
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
-        if (!rol || !isNaN(rol)) {
-            ErrorWrapper.createError({
-                name: 'rol is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'rol',
-                    type: 'string',
-                    value: rol,
-                }),
-                message: 'Error to save user',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!files || !isNaN(files)) {
-            ErrorWrapper.createError({
-                name: 'files is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'files',
-                    type: 'string',
-                    value: files,
-                }),
-                message: 'Error to save user',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!thumbnail || !isNaN(firstName)) {
-            ErrorWrapper.createError({
-                name: 'thumbnail is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'thumbnail',
-                    type: 'string',
-                    value: thumbnail,
-                }),
-                message: 'Error to save user',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
 
-        const result = await this.userRepository.createUser({
-            user: { firstName, lastName, email, password, rol, files, thumbnail },
-        })
+        const result = await this.userRepository.createUser({ user: { firstName, lastName, email, password, rol } })
 
         return res.status(201).send({
             status: 'success',
@@ -105,8 +67,7 @@ export class UserController {
     }
 
     searchUsers = async (req, res) => {
-        const { limit, page, firstName, lastName, email, password, rol, files, thumbnail } =
-            req.query
+        const { limit, page, firstName, lastName, email, password, rol, files } = req.query
 
         let query = {}
         if (firstName) query.firstName = firstName
@@ -115,7 +76,7 @@ export class UserController {
         if (password) query.password = password
         if (rol) query.rol = rol
         if (files) query.files = files
-        if (thumbnail) query.thumbnail = thumbnail
+
         const result = await this.userRepository.searchUsers({ limit, page, query })
 
         return res.status(200).send({
@@ -150,7 +111,7 @@ export class UserController {
     }
 
     updateUser = async (req, res) => {
-        const { firstName, lastName, email, password, rol, files, thumbnail } = req.body
+        const { firstName, lastName, email, password, rol, files } = req.body
         const { uid } = req.params
         if (!uid || !isNaN(uid)) {
             ErrorWrapper.createError({
@@ -172,7 +133,6 @@ export class UserController {
         if (password) query.password = password
         if (rol) query.rol = rol
         if (files) query.files = files
-        if (thumbnail) query.thumbnail = thumbnail
 
         const result = await this.userRepository.updateUser({ query })
 

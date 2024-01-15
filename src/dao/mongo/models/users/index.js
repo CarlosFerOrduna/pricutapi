@@ -12,7 +12,6 @@ const userSchema = new Schema(
         password: { type: String, required: true },
         rol: { type: String, enum: ['admin', 'user'], default: 'user' },
         files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] },
-        thumbnail: { type: String },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date },
     },

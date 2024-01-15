@@ -6,6 +6,7 @@ export class ShippingController {
         this.shippingRepository = new ShippingRepository()
     }
 
+    // todo: cranear
     saveShipping = async (req, res) => {
         const { cityOrigin, cityDestination, weight, long, high, width, price } = req.body
         if (!cityOrigin) {
@@ -133,8 +134,7 @@ export class ShippingController {
     }
 
     searchShippings = async (req, res) => {
-        const { limit, page, cityOrigin, cityDestination, weight, long, high, width, price } =
-            req.query
+        const { limit, page, cityOrigin, cityDestination, weight, long, high, width, price } = req.query
 
         let query = {}
         if (cityOrigin) query.cityOrigin = cityOrigin
