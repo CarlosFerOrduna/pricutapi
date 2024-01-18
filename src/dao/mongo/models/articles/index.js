@@ -4,7 +4,7 @@ import paginate from 'mongoose-paginate-v2'
 
 const articleSchema = new Schema(
     {
-        title: { type: String, required: true },
+        title: { type: String, required: true, index: true },
         summary: { type: String, required: true },
         body: { type: String, required: true },
         urlImageSmall: { type: String },

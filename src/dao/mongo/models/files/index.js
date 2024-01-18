@@ -4,7 +4,7 @@ import paginate from 'mongoose-paginate-v2'
 
 const fileSchema = new Schema(
     {
-        name: { type: String, required: true },
+        name: { type: String, required: true, index: true },
         file: { type: Buffer, required: true },
         url: { type: String, required: true },
         deleted: { type: Boolean, default: false },

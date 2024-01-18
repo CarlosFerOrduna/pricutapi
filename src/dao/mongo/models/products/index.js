@@ -5,7 +5,7 @@ import { categoryModel, materialModel } from '../index.js'
 const productSchema = new Schema(
     {
         material: { type: Schema.Types.ObjectId, ref: 'materials', require: true },
-        code: { type: String, require: true },
+        code: { type: String, require: true, index: true },
         pricePerPlank: { type: Number, require: true },
         priceSalePlank: { type: Number, require: true },
         width: { type: Number, require: true },

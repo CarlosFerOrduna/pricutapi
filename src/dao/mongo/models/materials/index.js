@@ -4,7 +4,7 @@ import paginate from 'mongoose-paginate-v2'
 
 const materialSchema = new Schema(
     {
-        name: { type: String, require: true },
+        name: { type: String, require: true, index: true },
         description: { type: String, require: true },
         about: { type: String },
         aboutImage: { type: String },

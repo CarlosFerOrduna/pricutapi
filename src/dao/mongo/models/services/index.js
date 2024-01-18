@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose'
 
 const serviceSchema = new Schema(
     {
-        name: { type: String, require: true },
+        name: { type: String, require: true, index: true },
         description: { type: String, require: true },
         cuttingCapacity: { type: String, require: true },
         supportedThickness: { type: String, require: true },

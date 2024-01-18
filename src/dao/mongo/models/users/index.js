@@ -8,7 +8,7 @@ const userSchema = new Schema(
     {
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
+        email: { type: String, required: true, unique: true, index: true },
         password: { type: String, required: true },
         rol: { type: String, enum: ['admin', 'user'], default: 'user' },
         files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] },
