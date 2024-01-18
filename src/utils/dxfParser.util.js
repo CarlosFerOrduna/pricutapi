@@ -1,5 +1,6 @@
 import DxfParser from 'dxf-parser'
-import { materialModel } from '../dao/mongo/models/index.js'
+
+import { productModel } from '../dao/mongo/models/index.js'
 
 export const dxfParser = (buffer) => {
     const parser = new DxfParser()
@@ -34,17 +35,17 @@ export const calculateDimensions = (buffer) => {
         widthIN,
         highIN,
         perimeterIN: (widthIN * 2 + highIN * 2).toFixed(3),
-        areaIN: (widthIN * highIN).toFixed(3)
+        areaIN: (widthIN * highIN).toFixed(3),
     }
 }
 
-export const calculatePrice = async (dimensions, mid) => {
+export const calculatePrice = async ({ dimensions, pid }) => {
     // ac = area pieza a calcular
     // ae = area estandar
     // p = precio estandar
     // ac = p . (ac/ae)
 
-    const material = await materialModel.findById(mid)
+    const material = await productModel.findById(pid)
     if (!material) throw new Error('material not exists')
 
     return (material.price * (dimensions.areaMM / material.areaStandard)).toFixed(2)

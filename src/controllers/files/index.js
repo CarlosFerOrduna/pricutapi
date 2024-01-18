@@ -65,7 +65,7 @@ export class FileController {
     }
 
     getFileByIdWithPrice = async (req, res) => {
-        const { fid, mid } = req.params
+        const { fid, pid } = req.params
         if (!fid || !isNaN(fid)) {
             ErrorWrapper.createError({
                 name: 'fid is required, or is not valid',
@@ -78,13 +78,13 @@ export class FileController {
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
-        if (!mid || !isNaN(mid)) {
+        if (!pid || !isNaN(pid)) {
             ErrorWrapper.createError({
                 name: 'mid is required, or is not valid',
                 cause: invalidFieldErrorInfo({
                     name: 'mid',
                     type: 'string',
-                    value: mid,
+                    value: pid,
                 }),
                 message: 'Error to get file',
                 code: codes.INVALID_TYPES_ERROR,
@@ -94,7 +94,7 @@ export class FileController {
         const result = await this.fileRepository.getFileById({ fid })
 
         const dimensions = calculateDimensions(result.file)
-        const price = await calculatePrice(dimensions, mid) // todo: cambiar esto para que en lugar de trabajar con material sea con producto
+        const price = await calculatePrice({ dimensions, pid }) // todo: cambiar esto para que en lugar de trabajar con material sea con producto
 
         return res.status(200).send({
             status: 'success',
