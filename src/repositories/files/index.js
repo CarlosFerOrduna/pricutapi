@@ -20,15 +20,8 @@ export class FileRepository {
     }
 
     searchFiles = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchFiles({ limit, page, query })
+        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
+            await this.dao.searchFiles({ limit, page, query })
 
         return {
             files: docs.map((f) => new SelectFile(f)),
@@ -49,7 +42,7 @@ export class FileRepository {
         return new SelectFile(fileUpdated)
     }
 
-    deleteFile = async ({ aid }) => {
-        return await this.dao.deleteFile({ aid })
+    deleteFile = async ({ fid }) => {
+        return await this.dao.deleteFile({ fid })
     }
 }

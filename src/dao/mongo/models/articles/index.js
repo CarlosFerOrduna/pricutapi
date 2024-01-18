@@ -11,7 +11,7 @@ const articleSchema = new Schema(
         urlImageLarge: { type: String },
         link: { type: String }, // todo: preguntar a andy como quiere guardar esto
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )

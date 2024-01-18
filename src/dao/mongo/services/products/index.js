@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { productModel } from '../../models/index.js'
 
 export class ProductService {
@@ -13,8 +9,8 @@ export class ProductService {
         return await newProduct.save()
     }
 
-    getProductById = async ({ mid }) => {
-        const result = await productModel.findById(mid).populate('material')
+    getProductById = async ({ pid }) => {
+        const result = await productModel.findById(pid).populate('material')
         if (!result) {
             ErrorWrapper.createError({
                 name: 'product not exists',
@@ -24,7 +20,7 @@ export class ProductService {
                     value: result,
                 }),
                 message: 'Error to get product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -48,15 +44,15 @@ export class ProductService {
                     value: result,
                 }),
                 message: 'Error to update product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
         return result
     }
 
-    deleteProduct = async ({ mid }) => {
-        const product = await productModel.findById(mid)
+    deleteProduct = async ({ pid }) => {
+        const product = await productModel.findById(pid)
         if (!product) {
             ErrorWrapper.createError({
                 name: 'product not exists',
@@ -66,7 +62,7 @@ export class ProductService {
                     value: product,
                 }),
                 message: 'Error to delete product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

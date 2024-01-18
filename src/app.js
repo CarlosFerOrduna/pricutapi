@@ -56,3 +56,5 @@ app.use('*', (req, res) => {
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
+
+//? todo: peliando con las collections de comments

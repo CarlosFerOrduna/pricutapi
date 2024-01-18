@@ -20,7 +20,7 @@ export class CommentService {
                     value: result,
                 }),
                 message: 'Error to get comment',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -28,7 +28,7 @@ export class CommentService {
     }
 
     searchComments = async ({ limit = 10, page = 1, query }) => {
-        const result = await commentModel.paginate(query, { limit, page, populate: 'author' })
+        const result = await commentModel.paginate(query, { limit, page, populate: 'user' })
         if (!result) {
             ErrorWrapper.createError({
                 name: 'comment not exists',
@@ -38,14 +38,14 @@ export class CommentService {
                     value: result,
                 }),
                 message: 'Error to get comment',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
         return result
     }
 
-    updateComments = async ({ comment }) => {
+    updateComment = async ({ comment }) => {
         const result = await commentModel.findByIdAndUpdate(comment._id, comment, {
             new: true,
         })
@@ -58,7 +58,7 @@ export class CommentService {
                     value: result,
                 }),
                 message: 'Error to update comment',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -76,7 +76,7 @@ export class CommentService {
                     value: comment,
                 }),
                 message: 'Error to delete comment',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

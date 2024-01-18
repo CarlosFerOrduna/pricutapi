@@ -1,14 +1,14 @@
-import { MaterialController } from '../../../controllers/index.js'
+import { ShippingController } from '../../../controllers/index.js'
 import BaseRouter from '../../entities/base.js'
 
-export class MaterialRouter extends BaseRouter {
+export class ShippingRouter extends BaseRouter {
     init() {
-        this.materialController = new MaterialController()
+        this.shippingController = new ShippingController()
 
-        this.get('/', ['public'], this.materialController.searchMaterials)
-        this.get('/:mid', ['public'], this.materialController.getMaterialById)
-        this.post('/', ['public'], this.materialController.saveMaterial)
-        this.put('/:mid', ['public'], this.materialController.updateMaterial)
-        this.delete('/:mid', ['public'], this.materialController.deleteMaterial)
+        this.get('/', ['public'], this.shippingController.searchShippings)
+        this.get('/:mid', ['public'], this.shippingController.getShippingById)
+        this.post('/', ['public'], this.shippingController.saveShipping)
+        this.put('/:mid', ['public'], this.shippingController.updateShipping)
+        this.delete('/:mid', ['public'], this.shippingController.deleteShipping)
     }
 }

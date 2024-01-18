@@ -20,7 +20,7 @@ export class CategoryService {
                     value: result,
                 }),
                 message: 'Error to get category',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -44,7 +44,7 @@ export class CategoryService {
                     value: result,
                 }),
                 message: 'Error to update category',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -62,7 +62,7 @@ export class CategoryService {
                     value: category,
                 }),
                 message: 'Error to delete category',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

@@ -8,7 +8,7 @@ const fileSchema = new Schema(
         file: { type: Buffer, required: true },
         url: { type: String, required: true },
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )

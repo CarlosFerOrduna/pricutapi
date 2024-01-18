@@ -1,14 +1,14 @@
-import { ShippingController } from '../../../controllers/index.js'
+import { ProductController } from '../../../controllers/index.js'
 import BaseRouter from '../../entities/base.js'
 
-export class ShippingRouter extends BaseRouter {
+export class ProductRouter extends BaseRouter {
     init() {
-        this.shippingController = new ShippingController()
+        this.productController = new ProductController()
 
-        this.get('/', ['public'], this.shippingController.searchShippings)
-        this.get('/:sid', ['public'], this.shippingController.getShippingById)
-        this.post('/', ['public'], this.shippingController.saveShipping)
-        this.put('/:sid', ['public'], this.shippingController.updateShipping)
-        this.delete('/:sid', ['public'], this.shippingController.deleteShipping)
+        this.get('/', ['public'], this.productController.searchProducts)
+        this.get('/:pid', ['public'], this.productController.getProductById)
+        this.post('/', ['public'], this.productController.saveProduct)
+        this.put('/:pid', ['public'], this.productController.updateProduct)
+        this.delete('/:pid', ['public'], this.productController.deleteProduct)
     }
 }

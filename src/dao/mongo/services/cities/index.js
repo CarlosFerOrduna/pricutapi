@@ -20,7 +20,7 @@ export class CityService {
                     value: result,
                 }),
                 message: 'Error to get city',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -42,7 +42,7 @@ export class CityService {
                     value: result,
                 }),
                 message: 'Error to update city',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -60,7 +60,7 @@ export class CityService {
                     value: city,
                 }),
                 message: 'Error to delete city',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

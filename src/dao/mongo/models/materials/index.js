@@ -14,7 +14,7 @@ const materialSchema = new Schema(
         urlImageSmall: { type: String },
         urlImageLarge: { type: String },
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )

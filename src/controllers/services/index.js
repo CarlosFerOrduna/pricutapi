@@ -1,5 +1,6 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { ServiceRepository } from '../../repositories/index.js'
+import { uploadImage } from '../../utils/uploadImage.util.js'
 
 export class ServiceController {
     constructor() {
@@ -90,7 +91,7 @@ export class ServiceController {
 
     getServiceById = async (req, res) => {
         const { sid } = req.params
-        if (!sid || !isNaN(sid)) {
+        if (!sid) {
             ErrorWrapper.createError({
                 name: 'sid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
@@ -109,7 +110,7 @@ export class ServiceController {
     }
 
     searchServices = async (req, res) => {
-        const { limit, page, name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
+        const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
 
         let query = {}
         if (name) query.name = name
@@ -119,7 +120,7 @@ export class ServiceController {
         if (about) query.about = about
         if (commonUses) query.commonUses = commonUses
 
-        const result = await this.serviceRepository.searchServices({ limit, page, query })
+        const result = await this.serviceRepository.searchServices({ query })
 
         return res.status(200).send({
             status: 'success',
@@ -129,14 +130,7 @@ export class ServiceController {
     }
 
     updateService = async (req, res) => {
-        const {
-            files: {
-                small: [small],
-                large: [large],
-                aboutImage: [aboutImage],
-                commonUsesImage: [commonUsesImage],
-            },
-        } = req
+        const { files } = req
         const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
         const { sid } = req.params
         if (!sid || !isNaN(sid)) {
@@ -154,13 +148,25 @@ export class ServiceController {
         if (cuttingCapacity) query.cuttingCapacity = cuttingCapacity
         if (supportedThickness) query.supportedThickness = supportedThickness
         if (about) query.about = about
-        if (aboutImage) query.aboutImage = await uploadImage({ image: aboutImage })
+        if (files?.aboutImage) {
+            const [aboutImage] = files.aboutImage
+            query.aboutImage = await uploadImage({ image: aboutImage })
+        }
         if (commonUses) query.commonUses = commonUses
-        if (commonUsesImage) query.commonUsesImage = await uploadImage({ image: commonUsesImage })
-        if (small) query.urlImageSmall = await uploadImage({ image: small })
-        if (large) query.urlImageLarge = await uploadImage({ image: large })
+        if (files?.commonUsesImage) {
+            const [commonUsesImage] = files.commonUsesImage
+            query.commonUsesImage = await uploadImage({ image: commonUsesImage })
+        }
+        if (files?.small) {
+            const [small] = files.small
+            query.urlImageSmall = await uploadImage({ image: small })
+        }
+        if (files?.large) {
+            const [large] = files.large
+            query.urlImageLarge = await uploadImage({ image: large })
+        }
 
-        const result = await this.serviceRepository.updateService({ query })
+        const result = await this.serviceRepository.updateService({ service: query })
 
         return res.status(200).send({
             status: 'success',

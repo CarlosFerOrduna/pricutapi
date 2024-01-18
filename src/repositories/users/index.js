@@ -20,15 +20,8 @@ export class UsersRepository {
     }
 
     searchUsers = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchUsers({ limit, page, query })
+        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
+            await this.dao.searchUsers({ limit, page, query })
 
         return {
             users: docs.map((u) => new SelectUser(u)),
@@ -49,7 +42,7 @@ export class UsersRepository {
         return new SelectUser(userUpdated)
     }
 
-    deleteUser = async ({ aid }) => {
-        return await this.dao.deleteUser({ aid })
+    deleteUser = async ({ uid }) => {
+        return await this.dao.deleteUser({ uid })
     }
 }

@@ -19,7 +19,7 @@ const productSchema = new Schema(
         CO2Laser: { type: Boolean, default: false },
         CNCRouter: { type: Boolean, default: false },
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )
@@ -44,5 +44,9 @@ productSchema.methods.softDelete = async function () {
 
     return this.save()
 }
+
+productSchema.pre('find', function () {
+    this.where({ deletedAt: null })
+})
 
 export const productModel = model('products', productSchema)

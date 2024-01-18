@@ -118,11 +118,11 @@ export class ArticleController {
         if (title) query.title = title
         if (summary) query.summary = summary
         if (body) query.body = body
-        if (files.small) {
+        if (files?.small) {
             const [small] = files.small
             query.urlImageSmall = await uploadImage({ image: small })
         }
-        if (files.large) {
+        if (files?.large) {
             const [large] = files.large
             query.urlImageLarge = await uploadImage({ image: large })
         }

@@ -19,27 +19,8 @@ export class ProductRepository {
         return new SelectProduct(product)
     }
 
-    searchProducts = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchProducts({ limit, page, query })
-
-        return {
-            products: docs.map((a) => new SelectProduct(a)),
-            totalPages,
-            page,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        }
+    searchProducts = async ({ query }) => {
+        return await this.dao.searchProducts({ query })
     }
 
     updateProduct = async ({ product }) => {

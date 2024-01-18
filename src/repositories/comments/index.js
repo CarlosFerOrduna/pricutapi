@@ -20,15 +20,8 @@ export class CommentRepository {
     }
 
     searchComments = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchComments({ limit, page, query })
+        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
+            await this.dao.searchComments({ limit, page, query })
 
         return {
             comments: docs.map((c) => new SelectComment(c)),

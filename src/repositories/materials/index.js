@@ -20,15 +20,8 @@ export class MaterialRepository {
     }
 
     searchMaterials = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchMaterials({ limit, page, query })
+        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
+            await this.dao.searchMaterials({ limit, page, query })
 
         return {
             materials: docs.map((m) => new SelectMaterial(m)),
@@ -49,7 +42,7 @@ export class MaterialRepository {
         return new SelectMaterial(materialUpdated)
     }
 
-    deleteMaterial = async ({ aid }) => {
-        return await this.dao.deleteMaterial({ aid })
+    deleteMaterial = async ({ mid }) => {
+        return await this.dao.deleteMaterial({ mid })
     }
 }

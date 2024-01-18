@@ -4,10 +4,10 @@ import paginate from 'mongoose-paginate-v2'
 
 const commentSchema = new Schema(
     {
-        author: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+        user: { type: Schema.Types.ObjectId, ref: 'users', required: true },
         details: { type: String, required: true },
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )

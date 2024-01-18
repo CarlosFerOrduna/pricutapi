@@ -2,16 +2,14 @@ import moment from 'moment'
 
 import { codes } from '../enum/codes.js'
 
-export const handlerErrors = async (error, req, res, next) => {
+export const handlerErrors = async (error, req, res) => {
     const logError = (status, logMethod) => {
-        req.logger[logMethod](
-            `${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')} ${error}`
-        )
+        req.logger[logMethod](`${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')} ${error}`)
 
         return res.status(status).send({
             status: 'error',
             error: error.name,
-            message: error.message
+            message: error.message,
         })
     }
 

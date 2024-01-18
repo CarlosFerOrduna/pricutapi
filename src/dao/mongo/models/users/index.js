@@ -13,7 +13,7 @@ const userSchema = new Schema(
         rol: { type: String, enum: ['admin', 'user'], default: 'user' },
         files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] },
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )
@@ -30,7 +30,7 @@ userSchema.pre('save', function () {
 })
 
 userSchema.pre('find', function () {
-    this.where({ createdAt: null })
+    this.where({ deletedAt: null })
 })
 
 userSchema.plugin(paginate)

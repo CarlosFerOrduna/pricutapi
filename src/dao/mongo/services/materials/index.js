@@ -1,4 +1,4 @@
-import { ErrorWrapper, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { materialModel } from '../../models/index.js'
 
 export class MaterialService {
@@ -20,7 +20,7 @@ export class MaterialService {
                     value: result,
                 }),
                 message: 'Error to get material',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -44,7 +44,7 @@ export class MaterialService {
                     value: result,
                 }),
                 message: 'Error to update material',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -62,11 +62,11 @@ export class MaterialService {
                     value: material,
                 }),
                 message: 'Error to delete material',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
-        const result = await this.material.softDelete()
+        const result = await material.softDelete()
 
         return result
     }

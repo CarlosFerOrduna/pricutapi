@@ -124,14 +124,7 @@ export class MaterialController {
     }
 
     updateMaterial = async (req, res) => {
-        const {
-            files: {
-                small: [small],
-                large: [large],
-                aboutImage: [aboutImage],
-                commonUsesImage: [commonUsesImage],
-            },
-        } = req
+        const { files } = req
         const { name, description, about, category, commonUses } = req.body
         const { mid } = req.params
         if (!mid || !isNaN(mid)) {
@@ -148,18 +141,29 @@ export class MaterialController {
         }
 
         let query = { _id: mid }
-
         if (name) query.name = name
         if (description) query.description = description
         if (about) query.about = about
-        if (aboutImage) query.aboutImage = await uploadImage({ image: aboutImage })
+        if (files?.aboutImage) {
+            const [aboutImage] = files.aboutImage
+            query.aboutImage = await uploadImage({ image: aboutImage })
+        }
         if (category) query.category = category
         if (commonUses) query.commonUses = commonUses
-        if (commonUsesImage) query.commonUsesImage = await uploadImage({ image: commonUsesImage })
-        if (small) query.urlImageSmall = await uploadImage({ image: small })
-        if (large) query.urlImageLarge = await uploadImage({ image: large })
+        if (files?.commonUsesImage) {
+            const [commonUsesImage] = files.commonUsesImage
+            query.commonUsesImage = await uploadImage({ image: commonUsesImage })
+        }
+        if (files?.small) {
+            const [small] = files.small
+            query.urlImageSmall = await uploadImage({ image: small })
+        }
+        if (files?.large) {
+            const [large] = files.large
+            query.urlImageLarge = await uploadImage({ image: large })
+        }
 
-        const result = await this.materialRepository.updateMaterial({ query })
+        const result = await this.materialRepository.updateMaterial({ material: query })
 
         return res.status(200).send({
             status: 'success',

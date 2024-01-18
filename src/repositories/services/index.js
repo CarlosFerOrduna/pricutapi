@@ -19,27 +19,8 @@ export class ServiceRepository {
         return new SelectService(service)
     }
 
-    searchServices = async ({ limit, page, query }) => {
-        const {
-            docs,
-            totalPages,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        } = await this.dao.searchServices({ limit, page, query })
-
-        return {
-            services: docs.map((a) => new SelectService(a)),
-            totalPages,
-            page,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        }
+    searchServices = async ({ query }) => {
+        return await this.dao.searchServices({ query })
     }
 
     updateService = async ({ service }) => {

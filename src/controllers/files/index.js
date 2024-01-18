@@ -94,7 +94,7 @@ export class FileController {
         const result = await this.fileRepository.getFileById({ fid })
 
         const dimensions = calculateDimensions(result.file)
-        const price = await calculatePrice(dimensions, mid)
+        const price = await calculatePrice(dimensions, mid) // todo: cambiar esto para que en lugar de trabajar con material sea con producto
 
         return res.status(200).send({
             status: 'success',
@@ -201,7 +201,7 @@ export class FileController {
         if (file) query.file = file
         if (url) query.url = url
 
-        const result = await this.fileRepository.updateFile({ query })
+        const result = await this.fileRepository.updateFile({ file: query })
 
         return res.status(200).send({
             status: 'success',
@@ -225,7 +225,7 @@ export class FileController {
             })
         }
 
-        await this.fileRepository.deleteFile({ cid })
+        await this.fileRepository.deleteFile({ fid })
 
         return res.status(204).send({})
     }

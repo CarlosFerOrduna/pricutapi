@@ -1,12 +1,8 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { userModel } from '../../models/index.js'
 
 export class UserService {
-    createUser = async ({ user }) => {
+    saveUser = async ({ user }) => {
         const newUser = new userModel(user)
         await newUser.validate()
 
@@ -14,7 +10,7 @@ export class UserService {
     }
 
     getUserById = async ({ uid }) => {
-        const result = await userModel.findById(uid).populate('file')
+        const result = await userModel.findById(uid)
         if (!result) {
             ErrorWrapper.createError({
                 name: 'user not exists',
@@ -24,15 +20,19 @@ export class UserService {
                     value: result,
                 }),
                 message: 'Error to get users',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
+        }
+
+        if (result && result.files && result.files.length > 0 && result.files[0].file) {
+            result.populate('files.file').execPopulate()
         }
 
         return result
     }
 
     getUserByEmail = async ({ email }) => {
-        const result = await userModel.findOne({ email }).populate('file')
+        const result = await userModel.findOne({ email })
         if (!result) {
             ErrorWrapper.createError({
                 name: 'user not exists',
@@ -42,15 +42,25 @@ export class UserService {
                     value: result,
                 }),
                 message: 'Error to get users',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
+        }
+
+        if (result && result.files && result.files.length > 0 && result.files[0].file) {
+            result.populate('files.file').execPopulate()
         }
 
         return result
     }
 
     searchUsers = async ({ limit = 10, page = 1, query }) => {
-        return await userModel.paginate(query, { limit, page, populate: 'file' })
+        const result = await userModel.paginate(query, { limit, page })
+
+        if (result.docs.length > 0 && result.docs[0].files && result.docs[0].files.length > 0) {
+            await userModel.populate(result.docs, { path: 'files.file' })
+        }
+
+        return result
     }
 
     updateUser = async ({ user }) => {
@@ -64,7 +74,7 @@ export class UserService {
                     value: result,
                 }),
                 message: 'Error to update users',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -72,7 +82,7 @@ export class UserService {
     }
 
     deleteUser = async ({ uid }) => {
-        const user = await userModel.findByIdAndDelete(uid)
+        const user = await userModel.findById(uid)
         if (!user) {
             ErrorWrapper.createError({
                 name: 'user not exists',
@@ -82,11 +92,11 @@ export class UserService {
                     value: user,
                 }),
                 message: 'Error to delete users',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
-        const result = await userModel.softDelete()
+        const result = await user.softDelete()
 
         return result
     }

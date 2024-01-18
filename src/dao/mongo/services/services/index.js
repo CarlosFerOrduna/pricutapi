@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { serviceModel } from '../../models/index.js'
 
 export class ServiceService {
@@ -13,8 +9,8 @@ export class ServiceService {
         return await newService.save()
     }
 
-    getServiceById = async ({ mid }) => {
-        const result = await serviceModel.findById(mid)
+    getServiceById = async ({ sid }) => {
+        const result = await serviceModel.findById(sid)
         if (!result) {
             ErrorWrapper.createError({
                 name: 'service not exists',
@@ -24,15 +20,15 @@ export class ServiceService {
                     value: result,
                 }),
                 message: 'Error to get product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
         return result
     }
 
-    searchServices = async ({ limit = 10, page = 1, query }) => {
-        return await serviceModel.paginate(query, { limit, page, populate: 'category' })
+    searchServices = async ({ query }) => {
+        return await serviceModel.find(query).populate('category')
     }
 
     updateService = async ({ service }) => {
@@ -48,15 +44,15 @@ export class ServiceService {
                     value: result,
                 }),
                 message: 'Error to update product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
         return result
     }
 
-    deleteService = async ({ mid }) => {
-        const service = await serviceModel.findById(mid)
+    deleteService = async ({ sid }) => {
+        const service = await serviceModel.findById(sid)
         if (!service) {
             ErrorWrapper.createError({
                 name: 'service not exists',
@@ -66,7 +62,7 @@ export class ServiceService {
                     value: service,
                 }),
                 message: 'Error to get product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

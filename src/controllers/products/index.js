@@ -101,9 +101,9 @@ export class ProductController {
 
     getProductById = async (req, res) => {
         const { pid } = req.params
-        if (!pid || !isNaN(pid)) {
+        if (!pid) {
             ErrorWrapper.createError({
-                name: 'pid is required, or is not valid',
+                name: 'pid is not valid',
                 cause: invalidFieldErrorInfo({ name: 'pid', type: 'string', value: pid }),
                 message: 'Error to get product',
                 code: codes.INVALID_TYPES_ERROR,
@@ -153,7 +153,7 @@ export class ProductController {
         if (CO2Laser) query.CO2Laser = CO2Laser
         if (CNCRouter) query.CNCRouter = CNCRouter
 
-        const result = await this.productRepository.searchProducts({ limit, page, query })
+        const result = await this.productRepository.searchProducts({ query })
 
         return res.status(200).send({
             status: 'success',
@@ -166,7 +166,7 @@ export class ProductController {
         const { material, pricePerPlank, width, height, thickness, specificWeight, fiberLaser, CO2Laser, CNCRouter } =
             req.query
         const { pid } = req.params
-        if (!pid || !isNaN(pid)) {
+        if (!pid) {
             ErrorWrapper.createError({
                 name: 'pid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'pid', type: 'string', value: pid }),
@@ -186,7 +186,7 @@ export class ProductController {
         if (CO2Laser) query.CO2Laser = CO2Laser
         if (CNCRouter) query.CNCRouter = CNCRouter
 
-        const result = await this.productRepository.updateProduct({ query })
+        const result = await this.productRepository.updateProduct({ product: query })
 
         return res.status(200).send({
             status: 'success',

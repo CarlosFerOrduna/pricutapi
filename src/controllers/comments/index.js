@@ -7,19 +7,7 @@ export class CommentController {
     }
 
     saveComment = async (req, res) => {
-        const { author, details } = req.body
-        if (!author || !isNaN(author)) {
-            ErrorWrapper.createError({
-                name: 'author is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'author',
-                    type: 'string',
-                    value: author,
-                }),
-                message: 'Error to create comment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
+        const { user, details } = req.body
         if (!details || !isNaN(details)) {
             ErrorWrapper.createError({
                 name: 'details is not valid',
@@ -33,7 +21,7 @@ export class CommentController {
             })
         }
 
-        const result = await this.commentRepository.saveComment({ commant: { author, details } })
+        const result = await this.commentRepository.saveComment({ comment: { user, details } })
 
         return res.status(201).send({
             status: 'success',
@@ -67,10 +55,10 @@ export class CommentController {
     }
 
     searchComments = async (req, res) => {
-        const { limit, page, author, details } = req.query
+        const { limit, page, user, details } = req.query
 
         let query = {}
-        if (author) query.author = author
+        if (user) query.user = user
         if (details) query.details = details
 
         const result = await this.commentRepository.searchComments({ limit, page, query })
@@ -83,7 +71,7 @@ export class CommentController {
     }
 
     updateComment = async (req, res) => {
-        const { author, details } = req.body
+        const { user, details } = req.body
         const { cid } = req.params
         if (!cid || !isNaN(cid)) {
             ErrorWrapper.createError({
@@ -99,10 +87,10 @@ export class CommentController {
         }
 
         let query = { _id: cid }
-        if (author) query.author = author
+        if (user) query.user = user
         if (details) query.details = details
 
-        const result = await this.commentRepository.updateComment({ query })
+        const result = await this.commentRepository.updateComment({ comment: query })
 
         return res.status(200).send({
             status: 'success',

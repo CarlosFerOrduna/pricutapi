@@ -20,21 +20,11 @@ export default class BaseRouter {
     }
 
     post(path, policies, ...callbacks) {
-        this.router.post(
-            path,
-            this.handlePolicies(policies),
-            uploadMultipleImages,
-            this.applyCallbacks(callbacks),
-        )
+        this.router.post(path, this.handlePolicies(policies), uploadMultipleImages, this.applyCallbacks(callbacks))
     }
 
     put(path, policies, ...callbacks) {
-        this.router.put(
-            path,
-            this.handlePolicies(policies),
-            uploadMultipleImages,
-            this.applyCallbacks(callbacks),
-        )
+        this.router.put(path, this.handlePolicies(policies), uploadMultipleImages, this.applyCallbacks(callbacks))
     }
 
     delete(path, policies, ...callbacks) {
@@ -51,8 +41,8 @@ export default class BaseRouter {
         return (req, res, next) => {
             if (policies.includes('public')) return next()
 
-            const { authorization } = req.headers
-            const result = authToken(authorization)
+            const { userization } = req.headers
+            const result = authToken(userization)
 
             if (result?.code) {
                 return res.status(result.code).send({

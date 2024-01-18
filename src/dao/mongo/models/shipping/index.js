@@ -11,7 +11,7 @@ const shippingSchema = new Schema(
         width: { type: Number, require: true },
         price: { type: Number, require: true },
         deleted: { type: Boolean, default: false },
-        deletedAt: { type: Date },
+        deletedAt: { type: Date, default: null },
     },
     { timestamps: true },
 )

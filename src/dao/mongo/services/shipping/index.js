@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { shippingModel } from '../../models/index.js'
 
 export class ShippingService {
@@ -24,7 +20,7 @@ export class ShippingService {
                     value: result,
                 }),
                 message: 'Error to get product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -52,7 +48,7 @@ export class ShippingService {
                     value: result,
                 }),
                 message: 'Error to update product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -70,7 +66,7 @@ export class ShippingService {
                     value: shipping,
                 }),
                 message: 'Error to get product',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

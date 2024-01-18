@@ -1,14 +1,14 @@
-import { MaterialController } from '../../../controllers/index.js'
+import { ServiceController } from '../../../controllers/index.js'
 import BaseRouter from '../../entities/base.js'
 
-export class MaterialRouter extends BaseRouter {
+export class ServiceRouter extends BaseRouter {
     init() {
-        this.materialController = new MaterialController()
+        this.serviceController = new ServiceController()
 
-        this.get('/', ['public'], this.materialController.searchMaterials)
-        this.get('/:mid', ['public'], this.materialController.getMaterialById)
-        this.post('/', ['public'], this.materialController.saveMaterial)
-        this.put('/:mid', ['public'], this.materialController.updateMaterial)
-        this.delete('/:mid', ['public'], this.materialController.deleteMaterial)
+        this.get('/:sid', ['public'], this.serviceController.getServiceById)
+        this.get('/', ['public'], this.serviceController.searchServices)
+        this.post('/', ['public'], this.serviceController.saveService)
+        this.put('/:sid', ['public'], this.serviceController.updateService)
+        this.delete('/:sid', ['public'], this.serviceController.deleteService)
     }
 }

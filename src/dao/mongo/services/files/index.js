@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo,
-} from '../../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
 import { fileModel } from '../../models/index.js'
 
 export class FileService {
@@ -24,7 +20,7 @@ export class FileService {
                     value: result,
                 }),
                 message: 'Error to get file',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -46,7 +42,7 @@ export class FileService {
                     value: result,
                 }),
                 message: 'Error to update file',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 
@@ -64,7 +60,7 @@ export class FileService {
                     value: file,
                 }),
                 message: 'Error to delete file',
-                code: codes.DATABASE_ERROR,
+                code: codes.NOT_FOUND,
             })
         }
 

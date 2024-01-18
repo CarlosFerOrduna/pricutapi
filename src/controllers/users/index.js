@@ -57,7 +57,7 @@ export class UserController {
             })
         }
 
-        const result = await this.userRepository.createUser({ user: { firstName, lastName, email, password, rol } })
+        const result = await this.userRepository.saveUser({ user: { firstName, lastName, email, password, rol } })
 
         return res.status(201).send({
             status: 'success',
@@ -134,7 +134,7 @@ export class UserController {
         if (rol) query.rol = rol
         if (files) query.files = files
 
-        const result = await this.userRepository.updateUser({ query })
+        const result = await this.userRepository.updateUser({ user: query })
 
         return res.status(201).send({
             status: 'success',

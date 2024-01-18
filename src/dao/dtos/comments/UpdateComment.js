@@ -1,8 +1,4 @@
-import {
-    ErrorWrapper,
-    codes,
-    invalidFieldErrorInfo
-} from '../../../middlewares/errors/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../middlewares/errors/index.js'
 
 export class UpdateComment {
     constructor(comment) {
@@ -12,9 +8,9 @@ export class UpdateComment {
                 name: '_id is not valid',
                 cause: invalidFieldErrorInfo({ name: '_id', type: 'string', value: _id }),
                 message: 'Error to update comment',
-                code: codes.INVALID_TYPES_ERROR
+                code: codes.INVALID_TYPES_ERROR,
             })
-        if (comment.author) this.author = comment.author
+        if (comment.user) this.user = comment.user
         if (comment.details) this.details = comment.details
     }
 }
