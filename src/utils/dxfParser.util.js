@@ -8,19 +8,17 @@ export const dxfParser = (buffer) => {
     return parser.parseSync(buffer.toString())
 }
 
-export const calculateDimensions = (buffer) => {
+export const calculateDimensions = ({ buffer }) => {
     // EXTMIN: esquina inferior izquierda
     // EXTMAX: esquina superior derecha
-
     const parser = new DxfParser()
-
     const dxf = parser.parseSync(buffer.toString())
 
     const extMax = dxf.header['$EXTMAX']
     const extMin = dxf.header['$EXTMIN']
     const units = dxf.header['$INSUNITS'] == 4 ? 'IN' : 'MM'
-    const width = extMax.x - extMin.x
-    const high = extMax.y - extMin.y
+    const width = Math.abs(extMax.x - extMin.x)
+    const high = Math.abs(extMax.y - extMin.y)
 
     const widthMM = (units == 'MM' ? width : width / 25.4).toFixed(3)
     const highMM = (units == 'MM' ? high : high / 25.4).toFixed(3)

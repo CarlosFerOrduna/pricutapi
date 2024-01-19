@@ -58,7 +58,7 @@ export class FileController {
                 _id: result._id,
                 name: result.name,
                 url: result.url,
-                dimensions: calculateDimensions(result.file),
+                dimensions: calculateDimensions({ buffer: result.file }),
                 file: result.file,
             },
         })
