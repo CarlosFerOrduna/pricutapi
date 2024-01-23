@@ -93,7 +93,7 @@ export class FileController {
 
         const result = await this.fileRepository.getFileById({ fid })
 
-        const dimensions = calculateDimensions(result.file)
+        const dimensions = calculateDimensions({ buffer: result.file })
         const price = await calculatePrice({ dimensions, pid }) // todo: cambiar esto para que en lugar de trabajar con material sea con producto
 
         return res.status(200).send({
@@ -127,7 +127,7 @@ export class FileController {
 
         const result = await this.fileRepository.getFileById({ fid })
 
-        const dimensions = calculateDimensions(result.file)
+        const dimensions = calculateDimensions({ buffer: result.file })
 
         return res.status(200).send({
             status: 'success',
