@@ -11,27 +11,48 @@ export const dxfParser = (buffer) => {
 
 export const calculateDimensions = ({ buffer }) => {
     const dxf = dxfParser(buffer)
+    let minX = Infinity
+    let maxX = -Infinity
+    let minY = Infinity
+    let maxY = -Infinity
 
-    const extMax = dxf.header['$EXTMAX']
-    const extMin = dxf.header['$EXTMIN']
-    const isMM = dxf.header['$INSUNITS'] !== 1
-    const width = Math.abs(extMax.x - extMin.x)
-    const high = Math.abs(extMax.y - extMin.y)
+    dxf.entities.forEach((entity) => {
+        if (entity?.vertices) {
+            entity.vertices.forEach((vertex) => {
+                minX = Math.min(minX, vertex.x)
+                maxX = Math.max(maxX, vertex.x)
+                minY = Math.min(minY, vertex.y)
+                maxY = Math.max(maxY, vertex.y)
+            })
+        }
+    })
 
-    const widthMM = (isMM ? width : width * 25.4).toFixed(3) //?ok
-    const highMM = (isMM ? high : high * 25.4).toFixed(3) //?ok
-    const widthIN = (!isMM ? width : width / 25.4).toFixed(3)
-    const highIN = (!isMM ? high : high / 25.4).toFixed(3)
+    for (const key in dxf.blocks) {
+        if (!dxf.blocks.hasOwnProperty(key)) continue
+
+        const block = dxf.blocks[key]
+        if (!block?.entities || !Array.isArray(block.entities)) continue
+
+        block.entities.forEach((entity) => {
+            if (entity?.vertices) {
+                entity.vertices.forEach((vertex) => {
+                    minX = Math.min(minX, vertex.x)
+                    maxX = Math.max(maxX, vertex.x)
+                    minY = Math.min(minY, vertex.y)
+                    maxY = Math.max(maxY, vertex.y)
+                })
+            }
+        })
+    }
+
+    const width = maxX - minX
+    const high = maxY - minY
 
     return {
-        widthMM,
-        highMM,
-        perimeterMM: (widthMM * 2 + highMM * 2).toFixed(3),
-        areaMM: (widthMM * highMM).toFixed(3),
-        widthIN,
-        highIN,
-        perimeterIN: (widthIN * 2 + highIN * 2).toFixed(3),
-        areaIN: (widthIN * highIN).toFixed(3),
+        width: width.toFixed(3),
+        high: high.toFixed(3),
+        perimeter: (width * 2 + high * 2).toFixed(3),
+        area: (width * high).toFixed(3),
     }
 }
 
