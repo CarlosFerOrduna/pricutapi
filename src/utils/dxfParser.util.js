@@ -17,14 +17,14 @@ export const calculateDimensions = ({ buffer }) => {
     let maxY = -Infinity
 
     dxf.entities.forEach((entity) => {
-        if (entity?.vertices) {
-            entity.vertices.forEach((vertex) => {
-                minX = Math.min(minX, vertex.x)
-                maxX = Math.max(maxX, vertex.x)
-                minY = Math.min(minY, vertex.y)
-                maxY = Math.max(maxY, vertex.y)
-            })
-        }
+        if (!entity?.vertices) return
+
+        entity.vertices.forEach((vertex) => {
+            minX = Math.min(minX, vertex.x)
+            maxX = Math.max(maxX, vertex.x)
+            minY = Math.min(minY, vertex.y)
+            maxY = Math.max(maxY, vertex.y)
+        })
     })
 
     for (const key in dxf.blocks) {
@@ -34,14 +34,14 @@ export const calculateDimensions = ({ buffer }) => {
         if (!block?.entities || !Array.isArray(block.entities)) continue
 
         block.entities.forEach((entity) => {
-            if (entity?.vertices) {
-                entity.vertices.forEach((vertex) => {
-                    minX = Math.min(minX, vertex.x)
-                    maxX = Math.max(maxX, vertex.x)
-                    minY = Math.min(minY, vertex.y)
-                    maxY = Math.max(maxY, vertex.y)
-                })
-            }
+            if (entity?.vertices) return
+
+            entity.vertices.forEach((vertex) => {
+                minX = Math.min(minX, vertex.x)
+                maxX = Math.max(maxX, vertex.x)
+                minY = Math.min(minY, vertex.y)
+                maxY = Math.max(maxY, vertex.y)
+            })
         })
     }
 
