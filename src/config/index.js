@@ -11,12 +11,13 @@ const env = program.opts().mode
 const environments = {
     prd: './.env.prd',
     stg: './.env.stg',
-    dev: './.env.dev'
+    dev: './.env.dev',
 }
 
 dotenv.config({ path: environments[env] })
 
 export default {
+    env,
     port: process.env.PORT,
     secretKey: process.env.SECRET_KEY,
     connectionString: process.env.CONNECTION_STRING,
@@ -26,5 +27,5 @@ export default {
     urlQuote: process.env.URL_QUOTE,
     persistence: process.env.PERSISTENCE,
     logger: process.env.LOGGER,
-    allowlist: process.env.ALLOW_LIST.split(',')
+    allowlist: process.env.ALLOW_LIST.split(','),
 }

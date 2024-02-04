@@ -1,6 +1,7 @@
 import DxfParser from 'dxf-parser'
 
 import { productModel } from '../dao/mongo/models/index.js'
+import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../middlewares/errors/index.js'
 
 export const dxfParser = (buffer) => {
     const parser = new DxfParser()
@@ -9,21 +10,18 @@ export const dxfParser = (buffer) => {
 }
 
 export const calculateDimensions = ({ buffer }) => {
-    // EXTMIN: esquina inferior izquierda
-    // EXTMAX: esquina superior derecha
-    const parser = new DxfParser()
-    const dxf = parser.parseSync(buffer.toString())
+    const dxf = dxfParser(buffer)
 
     const extMax = dxf.header['$EXTMAX']
     const extMin = dxf.header['$EXTMIN']
-    const units = dxf.header['$INSUNITS'] == 4 ? 'IN' : 'MM'
+    const isMM = dxf.header['$INSUNITS'] !== 1
     const width = Math.abs(extMax.x - extMin.x)
     const high = Math.abs(extMax.y - extMin.y)
 
-    const widthMM = (units == 'MM' ? width : width / 25.4).toFixed(3)
-    const highMM = (units == 'MM' ? high : high / 25.4).toFixed(3)
-    const widthIN = (units == 'IN' ? width : width * 25.4).toFixed(3)
-    const highIN = (units == 'IN' ? high : high * 25.4).toFixed(3)
+    const widthMM = (isMM ? width : width * 25.4).toFixed(3) //?ok
+    const highMM = (isMM ? high : high * 25.4).toFixed(3) //?ok
+    const widthIN = (!isMM ? width : width / 25.4).toFixed(3)
+    const highIN = (!isMM ? high : high / 25.4).toFixed(3)
 
     return {
         widthMM,
@@ -38,13 +36,19 @@ export const calculateDimensions = ({ buffer }) => {
 }
 
 export const calculatePrice = async ({ dimensions, pid }) => {
-    // ac = area pieza a calcular
-    // ae = area estandar
-    // p = precio estandar
-    // ac = p . (ac/ae)
+    const product = await productModel.findById(pid)
+    if (!product) {
+        ErrorWrapper.createError({
+            name: 'product not exists',
+            cause: invalidFieldErrorInfo({
+                name: 'product',
+                type: 'string',
+                value: product,
+            }),
+            message: 'Error to get product',
+            code: codes.NOT_FOUND,
+        })
+    }
 
-    const material = await productModel.findById(pid)
-    if (!material) throw new Error('material not exists')
-
-    return (material.price * (dimensions.areaMM / material.areaStandard)).toFixed(2)
+    return (product.price * (dimensions.areaMM / product.areaStandard)).toFixed(2)
 }

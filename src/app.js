@@ -28,7 +28,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (config.allowlist.some((s) => s === origin)) callback(null, true)
+        if (config.allowlist.includes(origin)) callback(null, true)
         else callback(new Error('internal server error'))
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -56,5 +56,3 @@ app.use('*', (req, res) => {
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
-
-//? todo: peliando con las collections de comments

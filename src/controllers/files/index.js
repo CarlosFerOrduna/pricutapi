@@ -1,6 +1,6 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { FileRepository } from '../../repositories/index.js'
-import { calculateDimensions, calculatePrice } from '../../utils/dxfParser.util.js'
+import { calculateDimensions, calculatePrice, dxfParser } from '../../utils/dxfParser.util.js'
 import { ConvertDxfToSvg } from '../../utils/dxfToSvg.util.js'
 import { uploadImage } from '../../utils/uploadImage.util.js'
 
@@ -59,7 +59,6 @@ export class FileController {
                 name: result.name,
                 url: result.url,
                 dimensions: calculateDimensions({ buffer: result.file }),
-                file: result.file,
             },
         })
     }
