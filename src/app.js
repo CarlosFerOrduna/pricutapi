@@ -28,8 +28,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (config.allowlist.includes(origin)) callback(null, true)
-        else callback(new Error('internal server error'))
+        config.allowlist.includes(origin) ? callback(null, true) : callback(new Error('internal server error'))
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: false,
