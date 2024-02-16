@@ -28,7 +28,7 @@ export class ServiceService {
     }
 
     searchServices = async ({ query }) => {
-        return await serviceModel.find(query).populate('category')
+        return await serviceModel.find(query)
     }
 
     updateService = async ({ service }) => {
