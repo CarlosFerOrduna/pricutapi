@@ -4,10 +4,12 @@ import config from '../config/index.js'
 export const uploadImage = async ({ svgCode = null, image = null }) => {
     if (config.env === 'dev') return 'fake'
 
+    const { cloudName, apiKey, apiSecret } = config.cloudinary
+
     cloudinary.v2.config({
-        cloud_name: config.cloudName,
-        api_key: config.apiKey,
-        api_secret: config.apiSecret,
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret,
     })
 
     let path

@@ -10,6 +10,7 @@ import { ErrorWrapper, codes, handlerErrors } from './middlewares/errors/index.j
 import { handlerLogs } from './middlewares/logs/index.js'
 import { router } from './routers/index.js'
 import __dirname from './utils/dirname.util.js'
+import { sendEmail } from './utils/mailer.util.js'
 
 const app = express()
 
@@ -28,7 +29,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 
 const corsOptions = {
     origin: (origin, callback) => {
-        config.allowlist.includes(origin) ? callback(null, true) : callback(new Error('internal server error'))
+        config.cors.allowlist.includes(origin) ? callback(null, true) : callback(new Error('internal server error'))
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: false,
@@ -55,3 +56,4 @@ app.use('*', (req, res) => {
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
+sendEmail()

@@ -19,13 +19,31 @@ dotenv.config({ path: environments[env] })
 export default {
     env,
     port: process.env.PORT,
-    secretKey: process.env.SECRET_KEY,
-    connectionString: process.env.CONNECTION_STRING,
-    apiKey: process.env.API_KEY,
-    apiSecret: process.env.API_SECRET,
-    cloudName: process.env.CLOUD_NAME,
-    urlQuote: process.env.URL_QUOTE,
     persistence: process.env.PERSISTENCE,
     logger: process.env.LOGGER,
-    allowlist: process.env.ALLOW_LIST.split(','),
+    jwt: {
+        secretKey: process.env.SECRET_KEY,
+    },
+    database: {
+        connectionString: process.env.CONNECTION_STRING,
+    },
+    cloudinary: {
+        apiKey: process.env.API_KEY,
+        apiSecret: process.env.API_SECRET,
+        cloudName: process.env.CLOUD_NAME,
+    },
+    scrapping: {
+        urlQuote: process.env.URL_QUOTE,
+    },
+    cors: {
+        allowlist: process.env.ALLOW_LIST.split(','),
+    },
+    mailer: {
+        service: process.env.TRANSPOSRT_SERVICE,
+        port: process.env.TRANSPOSRT_PORT,
+        auth: {
+            user: process.env.TRANSPOSRT_USER,
+            pass: process.env.TRANSPOSRT_PASS,
+        },
+    },
 }

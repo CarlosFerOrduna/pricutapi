@@ -17,7 +17,8 @@ export let userDAO
 switch (config.persistence) {
     case 'mongo':
         try {
-            await connect(config.connectionString)
+            const { connectionString } = config.database
+            await connect(connectionString)
             set('debug', true)
 
             const { ArticleService } = await import('./mongo/services/articles/index.js')
