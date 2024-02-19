@@ -34,7 +34,7 @@ export const calculateDimensions = ({ buffer }) => {
         if (!block?.entities || !Array.isArray(block.entities)) continue
 
         block.entities.forEach((entity) => {
-            if (entity?.vertices) return
+            if (entity?.vertices || !Array.isArray(entity.vertices)) return
 
             entity.vertices.forEach((vertex) => {
                 minX = Math.min(minX, vertex.x)
