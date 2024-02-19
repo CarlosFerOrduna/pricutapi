@@ -16,6 +16,14 @@ export const calculateDimensions = ({ buffer }) => {
     let minY = Infinity
     let maxY = -Infinity
 
+    const { x: xHeaderMax, y: yHeaderMax } = dxf.header['$EXTMAX']
+    const { x: xHeaderMin, y: yHeaderMin } = dxf.header['$EXTMIN']
+
+    minX = Math.min(minX, xHeaderMin)
+    maxX = Math.max(maxX, xHeaderMax)
+    minY = Math.min(minY, yHeaderMin)
+    maxY = Math.max(maxY, yHeaderMax)
+
     dxf.entities.forEach((entity) => {
         if (!entity?.vertices) return
 
@@ -27,6 +35,7 @@ export const calculateDimensions = ({ buffer }) => {
         })
     })
 
+    // console.log(dxf.blocks)
     for (const key in dxf.blocks) {
         if (!dxf.blocks.hasOwnProperty(key)) continue
 
@@ -34,7 +43,9 @@ export const calculateDimensions = ({ buffer }) => {
         if (!block?.entities || !Array.isArray(block.entities)) continue
 
         block.entities.forEach((entity) => {
-            if (entity?.vertices || !Array.isArray(entity.vertices)) return
+            const { vertices } = entity
+
+            if (!vertices || !Array.isArray(vertices)) return
 
             entity.vertices.forEach((vertex) => {
                 minX = Math.min(minX, vertex.x)
