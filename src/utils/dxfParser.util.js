@@ -35,7 +35,6 @@ export const calculateDimensions = ({ buffer }) => {
         })
     })
 
-    // console.log(dxf.blocks)
     for (const key in dxf.blocks) {
         if (!dxf.blocks.hasOwnProperty(key)) continue
 
@@ -44,7 +43,6 @@ export const calculateDimensions = ({ buffer }) => {
 
         block.entities.forEach((entity) => {
             const { vertices } = entity
-
             if (!vertices || !Array.isArray(vertices)) return
 
             entity.vertices.forEach((vertex) => {

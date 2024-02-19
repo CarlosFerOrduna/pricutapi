@@ -10,7 +10,6 @@ import { ErrorWrapper, codes, handlerErrors } from './middlewares/errors/index.j
 import { handlerLogs } from './middlewares/logs/index.js'
 import { router } from './routers/index.js'
 import __dirname from './utils/dirname.util.js'
-import { sendEmail } from './utils/mailer.util.js'
 
 const app = express()
 
@@ -56,4 +55,3 @@ app.use('*', (req, res) => {
 app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
-// sendEmail()
