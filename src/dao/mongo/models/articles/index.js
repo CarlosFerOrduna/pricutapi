@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { Schema, model } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
@@ -10,6 +9,7 @@ const articleSchema = new Schema(
         urlImageSmall: { type: String },
         urlImageLarge: { type: String },
         link: { type: String }, // todo: preguntar a andy como quiere guardar esto
+        status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },
     },
@@ -20,13 +20,13 @@ articleSchema.plugin(paginate)
 
 articleSchema.methods.softDelete = async function () {
     this.deleted = true
-    this.deletedAt = moment()
+    this.deletedAt = new Date()
 
     return this.save()
 }
 
 articleSchema.pre('find', function () {
-    this.where({ deletedAt: null })
+    this.where({ deleted: false })
 })
 
 export const articleModel = model('articles', articleSchema)

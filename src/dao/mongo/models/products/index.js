@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { model, Schema } from 'mongoose'
 import { categoryModel, materialModel } from '../index.js'
 
@@ -18,6 +17,7 @@ const productSchema = new Schema(
         fiberLaser: { type: Boolean, default: false },
         CO2Laser: { type: Boolean, default: false },
         CNCRouter: { type: Boolean, default: false },
+        status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },
     },
@@ -40,13 +40,13 @@ productSchema.pre('save', async function () {
 
 productSchema.methods.softDelete = async function () {
     this.deleted = true
-    this.deletedAt = moment()
+    this.deletedAt = new Date()
 
     return this.save()
 }
 
 productSchema.pre('find', function () {
-    this.where({ deletedAt: null })
+    this.where({ deleted: false })
 })
 
 export const productModel = model('products', productSchema)

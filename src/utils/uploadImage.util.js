@@ -25,3 +25,19 @@ export const uploadImage = async ({ svgCode = null, image = null }) => {
 
     return secure_url
 }
+
+export const deleteImages = async ({ publicIds }) => {
+    const { cloudName, apiKey, apiSecret } = config.cloudinary
+
+    if (!publicIds || !Array.isArray(publicIds)) return
+
+    cloudinary.v2.config({
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret,
+    })
+
+    for (const publicId of publicIds) {
+        await cloudinary.v2.uploader.destroy(publicId)
+    }
+}

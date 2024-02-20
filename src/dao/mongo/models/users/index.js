@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { Schema, model } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
@@ -12,6 +11,7 @@ const userSchema = new Schema(
         password: { type: String, required: true },
         rol: { type: String, enum: ['admin', 'user'], default: 'user' },
         files: { type: [{ file: { type: Schema.Types.ObjectId, ref: 'files' } }] },
+        status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },
     },
@@ -20,7 +20,7 @@ const userSchema = new Schema(
 
 userSchema.methods.softDelete = async function () {
     this.delete = true
-    this.deletedAt = moment()
+    this.deletedAt = new Date()
 
     return this.save()
 }
@@ -30,7 +30,7 @@ userSchema.pre('save', function () {
 })
 
 userSchema.pre('find', function () {
-    this.where({ deletedAt: null })
+    this.where({ deleted: false })
 })
 
 userSchema.plugin(paginate)

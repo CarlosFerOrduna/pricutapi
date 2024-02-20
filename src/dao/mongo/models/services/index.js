@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { model, Schema } from 'mongoose'
 
 const serviceSchema = new Schema(
@@ -13,6 +12,7 @@ const serviceSchema = new Schema(
         commonUsesImage: { type: String },
         urlImageSmall: { type: String },
         urlImageLarge: { type: String },
+        status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },
     },
@@ -21,13 +21,13 @@ const serviceSchema = new Schema(
 
 serviceSchema.methods.softDelete = async function () {
     this.deleted = true
-    this.deletedAt = moment()
+    this.deletedAt = new Date()
 
     return this.save()
 }
 
 serviceSchema.pre('find', function () {
-    this.where({ deletedAt: null })
+    this.where({ deleted: false })
 })
 
 export const serviceModel = model('services', serviceSchema)

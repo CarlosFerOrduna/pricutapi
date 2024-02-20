@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { Schema, model } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
@@ -6,6 +5,7 @@ const commentSchema = new Schema(
     {
         user: { type: Schema.Types.ObjectId, ref: 'users', required: true },
         details: { type: String, required: true },
+        status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },
     },
@@ -16,13 +16,13 @@ commentSchema.plugin(paginate)
 
 commentSchema.methods.softDelete = async function () {
     this.deleted = true
-    this.deletedAt = moment()
+    this.deletedAt = new Date()
 
     return this.save()
 }
 
 commentSchema.pre('find', function () {
-    this.where({ deletedAt: null })
+    this.where({ deleted: false })
 })
 
 export const commentModel = model('comments', commentSchema)
