@@ -7,7 +7,7 @@ export class FileRouter extends BaseRouter {
 
         this.get('/', ['public'], this.fileController.searchFiles)
         this.get('/download/:fid', ['public'], this.fileController.downloadFileById)
-        this.get('/:fid/:mid', ['public'], this.fileController.getFileByIdWithPrice)
+        this.get('/:fid/:pid', ['public'], this.fileController.getFileByIdWithPrice)
         this.get('/:fid', ['public'], this.fileController.getFileById)
         this.post('/', ['public'], this.fileController.saveFile)
         this.put('/:fid', ['public'], this.fileController.updateFile)
