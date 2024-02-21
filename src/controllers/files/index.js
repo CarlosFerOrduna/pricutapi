@@ -90,21 +90,20 @@ export class FileController {
             })
         }
 
-        const result = await this.fileRepository.getFileById({ fid })
+        const { _id, name, url, file } = await this.fileRepository.getFileById({ fid })
 
-        const dimensions = calculateDimensions({ buffer: result.file })
-        const price = await calculatePrice({ dimensions, pid }) // todo: cambiar esto para que en lugar de trabajar con material sea con producto
+        const dimensions = calculateDimensions({ buffer: file })
+        const price = await calculatePrice({ dimensions, pid })
 
         return res.status(200).send({
             status: 'success',
             message: 'file successfully found',
             data: {
-                _id: result._id,
-                filename: result.name,
-                price,
-                urlImage: result.url,
+                _id: _id,
+                filename: name,
+                price: +price,
+                urlImage: url,
                 dimensions,
-                file: result.file,
             },
         })
     }

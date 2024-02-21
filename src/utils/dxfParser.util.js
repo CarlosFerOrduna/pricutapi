@@ -58,27 +58,16 @@ export const calculateDimensions = ({ buffer }) => {
     const high = maxY - minY
 
     return {
-        width: width.toFixed(3),
-        high: high.toFixed(3),
-        perimeter: (width * 2 + high * 2).toFixed(3),
-        area: (width * high).toFixed(3),
+        width: +width.toFixed(3),
+        high: +high.toFixed(3),
+        perimeter: +(width * 2 + high * 2).toFixed(3),
+        area: +(width * high).toFixed(3),
     }
 }
 
 export const calculatePrice = async ({ dimensions, pid }) => {
-    const product = await productModel.findById(pid)
-    if (!product) {
-        ErrorWrapper.createError({
-            name: 'product not exists',
-            cause: invalidFieldErrorInfo({
-                name: 'product',
-                type: 'string',
-                value: product,
-            }),
-            message: 'Error to get product',
-            code: codes.NOT_FOUND,
-        })
-    }
+    const { area } = dimensions
+    const { area: areaStandard, priceSalePlank } = await productModel.findById(pid)
 
-    return (product.price * (dimensions.areaMM / product.areaStandard)).toFixed(2)
+    return (priceSalePlank * (area / areaStandard)).toFixed(2)
 }
