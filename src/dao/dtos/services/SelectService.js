@@ -5,7 +5,7 @@ export class SelectService {
         this.description = service.description || null
         this.cuttingCapacity = service.cuttingCapacity || null
         this.supportedThickness = service.supportedThickness || null
-        this.about = service.About || null
+        this.about = service.about || null
         this.aboutImage = service.aboutImage || null
         this.commonUses = service.commonUses || null
         this.commonUsesImage = service.commonUsesImage || null
