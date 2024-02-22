@@ -13,13 +13,13 @@ export class ContactController {
         } = config
 
         const mailOptionsUser = {
-            from: email,
+            to: email,
             subject: 'contacto pricut',
             text: 'Muchas gracias por su consulta, en breve nos estaremos comunicando',
         }
 
         const mailOptionsUs = {
-            from: user,
+            to: user,
             subject: 'contacto pricut',
             text: `${fullname}\n${email}\n${phone}\n${text}`,
         }

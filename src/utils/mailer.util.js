@@ -3,14 +3,15 @@ import { createTransport } from 'nodemailer'
 import config from '../config/index.js'
 
 export const sendEmail = async (params) => {
-    const { from, subject, text, html, attachments, alternatives } = params
+    console.log(params)
+    const { to, subject, text, html, attachments, alternatives } = params
     const { mailer } = config
 
     const transport = createTransport(mailer)
 
     const mailOptions = {
-        to: mailer.auth.user === from ? `Sistemas <${mailer.auth.user}>` : `Pricut <${mailer.auth.user}>`,
-        from,
+        from: mailer.auth.user === to ? `Sistemas <${mailer.auth.user}>` : `Pricut <${mailer.auth.user}>`,
+        to,
         subject,
     }
     if (text) mailOptions.text = text
