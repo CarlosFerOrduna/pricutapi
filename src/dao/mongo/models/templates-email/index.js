@@ -8,7 +8,7 @@ const templateEmailSchema = new Schema(
         text: { type: String, default: null },
         html: { type: String, default: null },
         attachments: [{ filename: String, content: String }],
-        alternatives: [{ contentType: String, content: String }],
+        alternatives: [{ contentType: { type: String }, content: { type: String } }],
         status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },

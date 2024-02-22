@@ -1,11 +1,10 @@
-import { sendEmail } from '../../../utils/mailer.util.js'
+import { ContactController } from '../../../controllers/index.js'
 import BaseRouter from '../../entities/base.js'
 
-export class ContactUsRouter extends BaseRouter {
+export class ContactRouter extends BaseRouter {
     init() {
-        this.post('/', ['public'], (req, res) => {
-            const {} = req.body
-            sendEmail()
-        })
+        this.contactRouter = new ContactController()
+
+        this.post('/', ['public'], this.contactRouter.contactUs)
     }
 }

@@ -8,7 +8,11 @@ export const sendEmail = async (params) => {
 
     const transport = createTransport(mailer)
 
-    const mailOptions = { to: mailer.auth.user, from, subject }
+    const mailOptions = {
+        to: mailer.auth.user === from ? `Sistemas <${mailer.auth.user}>` : `Pricut <${mailer.auth.user}>`,
+        from,
+        subject,
+    }
     if (text) mailOptions.text = text
     if (html) mailOptions.html = html
     if (attachments && attachments?.filename && attachments?.content) mailOptions.attachments = attachments
