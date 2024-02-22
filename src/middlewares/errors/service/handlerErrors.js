@@ -3,6 +3,7 @@ import moment from 'moment'
 import { codes } from '../enum/codes.js'
 
 export const handlerErrors = async (error, req, res) => {
+    console.log(error)
     const logError = (status, logMethod) => {
         req.logger[logMethod](`${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')} ${error}`)
 
