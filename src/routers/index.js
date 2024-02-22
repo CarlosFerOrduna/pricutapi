@@ -10,6 +10,7 @@ import {
     ProductRouter,
     ServiceRouter,
     ShippingRouter,
+    TemplateEmailRouter,
     UserRouter,
 } from './api/index.js'
 
@@ -24,4 +25,5 @@ router.use('/api/materials', new MaterialRouter().getRouter())
 router.use('/api/products', new ProductRouter().getRouter())
 router.use('/api/services', new ServiceRouter().getRouter())
 router.use('/api/shipping', new ShippingRouter().getRouter())
+router.use('/api/templates-email', new TemplateEmailRouter().getRouter())
 router.use('/api/users', new UserRouter().getRouter())

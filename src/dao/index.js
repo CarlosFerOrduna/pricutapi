@@ -12,6 +12,7 @@ export let materialDAO
 export let productDAO
 export let serviceDAO
 export let shippingDAO
+export let templateEmailDAO
 export let userDAO
 
 switch (config.persistence) {
@@ -39,6 +40,8 @@ switch (config.persistence) {
             serviceDAO = new ServiceService()
             const { ShippingService } = await import('./mongo/services/shipping/index.js')
             shippingDAO = new ShippingService()
+            const { TemplateEmailService } = await import('./mongo/services/templates-email/index.js')
+            shippingDAO = new TemplateEmailService()
             const { UserService } = await import('./mongo/services/users/index.js')
             userDAO = new UserService()
         } catch (error) {

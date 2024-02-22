@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const templateSchema = new Schema(
+const templateEmailSchema = new Schema(
     {
         name: { type: String, required: true, index: true, unique: true },
         from: [{ email: { type: String, required: true }, name: { type: String, required: false } }],
@@ -16,15 +16,15 @@ const templateSchema = new Schema(
     { timestamps: true },
 )
 
-templateSchema.methods.softDelete = function () {
+templateEmailSchema.methods.softDelete = function () {
     this.deleted = true
     this.deletedAt = new Date()
 
     return this.save()
 }
 
-templateSchema.pre('find', function () {
+templateEmailSchema.pre('find', function () {
     this.where({ deleted: false })
 })
 
-export const Template = model('Template', templateSchema)
+export const templateEmailModel = model('templatesEmail', templateEmailSchema)
