@@ -135,7 +135,6 @@ export class FileController {
                 filename: result.name,
                 urlImage: result.url,
                 dimensions,
-                file: result.file,
             },
         })
     }
