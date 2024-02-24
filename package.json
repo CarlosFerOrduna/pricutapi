@@ -7,7 +7,7 @@
     "scripts": {
         "start": "node ./src/app.js --mode prd",
         "stg": "node ./src/app.js --mode stg",
-        "dev": "nodemon ./src/app.js --mode dev",
+        "dev": "node ./src/app.js --mode dev",
         "test": "mocha test/*.js"
     },
     "keywords": [],
