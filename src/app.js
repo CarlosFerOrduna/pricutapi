@@ -29,6 +29,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 
 const corsOptions = {
     origin: (origin, callback) => {
+        console.log(origin)
         config.cors.allowlist.includes(origin) ? callback(null, true) : callback(new Error('internal server error'))
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -36,7 +37,7 @@ const corsOptions = {
 }
 
 app.use(handlerLogs)
-app.use(cors(corsOptions))
+app.use(cors(/*corsOptions*/))
 app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 app.use(compression({ brotli: { enabled: true, zlib: {} } }))
 app.use(json())
