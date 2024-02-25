@@ -29,7 +29,7 @@ materialSchema.methods.softDelete = async function () {
 }
 
 materialSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const materialModel = model('materials', materialSchema)

@@ -22,7 +22,7 @@ categorySchema.methods.softDelete = async function () {
 }
 
 categorySchema.pre('find', function () {
-    this.where({ deletedAt:null })
+    this.where({ deletedAt: null })
 })
 
 export const categoryModel = model('categories', categorySchema)

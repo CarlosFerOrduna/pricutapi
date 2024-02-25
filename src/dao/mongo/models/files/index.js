@@ -23,7 +23,7 @@ fileSchema.methods.softDelete = async function () {
 }
 
 fileSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const fileModel = model('files', fileSchema)

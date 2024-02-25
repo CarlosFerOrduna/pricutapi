@@ -30,7 +30,7 @@ userSchema.pre('save', function () {
 })
 
 userSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 userSchema.plugin(paginate)
