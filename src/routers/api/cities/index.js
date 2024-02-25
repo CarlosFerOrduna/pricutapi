@@ -7,8 +7,8 @@ export class CityRouter extends BaseRouter {
 
         this.get('/', ['public'], this.cityController.searchCities)
         this.get('/:cid', ['public'], this.cityController.getCityById)
-        this.post('/', ['public'], this.cityController.saveCity)
-        this.put('/:cid', ['public'], this.cityController.updateCity)
-        this.delete('/:cid', ['public'], this.cityController.deleteCity)
+        this.post('/', ['admin'], this.cityController.saveCity)
+        this.put('/:cid', ['admin'], this.cityController.updateCity)
+        this.delete('/:cid', ['admin'], this.cityController.deleteCity)
     }
 }

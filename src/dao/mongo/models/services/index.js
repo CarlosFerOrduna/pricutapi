@@ -27,7 +27,7 @@ serviceSchema.methods.softDelete = async function () {
 }
 
 serviceSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const serviceModel = model('services', serviceSchema)

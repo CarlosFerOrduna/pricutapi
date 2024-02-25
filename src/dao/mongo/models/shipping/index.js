@@ -24,7 +24,7 @@ shippingSchema.methods.softDelete = async function () {
 }
 
 shippingSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const shippingModel = model('shipping', shippingSchema)

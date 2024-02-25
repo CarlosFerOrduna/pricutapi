@@ -26,7 +26,7 @@ articleSchema.methods.softDelete = async function () {
 }
 
 articleSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const articleModel = model('articles', articleSchema)

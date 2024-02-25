@@ -22,7 +22,7 @@ citiesSchema.methods.softDelete = async function () {
 }
 
 citiesSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const cityModel = model('cities', citiesSchema)

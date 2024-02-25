@@ -24,7 +24,7 @@ templateEmailSchema.methods.softDelete = function () {
 }
 
 templateEmailSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const templateEmailModel = model('templatesEmail', templateEmailSchema)

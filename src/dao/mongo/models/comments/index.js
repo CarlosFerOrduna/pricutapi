@@ -22,7 +22,7 @@ commentSchema.methods.softDelete = async function () {
 }
 
 commentSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const commentModel = model('comments', commentSchema)

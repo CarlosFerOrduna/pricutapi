@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import { ErrorWrapper, codes } from '../../middlewares/errors/index.js'
 import { uploadMultipleImages } from '../../middlewares/multer/index.js'
 import { authToken } from '../../utils/jwt.util.js'
 
@@ -41,18 +42,20 @@ export default class BaseRouter {
         return (req, res, next) => {
             if (policies.includes('public')) return next()
 
-            const { userization } = req.headers
-            const result = authToken(userization)
+            const authorization = req?.headers?.Authorization || req?.cookies?.Authorization
 
-            if (result?.code) {
-                return res.status(result.code).send({
-                    status: 'error',
-                    message: result.message,
+            const { user } = authToken({ authorization })
+
+            if (!user?.rol || !policies.includes(user.rol)) {
+                ErrorWrapper.createError({
+                    name: 'forbidden',
+                    cause: 'can not add your product in your cart',
+                    message: 'error add product in cart',
+                    code: codes.USER_FORBIDDEN,
                 })
             }
 
-            req.user = result
-
+            req.user = user
             next()
         }
     }

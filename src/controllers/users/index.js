@@ -1,5 +1,7 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { UsersRepository } from '../../repositories/index.js'
+import { isValidPassword } from '../../utils/bcrypt.util.js'
+import { generateToken } from '../../utils/jwt.util.js'
 
 export class UserController {
     constructor() {
@@ -10,11 +12,11 @@ export class UserController {
         const { firstName, lastName, email, password, rol } = req.body
         if (!firstName || !isNaN(firstName)) {
             ErrorWrapper.createError({
-                name: 'cityOrigin is not valid',
+                name: 'firstName is not valid',
                 cause: invalidFieldErrorInfo({
-                    name: 'cityOrigin',
+                    name: 'firstName',
                     type: 'string',
-                    value: cityOrigin,
+                    value: firstName,
                 }),
                 message: 'Error to save user',
                 code: codes.INVALID_TYPES_ERROR,
@@ -161,5 +163,54 @@ export class UserController {
         await this.userRepository.deleteUser({ uid })
 
         return res.status(204).send()
+    }
+
+    login = async (req, res) => {
+        const { email, password } = req.body
+        if (!email || !email.match(/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/)) {
+            ErrorWrapper.createError({
+                name: 'email is not valid',
+                cause: invalidFieldErrorInfo({ name: 'email', type: 'string', value: email }),
+                message: 'Error to login user',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+        if (!password) {
+            ErrorWrapper.createError({
+                name: 'password is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'password',
+                    type: 'string',
+                    value: password,
+                }),
+                message: 'Error to login user',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+
+        const user = await this.userRepository.getUserByEmail({ email })
+        if (!isValidPassword(user, password)) {
+            ErrorWrapper.createError({
+                name: 'password is not valid',
+                cause: invalidFieldErrorInfo({
+                    name: 'password',
+                    type: 'string',
+                    value: password,
+                }),
+                message: 'Error to login user',
+                code: codes.INVALID_TYPES_ERROR,
+            })
+        }
+
+        const token = generateToken(user)
+
+        return res.status(200).send({
+            user: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+            },
+            accessToken: token,
+        })
     }
 }

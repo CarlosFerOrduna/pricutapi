@@ -46,7 +46,7 @@ productSchema.methods.softDelete = async function () {
 }
 
 productSchema.pre('find', function () {
-    this.where({ deleted: false })
+    this.where({ deletedAt: null })
 })
 
 export const productModel = model('products', productSchema)

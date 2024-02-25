@@ -7,8 +7,8 @@ export class ProductRouter extends BaseRouter {
 
         this.get('/', ['public'], this.productController.searchProducts)
         this.get('/:pid', ['public'], this.productController.getProductById)
-        this.post('/', ['public'], this.productController.saveProduct)
-        this.put('/:pid', ['public'], this.productController.updateProduct)
-        this.delete('/:pid', ['public'], this.productController.deleteProduct)
+        this.post('/', ['admin'], this.productController.saveProduct)
+        this.put('/:pid', ['admin'], this.productController.updateProduct)
+        this.delete('/:pid', ['admin'], this.productController.deleteProduct)
     }
 }
