@@ -19,6 +19,12 @@ export class UsersRepository {
         return new SelectUser(user)
     }
 
+    getUserByEmail = async ({ email }) => {
+        const user = await this.dao.getUserByEmail({ email })
+
+        return new SelectUser(user)
+    }
+
     searchUsers = async ({ limit, page, query }) => {
         const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
             await this.dao.searchUsers({ limit, page, query })
