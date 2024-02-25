@@ -7,8 +7,8 @@ export class CommentRouter extends BaseRouter {
 
         this.get('/', ['public'], this.commentController.searchComments)
         this.get('/:cid', ['public'], this.commentController.getCommentById)
-        this.post('/', ['public'], this.commentController.saveComment)
-        this.put('/:cid', ['public'], this.commentController.updateComment)
-        this.delete('/:cid', ['public'], this.commentController.deleteComment)
+        this.post('/', ['admin'], this.commentController.saveComment)
+        this.put('/:cid', ['admin'], this.commentController.updateComment)
+        this.delete('/:cid', ['admin'], this.commentController.deleteComment)
     }
 }

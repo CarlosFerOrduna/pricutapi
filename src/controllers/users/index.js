@@ -210,7 +210,7 @@ export class UserController {
                 lastName: user.lastName,
                 email: user.email,
             },
-            accessToken: `Bearer ${token}`,
+            accessToken: token,
         })
     }
 }
