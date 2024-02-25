@@ -2,19 +2,18 @@ import moment from 'moment'
 
 import { codes } from '../enum/codes.js'
 
-export const handlerErrors = async (error, req, res) => {
-    console.log(error)
+export const handlerErrors = (err, req, res, next) => {
     const logError = (status, logMethod) => {
-        req.logger[logMethod](`${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')} ${error}`)
+        req.logger[logMethod](`${req.method} in ${req.url} - ${moment().format('YYYY-MM-DD HH:mm:ss')} ${err}`)
 
         return res.status(status).send({
             status: 'error',
-            error: error.name,
-            message: error.message,
+            error: err.name,
+            message: err.message,
         })
     }
 
-    switch (error.code) {
+    switch (err.code) {
         case codes.INVALID_TYPES_ERROR:
         case codes.MAILER:
             logError(400, 'error')

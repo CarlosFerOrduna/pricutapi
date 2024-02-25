@@ -1,17 +1,44 @@
 import jwt from 'jsonwebtoken'
 
+import { ErrorWrapper, codes } from '../middlewares/errors/index.js'
+
 const generateToken = (user) => {
-    return jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: `${15 * 60 * 1000}` })
+    return jwt.sign({ user }, config.privateKey, { expiresIn: '1h' })
 }
 
-const authToken = (userization) => {
-    if (!userization) return { code: 401, message: 'not autenticated' }
+const authToken = ({ authorization }) => {
+    if (!authorization || !authorization.incldes('Bearer ')) {
+        ErrorWrapper.createError({
+            name: 'not autenticated',
+            cause: 'not autenticated',
+            message: 'unauthorized',
+            code: codes.NOT_AUTENTICATE,
+        })
+    }
 
-    const token = userization.replace('Bearer ', '')
+    const token = authorization.replace('Bearer ', '')
 
-    return jwt.verify(token, process.env.SECRET_KEY, (error, credentiales) => {
-        if (error) return { code: 403, message: 'forbidden' }
+    return jwt.verify(token, config.privateKey, (error, credentials) => {
+        if (error?.message.includes('expired')) {
+            ErrorWrapper.createError({
+                name: 'token expired',
+                cause: 'token expired',
+                message: error.message,
+                code: codes.TOKEN_EXPIRED,
+            })
+        }
+
+        if (error) {
+            ErrorWrapper.createError({
+                name: 'forbidden',
+                cause: 'forbidden',
+                message: error.message,
+                code: codes.USER_FORBIDDEN,
+            })
+        }
+
+        return credentials
     })
 }
 
-export { generateToken, authToken }
+export { authToken, generateToken }
