@@ -24,7 +24,10 @@ export class FileRepository {
             await this.dao.searchFiles({ limit, page, query })
 
         return {
-            files: docs.map((f) => new SelectFile(f)),
+            files: docs.map((f) => {
+                const { _id, name, url } = new SelectFile(f)
+                return { _id, name, url }
+            }),
             totalPages,
             page,
             pagingCounter,
