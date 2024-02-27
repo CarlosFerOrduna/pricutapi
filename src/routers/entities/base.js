@@ -42,8 +42,7 @@ export default class BaseRouter {
         return (req, res, next) => {
             if (policies.includes('public')) return next()
 
-            const authorization = req?.headers?.Authorization || req?.cookies?.Authorization
-
+            const authorization = req?.headers?.authorization || req?.cookies?.authorization
             const { user } = authToken({ authorization })
 
             if (!user?.rol || !policies.includes(user.rol)) {
