@@ -10,8 +10,7 @@ const generateToken = (user) => {
 }
 
 const authToken = ({ authorization }) => {
-    console.log(SECRET_KEY)
-    if (!authorization || !authorization.incldes('Bearer ')) {
+    if (!authorization || !authorization.includes('Bearer ')) {
         ErrorWrapper.createError({
             name: 'not autenticated',
             cause: 'not autenticated',
