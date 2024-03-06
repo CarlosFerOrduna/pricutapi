@@ -1,13 +1,13 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
-import { ServiceRepository } from '../../repositories/index.js'
+import { CutServiceRepository } from '../../repositories/index.js'
 import { uploadImage } from '../../utils/uploadImage.util.js'
 
-export class ServiceController {
+export class CutServiceController {
     constructor() {
-        this.serviceRepository = new ServiceRepository()
+        this.cutServiceRepository = new CutServiceRepository()
     }
 
-    saveService = async (req, res) => {
+    saveCutService = async (req, res) => {
         const {
             files: {
                 small: [small],
@@ -21,7 +21,7 @@ export class ServiceController {
             ErrorWrapper.createError({
                 name: 'name is not valid',
                 cause: invalidFieldErrorInfo({ name: 'name', type: 'string', value: name }),
-                message: 'Error to save service',
+                message: 'Error to save cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -33,7 +33,7 @@ export class ServiceController {
                     type: 'string',
                     value: description,
                 }),
-                message: 'Error to save service',
+                message: 'Error to save cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -45,7 +45,7 @@ export class ServiceController {
                     type: 'string',
                     value: cuttingCapacity,
                 }),
-                message: 'Error to save service',
+                message: 'Error to save cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -57,18 +57,20 @@ export class ServiceController {
                     type: 'string',
                     value: supportedThickness,
                 }),
-                message: 'Error to save service',
+                message: 'Error to save cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const urlImageSmall = await uploadImage({ image: small })
-        const urlImageLarge = await uploadImage({ image: large })
-        const urlImageAbout = await uploadImage({ image: aboutImage })
-        const urlImagecommonUses = await uploadImage({ image: commonUsesImage })
+        const [urlImageSmall, urlImageLarge, urlImageAbout, urlImagecommonUses] = await Promise.all([
+            uploadImage({ image: small }),
+            uploadImage({ image: large }),
+            uploadImage({ image: aboutImage }),
+            uploadImage({ image: commonUsesImage }),
+        ])
 
-        const result = await this.serviceRepository.saveService({
-            service: {
+        const result = await this.cutServiceRepository.saveCutService({
+            cutService: {
                 name,
                 description,
                 cuttingCapacity,
@@ -84,32 +86,32 @@ export class ServiceController {
 
         return res.status(201).send({
             status: 'success',
-            message: 'service successfully created',
+            message: 'cutService successfully created',
             data: result,
         })
     }
 
-    getServiceById = async (req, res) => {
-        const { sid } = req.params
-        if (!sid) {
+    getCutServiceById = async (req, res) => {
+        const { csid } = req.params
+        if (!csid) {
             ErrorWrapper.createError({
-                name: 'sid is required, or is not valid',
-                cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
-                message: 'Error to get service',
+                name: 'csid is required, or is not valid',
+                cause: invalidFieldErrorInfo({ name: 'csid', type: 'string', value: csid }),
+                message: 'Error to get cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.serviceRepository.getServiceById({ sid })
+        const result = await this.cutServiceRepository.getCutServiceById({ csid })
 
         return res.status(200).send({
             status: 'success',
-            message: 'service successfully found',
+            message: 'cutService successfully found',
             data: result,
         })
     }
 
-    searchServices = async (req, res) => {
+    searchCutServices = async (req, res) => {
         const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
 
         let query = {}
@@ -120,29 +122,29 @@ export class ServiceController {
         if (about) query.about = about
         if (commonUses) query.commonUses = commonUses
 
-        const result = await this.serviceRepository.searchServices({ query })
+        const result = await this.cutServiceRepository.searchCutServices({ query })
 
         return res.status(200).send({
             status: 'success',
-            message: 'all service',
+            message: 'all cutService',
             data: result,
         })
     }
 
-    updateService = async (req, res) => {
+    updateCutService = async (req, res) => {
         const { files } = req
         const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
-        const { sid } = req.params
-        if (!sid || !isNaN(sid)) {
+        const { csid } = req.params
+        if (!csid || !isNaN(csid)) {
             ErrorWrapper.createError({
-                name: 'sid is required, or is not valid',
-                cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
-                message: 'Error to update service',
+                name: 'csid is required, or is not valid',
+                cause: invalidFieldErrorInfo({ name: 'csid', type: 'string', value: csid }),
+                message: 'Error to update cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        let query = { _id: sid }
+        let query = { _id: csid }
         if (name) query.name = name
         if (description) query.description = description
         if (cuttingCapacity) query.cuttingCapacity = cuttingCapacity
@@ -166,31 +168,31 @@ export class ServiceController {
             query.urlImageLarge = await uploadImage({ image: large })
         }
 
-        const result = await this.serviceRepository.updateService({ service: query })
+        const result = await this.cutServiceRepository.updateCutService({ cutService: query })
 
         return res.status(200).send({
             status: 'success',
-            message: 'service successfully updated',
+            message: 'cutService successfully updated',
             data: result,
         })
     }
 
-    deleteService = async (req, res) => {
-        const { sid } = req.params
-        if (!sid) {
+    deleteCutService = async (req, res) => {
+        const { csid } = req.params
+        if (!csid) {
             ErrorWrapper.createError({
-                name: 'sid is not valid',
+                name: 'csid is not valid',
                 cause: invalidFieldErrorInfo({
-                    name: 'sid',
+                    name: 'csid',
                     type: 'string',
-                    value: sid,
+                    value: csid,
                 }),
-                message: 'Error to delete service',
+                message: 'Error to delete cutService',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        await this.serviceRepository.deleteService({ sid })
+        await this.cutServiceRepository.deleteCutService({ csid })
 
         return res.status(204).send()
     }

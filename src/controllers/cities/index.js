@@ -7,33 +7,33 @@ export class CityController {
     }
 
     saveCity = async (req, res) => {
-        const { key, value } = req.body
-        if (!key || isNaN(key)) {
+        const { name, shipmentService } = req.body
+        if (!name || isNaN(name)) {
             ErrorWrapper.createError({
-                name: 'key is not valid',
+                name: 'name is not valid',
                 cause: invalidFieldErrorInfo({
-                    name: 'key',
+                    name: 'name',
                     type: 'string',
-                    value: key,
+                    value: name,
                 }),
                 message: 'Error to create city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
-        if (!value || !isNaN(value)) {
+        if (!shipmentService || !isNaN(shipmentService)) {
             ErrorWrapper.createError({
-                name: 'value is not valid',
+                name: 'shipmentService is not valid',
                 cause: invalidFieldErrorInfo({
-                    name: 'value',
+                    name: 'shipmentService',
                     type: 'string',
-                    value: value,
+                    value: shipmentService,
                 }),
                 message: 'Error to create city',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.citiesRepository.saveCity({ city: { key, value } })
+        const result = await this.citiesRepository.saveCity({ city: { name, shipmentService } })
 
         return res.status(201).send({
             status: 'success',
@@ -67,13 +67,13 @@ export class CityController {
     }
 
     searchCities = async (req, res) => {
-        const { limit, page, key, value } = req.query
+        const { name, shipmentService } = req.query
 
         let query = {}
-        if (key) query.key = key
-        if (value) query.value = value
+        if (name) query.name = name
+        if (shipmentService) query.shipmentService = shipmentService
 
-        const result = await this.citiesRepository.searchCities({ limit, page, query })
+        const result = await this.citiesRepository.searchCities({ query })
 
         return res.status(200).send({
             status: 'success',
@@ -83,7 +83,7 @@ export class CityController {
     }
 
     updateCity = async (req, res) => {
-        const { key, value } = req.body
+        const { name, shipmentService } = req.body
         const { cid } = req.params
         if (!cid || !isNaN(cid)) {
             ErrorWrapper.createError({
@@ -99,8 +99,8 @@ export class CityController {
         }
 
         let query = { _id: cid }
-        if (key) query.key = key
-        if (value) query.value = value
+        if (name) query.name = name
+        if (shipmentService) query.shipmentService = shipmentService
 
         const result = await this.citiesRepository.updateCity({ city: query })
 
