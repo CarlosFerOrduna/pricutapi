@@ -1,6 +1,7 @@
 export class CreateCity {
     constructor(city) {
-        this.key = city.key || null
-        this.value = city.value || null
+        this.name = city.name || null
+        this.shipmentService = city.shipmentService || null
+        this.status = city.status || null
     }
 }

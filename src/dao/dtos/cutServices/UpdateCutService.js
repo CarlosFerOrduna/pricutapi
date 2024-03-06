@@ -1,4 +1,4 @@
-export class UpdateService {
+export class UpdateCutService {
     constructor(service) {
         this._id = service._id
         if (service.name) this.name = service.name

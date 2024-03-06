@@ -3,13 +3,14 @@ import {
     categoryModel,
     cityModel,
     commentModel,
+    cutServiceModel,
     fileModel,
     materialModel,
     productModel,
-    serviceModel,
+    shipmentServiceModel,
     shipmentModel,
-    userModel,
     templateEmailModel,
+    userModel,
 } from '../dao/mongo/models/index.js'
 
 export const migrateSchemaHandler = () => {
@@ -20,13 +21,14 @@ export const migrateSchemaHandler = () => {
                 categoryModel,
                 cityModel,
                 commentModel,
+                cutServiceModel,
                 fileModel,
                 materialModel,
                 productModel,
-                serviceModel,
+                shipmentServiceModel,
                 shipmentModel,
-                userModel,
                 templateEmailModel,
+                userModel,
             ]
 
             for (const model of models) {

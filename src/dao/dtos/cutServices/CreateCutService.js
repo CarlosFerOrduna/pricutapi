@@ -1,4 +1,4 @@
-export class CreateService {
+export class CreateCutService {
     constructor(service) {
         this.name = service.name || null
         this.description = service.description || null

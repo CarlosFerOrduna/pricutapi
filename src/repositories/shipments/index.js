@@ -19,20 +19,8 @@ export class ShipmentRepository {
         return new SelectShipment(shipment)
     }
 
-    searchShipments = async ({ limit, page, query }) => {
-        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
-            await this.dao.searchShipments({ limit, page, query })
-
-        return {
-            shipments: docs.map((a) => new SelectShipment(a)),
-            totalPages,
-            page,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        }
+    searchShipments = async ({ query }) => {
+        return await this.dao.searchShipments({ query })
     }
 
     updateShipment = async ({ shipment }) => {

@@ -1,16 +1,16 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
-import { serviceModel } from '../../models/index.js'
+import { cutServiceModel } from '../../models/index.js'
 
-export class ServiceService {
+export class CutServiceService {
     saveService = async ({ service }) => {
-        const newService = new serviceModel(service)
+        const newService = new cutServiceModel(service)
         await newService.validate()
 
         return await newService.save()
     }
 
     getServiceById = async ({ sid }) => {
-        const result = await serviceModel.findById(sid)
+        const result = await cutServiceModel.findById(sid)
         if (!result) {
             ErrorWrapper.createError({
                 name: 'service not exists',
@@ -28,11 +28,11 @@ export class ServiceService {
     }
 
     searchServices = async ({ query }) => {
-        return await serviceModel.find(query)
+        return await cutServiceModel.find(query)
     }
 
     updateService = async ({ service }) => {
-        const result = await serviceModel.findByIdAndUpdate(service._id, service, {
+        const result = await cutServiceModel.findByIdAndUpdate(service._id, service, {
             new: true,
         })
         if (!result) {
@@ -52,7 +52,7 @@ export class ServiceService {
     }
 
     deleteService = async ({ sid }) => {
-        const service = await serviceModel.findById(sid)
+        const service = await cutServiceModel.findById(sid)
         if (!service) {
             ErrorWrapper.createError({
                 name: 'service not exists',

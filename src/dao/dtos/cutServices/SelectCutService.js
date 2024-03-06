@@ -1,4 +1,4 @@
-export class SelectService {
+export class SelectCutService {
     constructor(service) {
         this._id = service._id || null
         this.name = service.name || null

@@ -10,7 +10,7 @@ export class CityService {
     }
 
     getCityById = async ({ cid }) => {
-        const result = await cityModel.findById(cid)
+        const result = await cityModel.findById(cid).populate('shipmentService')
         if (!result) {
             ErrorWrapper.createError({
                 name: 'city not exists',

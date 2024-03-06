@@ -27,12 +27,8 @@ export class ShipmentService {
         return result
     }
 
-    searchShipments = async ({ limit = 10, page = 1, query }) => {
-        return await shipmentModel.paginate(query, {
-            limit,
-            page,
-            populate: 'city shipmentServices',
-        })
+    searchShipments = async ({ query }) => {
+        return await shipmentModel.find(query).populate('city shipmentServices')
     }
 
     updateShipment = async ({ shipment }) => {

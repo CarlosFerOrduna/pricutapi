@@ -9,8 +9,8 @@ export class ShipmentServiceService {
         return await newShipmentService.save()
     }
 
-    getShipmentServiceById = async ({ sid }) => {
-        const result = await shipmentServiceModel.findById(sid).populate('cityOrigin cityDestination')
+    getShipmentServiceById = async ({ ssid }) => {
+        const result = await shipmentServiceModel.findById(ssid)
         if (!result) {
             ErrorWrapper.createError({
                 name: 'shipmentService not exists',
@@ -28,7 +28,7 @@ export class ShipmentServiceService {
     }
 
     searchShipmentServices = async ({ query }) => {
-        return await shipmentServiceModel.find(query).populate('city')
+        return await shipmentServiceModel.find(query)
     }
 
     updateShipmentService = async ({ shipmentService }) => {
@@ -51,8 +51,8 @@ export class ShipmentServiceService {
         return result
     }
 
-    deleteShipmentService = async ({ sid }) => {
-        const shipmentService = await shipmentServiceModel.findById(sid)
+    deleteShipmentService = async ({ ssid }) => {
+        const shipmentService = await shipmentServiceModel.findById(ssid)
         if (!shipmentService) {
             ErrorWrapper.createError({
                 name: 'shipmentService not exists',

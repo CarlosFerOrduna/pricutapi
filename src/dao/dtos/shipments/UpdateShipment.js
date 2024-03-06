@@ -10,12 +10,18 @@ export class UpdateShipment {
                 message: 'Error to update shipping',
                 code: codes.INVALID_TYPES_ERROR,
             })
-        if (shipment.cityOrigin) this.cityOrigin = shipment.cityOrigin
-        if (shipment.cityDestination) this.cityDestination = shipment.cityDestination
+        if (shipment.city) this.city = shipment.city
+        if (shipment.shipmentService) this.shipmentService = shipment.shipmentService
+        if (shipment.streetName) this.streetName = shipment.streetName
+        if (shipment.streetNumber) this.streetNumber = shipment.streetNumber
+        if (shipment.floor) this.floor = shipment.floor
+        if (shipment.apartment) this.apartment = shipment.apartment
+        if (shipment.zipCode) this.zipCode = shipment.zipCode
         if (shipment.weight) this.weight = shipment.weight
         if (shipment.long) this.long = shipment.long
         if (shipment.high) this.high = shipment.high
         if (shipment.width) this.width = shipment.width
         if (shipment.price) this.price = shipment.price
+        if (shipment.deliveryStatus) this.deliveryStatus = shipment.deliveryStatus
     }
 }

@@ -8,11 +8,12 @@ import {
     CategoryService,
     CityService,
     CommentService,
+    CutServiceService,
     FileService,
     MaterialService,
     ProductService,
-    ServiceService,
     ShipmentService,
+    ShipmentServiceService,
     TemplateEmailService,
     UserService,
 } from './mongo/services/index.js'
@@ -24,7 +25,8 @@ export let commentDAO
 export let fileDAO
 export let materialDAO
 export let productDAO
-export let serviceDAO
+export let cutServiceDAO
+export let shipmentServicesDAO
 export let shipmentsDAO
 export let templateEmailDAO
 export let userDAO
@@ -43,7 +45,8 @@ switch (config.persistence) {
             fileDAO = new FileService()
             materialDAO = new MaterialService()
             productDAO = new ProductService()
-            serviceDAO = new ServiceService()
+            cutServiceDAO = new CutServiceService()
+            shipmentServiceDAO = new ShipmentServiceService()
             shipmentsDAO = new ShipmentService()
             templateEmailDAO = new TemplateEmailService()
             userDAO = new UserService()
