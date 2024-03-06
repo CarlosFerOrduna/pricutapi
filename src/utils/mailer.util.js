@@ -3,7 +3,6 @@ import { createTransport } from 'nodemailer'
 import config from '../config/index.js'
 
 export const sendEmail = async (params) => {
-    console.log(params)
     const { to, subject, text, html, attachments, alternatives } = params
     const { mailer } = config
 

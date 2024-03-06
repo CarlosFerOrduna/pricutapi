@@ -7,7 +7,7 @@ import {
     materialModel,
     productModel,
     serviceModel,
-    shippingModel,
+    shipmentModel,
     userModel,
     templateEmailModel,
 } from '../dao/mongo/models/index.js'
@@ -24,7 +24,7 @@ export const migrateSchemaHandler = () => {
                 materialModel,
                 productModel,
                 serviceModel,
-                shippingModel,
+                shipmentModel,
                 userModel,
                 templateEmailModel,
             ]

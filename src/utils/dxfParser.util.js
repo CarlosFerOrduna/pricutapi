@@ -1,7 +1,6 @@
 import DxfParser from 'dxf-parser'
 
 import { productModel } from '../dao/mongo/models/index.js'
-import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../middlewares/errors/index.js'
 
 export const dxfParser = (buffer) => {
     const parser = new DxfParser()

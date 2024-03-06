@@ -1,21 +1,21 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewares/errors/index.js'
-import { shippingModel } from '../../models/index.js'
+import { shipmentModel } from '../../models/index.js'
 
-export class ShippingService {
-    saveShipping = async ({ shipping }) => {
-        const newShipping = new shippingModel(shipping)
-        await newShipping.validate()
+export class ShipmentService {
+    saveShipment = async ({ shipment }) => {
+        const newShipment = new shipmentModel(shipment)
+        await newShipment.validate()
 
-        return await newShipping.save()
+        return await newShipment.save()
     }
 
-    getShippingById = async ({ sid }) => {
-        const result = await shippingModel.findById(sid).populate('cityOrigin cityDestination')
+    getShipmentById = async ({ sid }) => {
+        const result = await shipmentModel.findById(sid).populate('city shipmentServices')
         if (!result) {
             ErrorWrapper.createError({
-                name: 'shipping not exists',
+                name: 'shipment not exists',
                 cause: invalidFieldErrorInfo({
-                    name: 'shipping',
+                    name: 'shipment',
                     type: 'string',
                     value: result,
                 }),
@@ -27,23 +27,23 @@ export class ShippingService {
         return result
     }
 
-    searchShippings = async ({ limit = 10, page = 1, query }) => {
-        return await shippingModel.paginate(query, {
+    searchShipments = async ({ limit = 10, page = 1, query }) => {
+        return await shipmentModel.paginate(query, {
             limit,
             page,
-            populate: 'cityOrigin cityDestination',
+            populate: 'city shipmentServices',
         })
     }
 
-    updateShipping = async ({ shipping }) => {
-        const result = await shippingModel.findByIdAndUpdate(shipping._id, shipping, {
+    updateShipment = async ({ shipment }) => {
+        const result = await shipmentModel.findByIdAndUpdate(shipment._id, shipment, {
             new: true,
         })
         if (!result) {
             ErrorWrapper.createError({
-                name: 'shipping not exists',
+                name: 'shipment not exists',
                 cause: invalidFieldErrorInfo({
-                    name: 'shipping',
+                    name: 'shipment',
                     type: 'string',
                     value: result,
                 }),
@@ -55,22 +55,22 @@ export class ShippingService {
         return result
     }
 
-    deleteShipping = async ({ sid }) => {
-        const shipping = await shippingModel.findById(sid)
-        if (!shipping) {
+    deleteShipment = async ({ sid }) => {
+        const shipment = await shipmentModel.findById(sid)
+        if (!shipment) {
             ErrorWrapper.createError({
-                name: 'shipping not exists',
+                name: 'shipment not exists',
                 cause: invalidFieldErrorInfo({
-                    name: 'shipping',
+                    name: 'shipment',
                     type: 'string',
-                    value: shipping,
+                    value: shipment,
                 }),
                 message: 'Error to get product',
                 code: codes.NOT_FOUND,
             })
         }
 
-        const result = await shipping.softDelete()
+        const result = await shipment.softDelete()
 
         return result
     }

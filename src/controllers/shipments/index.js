@@ -1,13 +1,13 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
-import { ShippingRepository } from '../../repositories/index.js'
+import { ShipmentRepository } from '../../repositories/index.js'
 
-export class ShippingController {
+export class ShipmentController {
     constructor() {
-        this.shippingRepository = new ShippingRepository()
+        this.shipmentRepository = new ShipmentRepository()
     }
 
     // todo: cranear
-    saveShipping = async (req, res) => {
+    saveShipment = async (req, res) => {
         const { cityOrigin, cityDestination, weight, long, high, width, price } = req.body
         if (!cityOrigin) {
             ErrorWrapper.createError({
@@ -17,7 +17,7 @@ export class ShippingController {
                     type: 'string',
                     value: cityOrigin,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -29,7 +29,7 @@ export class ShippingController {
                     type: 'string',
                     value: cityDestination,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -41,7 +41,7 @@ export class ShippingController {
                     type: 'string',
                     value: weight,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -53,7 +53,7 @@ export class ShippingController {
                     type: 'string',
                     value: long,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -65,7 +65,7 @@ export class ShippingController {
                     type: 'string',
                     value: high,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -77,7 +77,7 @@ export class ShippingController {
                     type: 'string',
                     value: width,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -89,13 +89,13 @@ export class ShippingController {
                     type: 'string',
                     value: price,
                 }),
-                message: 'Error to save shipping',
+                message: 'Error to save shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.shippingRepository.saveShipping({
-            shipping: {
+        const result = await this.shipmentRepository.saveShipment({
+            shipment: {
                 cityOrigin,
                 cityDestination,
                 weight,
@@ -108,32 +108,32 @@ export class ShippingController {
 
         return res.status(201).send({
             status: 'success',
-            message: 'shipping successfully created',
+            message: 'shipment successfully created',
             data: result,
         })
     }
 
-    getShippingById = async (req, res) => {
+    getShipmentById = async (req, res) => {
         const { sid } = req.params
         if (!sid || !isNaN(sid)) {
             ErrorWrapper.createError({
                 name: 'sid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
-                message: 'Error to get shipping',
+                message: 'Error to get shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        const result = await this.shippingRepository.getShippingById({ sid })
+        const result = await this.shipmentRepository.getShipmentById({ sid })
 
         return res.status(200).send({
             status: 'success',
-            message: 'shipping successfully found',
+            message: 'shipment successfully found',
             data: result,
         })
     }
 
-    searchShippings = async (req, res) => {
+    searchShipments = async (req, res) => {
         const { limit, page, cityOrigin, cityDestination, weight, long, high, width, price } = req.query
 
         let query = {}
@@ -145,23 +145,23 @@ export class ShippingController {
         if (width) query.width = width
         if (price) query.price = price
 
-        const result = await this.shippingRepository.searchShippings({ limit, page, query })
+        const result = await this.shipmentRepository.searchShipments({ limit, page, query })
 
         return res.status(200).send({
             status: 'success',
-            message: 'all shipping',
+            message: 'all shipment',
             data: result,
         })
     }
 
-    updateShipping = async (req, res) => {
+    updateShipment = async (req, res) => {
         const { cityOrigin, cityDestination, weight, long, high, width, price } = req.query
         const { sid } = req.params
         if (!sid || !isNaN(sid)) {
             ErrorWrapper.createError({
                 name: 'sid is required, or is not valid',
                 cause: invalidFieldErrorInfo({ name: 'sid', type: 'string', value: sid }),
-                message: 'Error to update shipping',
+                message: 'Error to update shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
@@ -175,16 +175,16 @@ export class ShippingController {
         if (width) query.width = width
         if (price) query.price = price
 
-        const result = await this.shippingRepository.updateShipping({ query })
+        const result = await this.shipmentRepository.updateShipment({ query })
 
         return res.status(200).send({
             status: 'success',
-            message: 'shipping successfully updated',
+            message: 'shipment successfully updated',
             data: result,
         })
     }
 
-    deleteShipping = async (req, res) => {
+    deleteShipment = async (req, res) => {
         const { sid } = req.params
         if (!sid) {
             ErrorWrapper.createError({
@@ -194,12 +194,12 @@ export class ShippingController {
                     type: 'string',
                     value: sid,
                 }),
-                message: 'Error to delete shipping',
+                message: 'Error to delete shipment',
                 code: codes.INVALID_TYPES_ERROR,
             })
         }
 
-        await this.shippingRepository.deleteShipping({ sid })
+        await this.shipmentRepository.deleteShipment({ sid })
 
         return res.status(204).send()
     }
