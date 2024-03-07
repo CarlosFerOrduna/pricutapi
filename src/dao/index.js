@@ -46,7 +46,7 @@ switch (config.persistence) {
             materialDAO = new MaterialService()
             productDAO = new ProductService()
             cutServiceDAO = new CutServiceService()
-            shipmentServiceDAO = new ShipmentServiceService()
+            shipmentServicesDAO = new ShipmentServiceService()
             shipmentsDAO = new ShipmentService()
             templateEmailDAO = new TemplateEmailService()
             userDAO = new UserService()

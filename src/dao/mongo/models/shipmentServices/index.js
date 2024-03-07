@@ -2,11 +2,11 @@ import { Schema, model } from 'mongoose'
 
 const shipmentServiceSchema = new Schema(
     {
-        name: { type: String, required: true, unique: true },
+        name: { type: String, require: true, unique: true },
         standardPrice: { type: Number, require: true },
         standardWeight: { type: Number, require: true },
         pricePerKiloExtra: { type: Number, require: true },
-        EstimatedDeliveryTime: { type: { String, require: true } },
+        EstimatedDeliveryTime: { type: String, require: true },
         status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },

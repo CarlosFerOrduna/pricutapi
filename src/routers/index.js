@@ -6,11 +6,12 @@ import {
     CityRouter,
     CommentRouter,
     ContactRouter,
+    CutServiceRouter,
     FileRouter,
     MaterialRouter,
     ProductRouter,
-    ServiceRouter,
     ShipmentRouter,
+    ShipmentServiceRouter,
     TemplateEmailRouter,
     UserRouter,
 } from './api/index.js'
@@ -25,7 +26,8 @@ router.use('/api/contact', new ContactRouter().getRouter())
 router.use('/api/files', new FileRouter().getRouter())
 router.use('/api/materials', new MaterialRouter().getRouter())
 router.use('/api/products', new ProductRouter().getRouter())
-router.use('/api/services', new ServiceRouter().getRouter())
+router.use('/api/cutservices', new CutServiceRouter().getRouter())
+router.use('/api/shipmentservices', new ShipmentServiceRouter().getRouter())
 router.use('/api/shipments', new ShipmentRouter().getRouter())
 router.use('/api/templates-email', new TemplateEmailRouter().getRouter())
 router.use('/api/users', new UserRouter().getRouter())
