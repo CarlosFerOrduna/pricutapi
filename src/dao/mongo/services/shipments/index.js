@@ -10,7 +10,7 @@ export class ShipmentService {
     }
 
     getShipmentById = async ({ sid }) => {
-        const result = await shipmentModel.findById(sid).populate('city shipmentServices')
+        const result = await shipmentModel.findById(sid)
         if (!result) {
             ErrorWrapper.createError({
                 name: 'shipment not exists',
@@ -28,7 +28,7 @@ export class ShipmentService {
     }
 
     searchShipments = async ({ query }) => {
-        return await shipmentModel.find(query).populate('city shipmentServices')
+        return await shipmentModel.find(query)
     }
 
     updateShipment = async ({ shipment }) => {

@@ -2,8 +2,8 @@ import { Schema, model } from 'mongoose'
 
 const shipmentSchema = new Schema(
     {
-        city: { type: Schema.Types.ObjectId, require: true, ref: 'cities' },
-        shipmentService: { type: Schema.Types.ObjectId, require: true, ref: 'shipmentServices' },
+        city: { type: String, require: true },
+        shipmentService: { type: String, require: true },
         streetName: { type: String, require: true },
         streetNumber: { type: Number, require: true },
         floor: { type: String, default: null },
@@ -14,7 +14,11 @@ const shipmentSchema = new Schema(
         high: { type: Number, require: true },
         width: { type: Number, require: true },
         price: { type: Number, require: true },
-        deliveryStatus: { type: Boolean, default: false },
+        deliveryStatus: {
+            type: String,
+            enum: ['pending', 'delivered', 'delayed', 'rejected', 'cancelled', 'rescheduled'],
+            default: 'pending',
+        },
         status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },

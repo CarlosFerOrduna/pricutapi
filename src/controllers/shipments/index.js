@@ -1,103 +1,41 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
-import { ShipmentRepository } from '../../repositories/index.js'
+import { CityRepository, FileRepository, ProductRepository, ShipmentRepository } from '../../repositories/index.js'
+import { calculateDimensions } from '../../utils/dxfParser.util.js'
 
 export class ShipmentController {
     constructor() {
         this.shipmentRepository = new ShipmentRepository()
+        this.cityRepository = new CityRepository()
+        this.fileRepository = new FileRepository()
+        this.productRepository = new ProductRepository()
     }
 
-    // todo: cranear
     saveShipment = async (req, res) => {
-        const { cityOrigin, cityDestination, weight, long, high, width, price } = req.body
-        if (!cityOrigin) {
-            ErrorWrapper.createError({
-                name: 'cityOrigin is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'cityOrigin',
-                    type: 'string',
-                    value: cityOrigin,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!cityDestination) {
-            ErrorWrapper.createError({
-                name: 'cityDestination is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'cityDestination',
-                    type: 'string',
-                    value: cityDestination,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!weight) {
-            ErrorWrapper.createError({
-                name: 'weight is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'weight',
-                    type: 'string',
-                    value: weight,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!long) {
-            ErrorWrapper.createError({
-                name: 'long is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'long',
-                    type: 'string',
-                    value: long,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!high) {
-            ErrorWrapper.createError({
-                name: 'high is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'high',
-                    type: 'string',
-                    value: high,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!width) {
-            ErrorWrapper.createError({
-                name: 'width is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'width',
-                    type: 'string',
-                    value: width,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!price) {
-            ErrorWrapper.createError({
-                name: 'price is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'price',
-                    type: 'string',
-                    value: price,
-                }),
-                message: 'Error to save shipment',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
+        const { quantity, streetName, streetNumber, floor, apartment, zipCode } = req.body
+        const { cid, fid, pid } = req.params
+
+        const [city, file, product] = await Promise.all([
+            this.cityRepository.getCityById(cid),
+            this.fileRepository.getFileById(fid),
+            this.productRepository.getProductById(pid),
+        ])
+
+        const { width, high } = calculateDimensions({ buffer: file.file })
+        const long = product.thickness * quantity
+        const volume = width * high * long
+        const weight = product.specificWeight * volume
+        const exedentWeight = Math.max(0, Math.ceil(weight - product.standardWeight))
+        const price = city.shipmentService.price + exedentWeight * city.pricePerKiloExtra
 
         const result = await this.shipmentRepository.saveShipment({
             shipment: {
-                cityOrigin,
-                cityDestination,
+                city: city.name,
+                shipmentService: city.shipmentService.name,
+                streetName,
+                streetNumber,
+                floor,
+                apartment,
+                zipCode,
                 weight,
                 long,
                 high,
@@ -134,18 +72,36 @@ export class ShipmentController {
     }
 
     searchShipments = async (req, res) => {
-        const { limit, page, cityOrigin, cityDestination, weight, long, high, width, price } = req.query
+        const {
+            city,
+            shipmentService,
+            streetName,
+            streetNumber,
+            floor,
+            apartment,
+            zipCode,
+            weight,
+            long,
+            high,
+            width,
+            price,
+        } = req.query
 
         let query = {}
-        if (cityOrigin) query.cityOrigin = cityOrigin
-        if (cityDestination) query.cityDestination = cityDestination
+        if (city) query.city = city
+        if (shipmentService) query.shipmentService = shipmentService
+        if (streetName) query.streetName = streetName
+        if (streetNumber) query.streetNumber = streetNumber
+        if (floor) query.floor = floor
+        if (apartment) query.apartment = apartment
+        if (zipCode) query.zipCode = zipCode
         if (weight) query.weight = weight
         if (long) query.long = long
         if (high) query.high = high
         if (width) query.width = width
         if (price) query.price = price
 
-        const result = await this.shipmentRepository.searchShipments({ limit, page, query })
+        const result = await this.shipmentRepository.searchShipments({ query })
 
         return res.status(200).send({
             status: 'success',
@@ -155,7 +111,21 @@ export class ShipmentController {
     }
 
     updateShipment = async (req, res) => {
-        const { cityOrigin, cityDestination, weight, long, high, width, price } = req.query
+        const {
+            city,
+            shipmentService,
+            streetName,
+            streetNumber,
+            floor,
+            apartment,
+            zipCode,
+            weight,
+            long,
+            high,
+            width,
+            price,
+        } = req.query
+
         const { sid } = req.params
         if (!sid || !isNaN(sid)) {
             ErrorWrapper.createError({
@@ -166,9 +136,14 @@ export class ShipmentController {
             })
         }
 
-        let query = { _id: sid }
-        if (cityOrigin) query.cityOrigin = cityOrigin
-        if (cityDestination) query.cityDestination = cityDestination
+        let query = {}
+        if (city) query.city = city
+        if (shipmentService) query.shipmentService = shipmentService
+        if (streetName) query.streetName = streetName
+        if (streetNumber) query.streetNumber = streetNumber
+        if (floor) query.floor = floor
+        if (apartment) query.apartment = apartment
+        if (zipCode) query.zipCode = zipCode
         if (weight) query.weight = weight
         if (long) query.long = long
         if (high) query.high = high
