@@ -8,8 +8,8 @@ import swaggerUIExpress from 'swagger-ui-express'
 import config from './config/index.js'
 import { ErrorWrapper, codes, handlerErrors } from './middlewares/errors/index.js'
 import { handlerLogs } from './middlewares/logs/index.js'
-import { router } from './routers/index.js'
-import { cronClearFile } from './tasks/files.js'
+import { router } from './routes/index.js'
+import { TaskDeleteFiles } from './tasks/files.js'
 import __dirname from './utils/dirname.util.js'
 
 const app = express()
@@ -58,4 +58,5 @@ app.use(handlerErrors)
 
 app.listen(config.port, () => console.log('app run in port ' + config.port))
 
-cronClearFile()
+const task = new TaskDeleteFiles()
+await task.cronClearFile()

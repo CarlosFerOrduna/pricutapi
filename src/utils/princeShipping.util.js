@@ -1,5 +1,5 @@
 import { launch } from 'puppeteer'
-import citiesModel from '../models/cities.model.js'
+import citiesModel from '../dao/mongo/models/cities/index.js'
 
 const getPriceShipping = async ({
     cityOrigin,
