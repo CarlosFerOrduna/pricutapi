@@ -35,4 +35,9 @@ userSchema.pre('find', function () {
 
 userSchema.plugin(paginate)
 
+userSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const userModel = model('users', userSchema)

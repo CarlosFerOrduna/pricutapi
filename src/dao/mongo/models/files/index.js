@@ -26,4 +26,9 @@ fileSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+fileSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const fileModel = model('files', fileSchema)

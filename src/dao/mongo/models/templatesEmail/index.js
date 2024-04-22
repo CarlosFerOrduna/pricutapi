@@ -27,4 +27,9 @@ templateEmailSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+templateEmailSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const templateEmailModel = model('templatesEmail', templateEmailSchema)

@@ -32,4 +32,9 @@ materialSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+materialSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const materialModel = model('materials', materialSchema)

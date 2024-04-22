@@ -37,4 +37,9 @@ shipmentSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+shipmentSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const shipmentModel = model('shipments', shipmentSchema)

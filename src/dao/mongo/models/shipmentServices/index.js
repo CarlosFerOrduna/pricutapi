@@ -25,4 +25,9 @@ shipmentServiceSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+shipmentServiceSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const shipmentServiceModel = model('shipmentServices', shipmentServiceSchema)

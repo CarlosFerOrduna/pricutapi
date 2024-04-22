@@ -30,4 +30,9 @@ cutServiceSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+cutServiceSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const cutServiceModel = model('cutServices', cutServiceSchema)

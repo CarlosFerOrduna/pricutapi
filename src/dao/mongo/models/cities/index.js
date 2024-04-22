@@ -22,4 +22,9 @@ citySchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+citySchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const cityModel = model('cities', citySchema)
