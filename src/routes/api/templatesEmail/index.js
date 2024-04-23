@@ -6,9 +6,9 @@ export class TemplateEmailRouter extends BaseRouter {
         this.templateEmailController = new TemplateEmailController()
 
         this.get('/', ['public'], this.templateEmailController.searchTemplateEmails)
-        this.get('/:cid', ['public'], this.templateEmailController.getTemplateEmailById)
+        this.get('/:teid', ['public'], this.templateEmailController.getTemplateEmailById)
         this.post('/', ['admin'], this.templateEmailController.saveTemplateEmail)
-        this.put('/:cid', ['admin'], this.templateEmailController.updateTemplateEmail)
-        this.delete('/:cid', ['admin'], this.templateEmailController.deleteTemplateEmail)
+        this.put('/:teid', ['admin'], this.templateEmailController.updateTemplateEmail)
+        this.delete('/:teid', ['admin'], this.templateEmailController.deleteTemplateEmail)
     }
 }
