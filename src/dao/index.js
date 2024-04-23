@@ -12,6 +12,7 @@ import {
     FileService,
     MaterialService,
     ProductService,
+    PurchaseOrderService,
     ShipmentService,
     ShipmentServiceService,
     TemplateEmailService,
@@ -22,12 +23,13 @@ export let articleDAO
 export let categoryDAO
 export let cityDAO
 export let commentDAO
+export let cutServiceDAO
 export let fileDAO
 export let materialDAO
 export let productDAO
-export let cutServiceDAO
-export let shipmentServicesDAO
+export let purchaseOrderDAO
 export let shipmentsDAO
+export let shipmentServicesDAO
 export let templateEmailDAO
 export let userDAO
 
@@ -45,6 +47,7 @@ switch (config.persistence) {
             fileDAO = new FileService()
             materialDAO = new MaterialService()
             productDAO = new ProductService()
+            userDAO = new PurchaseOrderService()
             cutServiceDAO = new CutServiceService()
             shipmentServicesDAO = new ShipmentServiceService()
             shipmentsDAO = new ShipmentService()

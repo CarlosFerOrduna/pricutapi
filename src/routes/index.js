@@ -10,6 +10,7 @@ import {
     FileRouter,
     MaterialRouter,
     ProductRouter,
+    PurchaseOrderRouter,
     ShipmentRouter,
     ShipmentServiceRouter,
     TemplateEmailRouter,
@@ -26,6 +27,7 @@ router.use('/api/contact', new ContactRouter().getRouter())
 router.use('/api/files', new FileRouter().getRouter())
 router.use('/api/materials', new MaterialRouter().getRouter())
 router.use('/api/products', new ProductRouter().getRouter())
+router.use('/api/purchaseorders', new PurchaseOrderRouter().getRouter())
 router.use('/api/cutservices', new CutServiceRouter().getRouter())
 router.use('/api/shipmentservices', new ShipmentServiceRouter().getRouter())
 router.use('/api/shipments', new ShipmentRouter().getRouter())

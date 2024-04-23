@@ -7,7 +7,7 @@ export class ShipmentRouter extends BaseRouter {
 
         this.get('/', ['public'], this.shipmentController.searchShipments)
         this.get('/:sid', ['public'], this.shipmentController.getShipmentById)
-        this.post('/', ['admin'], this.shipmentController.saveShipment)
+        this.post('/:cid:fid:pid', ['public'], this.shipmentController.saveShipment)
         this.put('/:sid', ['admin'], this.shipmentController.updateShipment)
         this.delete('/:sid', ['admin'], this.shipmentController.deleteShipment)
     }

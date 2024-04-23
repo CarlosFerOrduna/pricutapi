@@ -1,14 +1,15 @@
 import { model, Schema } from 'mongoose'
+import envs from '../../../../config/index'
 
 const purchaseOrderSchema = new Schema(
     {
-        sellerCompanyName: { type: String, required: true },
-        sellerDeliveryAddress: { type: String, required: true },
-        sellerTax: { type: String, required: true },
-        sellerFiscalAddress: { type: String, required: true },
+        sellerCompanyName: { type: String },
+        sellerDeliveryAddress: { type: String },
+        sellerTax: { type: String },
+        sellerFiscalAddress: { type: String },
         sellerEmail: { type: String },
         sellerTel: { type: String },
-        purchaserName: { type: String, required: true },
+        purchaserFullName: { type: String, required: true },
         purchaserDeliveryAddress: { type: String, required: true },
         purchaserEmail: { type: String },
         purchaserTel: { type: String },
@@ -27,6 +28,15 @@ const purchaseOrderSchema = new Schema(
         timestamps: true,
     },
 )
+
+purchaseOrderSchema.pre('save', function () {
+    this.sellerCompanyName = 'pricut-test'
+    this.sellerDeliveryAddress = 'address-pricut'
+    this.sellerTax = 'cuit/ruc-pricut'
+    this.sellerFiscalAddress = 'fiscal-pricut'
+    this.sellerEmail = envs.mailer.auth.user
+    this.sellerTel = '+111 1111111111'
+})
 
 purchaseOrderSchema.methods.softDelete = async function () {
     this.deleted = true
