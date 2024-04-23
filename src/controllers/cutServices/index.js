@@ -147,7 +147,7 @@ export class CutServiceController {
     updateCutService = async (req, res) => {
         try {
             const { files } = req
-            const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.query
+            const { name, description, cuttingCapacity, supportedThickness, about, commonUses } = req.body
             const { csid } = req.params
             if (!csid || !isNaN(csid)) {
                 ErrorWrapper.createError({
