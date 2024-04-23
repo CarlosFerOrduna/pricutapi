@@ -9,7 +9,7 @@ export class CutServiceService {
         return await newCutService.save()
     }
 
-    getServiceById = async ({ csid }) => {
+    getCutServiceById = async ({ csid }) => {
         const result = await cutServiceModel.findById(csid)
         if (!result) {
             ErrorWrapper.createError({
