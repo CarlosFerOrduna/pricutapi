@@ -46,4 +46,12 @@ export default {
             pass: process.env.TRANSPOSRT_PASS,
         },
     },
+    ruc: {
+        companyName: process.env.SELLER_COMPANY_NAME,
+        deliveryAddress: process.env.SELLER_DELIVERY_ADDRESS,
+        tax: process.env.SELLER_TAX,
+        fiscalAddress: process.env.SELLER_FISCAL_ADDRESS,
+        email: process.env.SELLER_EMAIL,
+        tel: process.env.SELLER_TEL,
+    },
 }

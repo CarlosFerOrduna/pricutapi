@@ -30,12 +30,12 @@ const purchaseOrderSchema = new Schema(
 )
 
 purchaseOrderSchema.pre('save', function () {
-    this.sellerCompanyName = 'pricut-test'
-    this.sellerDeliveryAddress = 'address-pricut'
-    this.sellerTax = 'cuit/ruc-pricut'
-    this.sellerFiscalAddress = 'fiscal-pricut'
-    this.sellerEmail = envs.mailer.auth.user
-    this.sellerTel = '+111 1111111111'
+    this.sellerCompanyName = envs.ruc.companyName
+    this.sellerDeliveryAddress = envs.ruc.deliveryAddress
+    this.sellerTax = envs.ruc.tax
+    this.sellerFiscalAddress = envs.ruc.fiscalAddress
+    this.sellerEmail = envs.ruc.email
+    this.sellerTel = envs.ruc.tel
 })
 
 purchaseOrderSchema.methods.softDelete = async function () {
