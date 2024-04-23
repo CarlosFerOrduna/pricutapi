@@ -1,5 +1,5 @@
-import { cityDAO } from '../../dao/index.js'
 import { CreateCity, SelectCity, UpdateCity } from '../../dao/dtos/index.js'
+import { cityDAO } from '../../dao/index.js'
 
 export class CityRepository {
     constructor() {
@@ -19,20 +19,8 @@ export class CityRepository {
         return new SelectCity(city)
     }
 
-    searchCities = async ({ limit, page, query }) => {
-        const { docs, totalPages, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } =
-            await this.dao.searchCities({ limit, page, query })
-
-        return {
-            cities: docs.map((c) => new SelectCity(c)),
-            totalPages,
-            page,
-            pagingCounter,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-        }
+    searchCities = async ({ query }) => {
+        return await this.dao.searchCities({ query })
     }
 
     updateCity = async ({ city }) => {

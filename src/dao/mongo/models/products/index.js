@@ -49,4 +49,9 @@ productSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+productSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const productModel = model('products', productSchema)

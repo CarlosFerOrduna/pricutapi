@@ -25,4 +25,9 @@ categorySchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+categorySchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const categoryModel = model('categories', categorySchema)

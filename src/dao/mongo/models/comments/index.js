@@ -25,4 +25,9 @@ commentSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+commentSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const commentModel = model('comments', commentSchema)

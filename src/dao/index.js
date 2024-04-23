@@ -2,30 +2,34 @@ import { connect, set } from 'mongoose'
 import config from '../config/index.js'
 import { ErrorWrapper, codes } from '../middlewares/errors/index.js'
 
+import { migrateSchemaHandler } from '../utils/migrateSchemaHandler.js'
 import {
     ArticleService,
     CategoryService,
     CityService,
     CommentService,
+    CutServiceService,
     FileService,
     MaterialService,
     ProductService,
-    ServiceService,
-    ShippingService,
+    PurchaseOrderService,
+    ShipmentService,
+    ShipmentServiceService,
     TemplateEmailService,
     UserService,
 } from './mongo/services/index.js'
-import { migrateSchemaHandler } from '../utils/migrateSchemaHandler.js'
 
 export let articleDAO
 export let categoryDAO
 export let cityDAO
 export let commentDAO
+export let cutServiceDAO
 export let fileDAO
 export let materialDAO
 export let productDAO
-export let serviceDAO
-export let shippingDAO
+export let purchaseOrderDAO
+export let shipmentsDAO
+export let shipmentServicesDAO
 export let templateEmailDAO
 export let userDAO
 
@@ -43,8 +47,10 @@ switch (config.persistence) {
             fileDAO = new FileService()
             materialDAO = new MaterialService()
             productDAO = new ProductService()
-            serviceDAO = new ServiceService()
-            shippingDAO = new ShippingService()
+            userDAO = new PurchaseOrderService()
+            cutServiceDAO = new CutServiceService()
+            shipmentServicesDAO = new ShipmentServiceService()
+            shipmentsDAO = new ShipmentService()
             templateEmailDAO = new TemplateEmailService()
             userDAO = new UserService()
 

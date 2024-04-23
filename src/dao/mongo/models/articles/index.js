@@ -29,4 +29,9 @@ articleSchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
+articleSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
 export const articleModel = model('articles', articleSchema)

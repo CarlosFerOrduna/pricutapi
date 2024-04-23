@@ -1,10 +1,9 @@
 import { Schema, model } from 'mongoose'
-import paginate from 'mongoose-paginate-v2'
 
-const citiesSchema = new Schema(
+const citySchema = new Schema(
     {
-        key: { type: Number, required: true, index: true, unique: true },
-        value: { type: String, required: true, unique: true },
+        name: { type: String, required: true, unique: true, index: true },
+        shipmentService: { type: Schema.Types.ObjectId, require: true, ref: 'shipmentServices' },
         status: { type: String, enum: ['enable', 'disable'], default: 'enable' },
         deleted: { type: Boolean, default: false },
         deletedAt: { type: Date, default: null },
@@ -12,17 +11,20 @@ const citiesSchema = new Schema(
     { timestamps: true },
 )
 
-citiesSchema.plugin(paginate)
-
-citiesSchema.methods.softDelete = async function () {
+citySchema.methods.softDelete = async function () {
     this.deleted = true
     this.deletedAt = new Date()
 
     return this.save()
 }
 
-citiesSchema.pre('find', function () {
+citySchema.pre('find', function () {
     this.where({ deletedAt: null })
 })
 
-export const cityModel = model('cities', citiesSchema)
+citySchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+})
+
+export const cityModel = model('cities', citySchema)

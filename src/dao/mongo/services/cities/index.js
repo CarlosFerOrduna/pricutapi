@@ -10,7 +10,7 @@ export class CityService {
     }
 
     getCityById = async ({ cid }) => {
-        const result = await cityModel.findById(cid)
+        const result = await cityModel.findById(cid).populate('shipmentService')
         if (!result) {
             ErrorWrapper.createError({
                 name: 'city not exists',
@@ -27,12 +27,14 @@ export class CityService {
         return result
     }
 
-    searchCities = async ({ limit = 10, page = 1, query }) => {
-        return await cityModel.paginate(query, { limit, page })
+    searchCities = async ({ query }) => {
+        return await cityModel.find(query).populate('shipmentService')
     }
 
     updateCity = async ({ city }) => {
-        const result = await cityModel.findByIdAndUpdate(city._id, city, { new: true })
+        const result = await cityModel.findByIdAndUpdate(city._id, city, {
+            new: true,
+        })
         if (!result) {
             ErrorWrapper.createError({
                 name: 'city not exists',

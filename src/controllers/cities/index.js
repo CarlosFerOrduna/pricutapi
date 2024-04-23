@@ -1,5 +1,6 @@
 import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../middlewares/errors/index.js'
 import { CityRepository } from '../../repositories/index.js'
+import { handlerError } from '../../utils/handlerError.util.js'
 
 export class CityController {
     constructor() {
@@ -7,127 +8,147 @@ export class CityController {
     }
 
     saveCity = async (req, res) => {
-        const { key, value } = req.body
-        if (!key || isNaN(key)) {
-            ErrorWrapper.createError({
-                name: 'key is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'key',
-                    type: 'string',
-                    value: key,
-                }),
-                message: 'Error to create city',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
-        if (!value || !isNaN(value)) {
-            ErrorWrapper.createError({
-                name: 'value is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'value',
-                    type: 'string',
-                    value: value,
-                }),
-                message: 'Error to create city',
-                code: codes.INVALID_TYPES_ERROR,
-            })
-        }
+        try {
+            const { name, shipmentService } = req.body
+            if (!name || isNaN(name)) {
+                ErrorWrapper.createError({
+                    name: 'name is not valid',
+                    cause: invalidFieldErrorInfo({
+                        name: 'name',
+                        type: 'string',
+                        value: name,
+                    }),
+                    message: 'Error to create city',
+                    code: codes.INVALID_TYPES_ERROR,
+                })
+            }
+            if (!shipmentService || !isNaN(shipmentService)) {
+                ErrorWrapper.createError({
+                    name: 'shipmentService is not valid',
+                    cause: invalidFieldErrorInfo({
+                        name: 'shipmentService',
+                        type: 'string',
+                        value: shipmentService,
+                    }),
+                    message: 'Error to create city',
+                    code: codes.INVALID_TYPES_ERROR,
+                })
+            }
 
-        const result = await this.citiesRepository.saveCity({ city: { key, value } })
+            const result = await this.citiesRepository.saveCity({ city: { name, shipmentService } })
 
-        return res.status(201).send({
-            status: 'success',
-            message: 'cities successfully created',
-            data: result,
-        })
+            return res.status(201).send({
+                status: 'success',
+                message: 'cities successfully created',
+                data: result,
+            })
+        } catch (error) {
+            handlerError(error, res)
+        }
     }
 
     getCityById = async (req, res) => {
-        const { cid } = req.params
-        if (!cid || !isNaN(cid)) {
-            ErrorWrapper.createError({
-                name: 'cid is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'cid',
-                    type: 'string',
-                    value: cid,
-                }),
-                message: 'Error to get city',
-                code: codes.INVALID_TYPES_ERROR,
+        try {
+            const { cid } = req.params
+            if (!cid || !isNaN(cid)) {
+                ErrorWrapper.createError({
+                    name: 'cid is not valid',
+                    cause: invalidFieldErrorInfo({
+                        name: 'cid',
+                        type: 'string',
+                        value: cid,
+                    }),
+                    message: 'Error to get city',
+                    code: codes.INVALID_TYPES_ERROR,
+                })
+            }
+
+            const result = await this.citiesRepository.getCityById({ cid })
+
+            return res.status(200).send({
+                status: 'success',
+                message: 'cities successfully found',
+                data: result,
             })
+        } catch (error) {
+            handlerError(error, res)
         }
-
-        const result = await this.citiesRepository.getCityById({ cid })
-
-        return res.status(200).send({
-            status: 'success',
-            message: 'cities successfully found',
-            data: result,
-        })
     }
 
     searchCities = async (req, res) => {
-        const { limit, page, key, value } = req.query
+        try {
+            const { name, shipmentService } = req.query
 
-        let query = {}
-        if (key) query.key = key
-        if (value) query.value = value
+            let query = {}
+            if (name) query.name = name
+            if (shipmentService) query.shipmentService = shipmentService
 
-        const result = await this.citiesRepository.searchCities({ limit, page, query })
+            const result = await this.citiesRepository.searchCities({ query })
 
-        return res.status(200).send({
-            status: 'success',
-            message: 'all cities',
-            data: result,
-        })
+            return res.status(200).send({
+                status: 'success',
+                message: 'all cities',
+                data: result,
+            })
+        } catch (error) {
+            handlerError(error, res)
+        }
     }
 
     updateCity = async (req, res) => {
-        const { key, value } = req.body
-        const { cid } = req.params
-        if (!cid || !isNaN(cid)) {
-            ErrorWrapper.createError({
-                name: 'cid is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'cid',
-                    type: 'string',
-                    value: cid,
-                }),
-                message: 'Error to update city',
-                code: codes.INVALID_TYPES_ERROR,
+        try {
+            const { name, shipmentService } = req.body
+            const { cid } = req.params
+            if (!cid || !isNaN(cid)) {
+                ErrorWrapper.createError({
+                    name: 'cid is not valid',
+                    cause: invalidFieldErrorInfo({
+                        name: 'cid',
+                        type: 'string',
+                        value: cid,
+                    }),
+                    message: 'Error to update city',
+                    code: codes.INVALID_TYPES_ERROR,
+                })
+            }
+
+            let query = { _id: cid }
+            if (name) query.name = name
+            if (shipmentService) query.shipmentService = shipmentService
+
+            const result = await this.citiesRepository.updateCity({ city: query })
+
+            return res.status(200).send({
+                status: 'success',
+                message: 'cities successfully updated',
+                data: result,
             })
+        } catch (error) {
+            handlerError(error, res)
         }
-
-        let query = { _id: cid }
-        if (key) query.key = key
-        if (value) query.value = value
-
-        const result = await this.citiesRepository.updateCity({ city: query })
-
-        return res.status(200).send({
-            status: 'success',
-            message: 'cities successfully updated',
-            data: result,
-        })
     }
 
     deleteCity = async (req, res) => {
-        const { cid } = req.params
-        if (!cid || !isNaN(cid)) {
-            ErrorWrapper.createError({
-                name: 'cid is not valid',
-                cause: invalidFieldErrorInfo({
-                    name: 'cid',
-                    type: 'string',
-                    value: cid,
-                }),
-                message: 'Error to delete city',
-                code: codes.INVALID_TYPES_ERROR,
-            })
+        try {
+            const { cid } = req.params
+            if (!cid || !isNaN(cid)) {
+                ErrorWrapper.createError({
+                    name: 'cid is not valid',
+                    cause: invalidFieldErrorInfo({
+                        name: 'cid',
+                        type: 'string',
+                        value: cid,
+                    }),
+                    message: 'Error to delete city',
+                    code: codes.INVALID_TYPES_ERROR,
+                })
+            }
+
+            await this.citiesRepository.deleteCity({ cid })
+
+            return res.status(204).send()
+        } catch (error) {
+            handlerError(error, res)
         }
-
-        await this.citiesRepository.deleteCity({ cid })
-
-        return res.status(204).send()
     }
 }
