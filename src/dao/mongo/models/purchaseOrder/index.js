@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import envs from '../../../../config/index'
+import envs from '../../../../config/index.js'
 
 const purchaseOrderSchema = new Schema(
     {
