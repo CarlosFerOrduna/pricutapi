@@ -2,20 +2,20 @@ import { ErrorWrapper, codes, invalidFieldErrorInfo } from '../../../../middlewa
 import { cutServiceModel } from '../../models/index.js'
 
 export class CutServiceService {
-    saveService = async ({ service }) => {
-        const newService = new cutServiceModel(service)
-        await newService.validate()
+    saveCutService = async ({ service }) => {
+        const newCutService = new cutServiceModel(service)
+        await newCutService.validate()
 
-        return await newService.save()
+        return await newCutService.save()
     }
 
-    getServiceById = async ({ sid }) => {
-        const result = await cutServiceModel.findById(sid)
+    getServiceById = async ({ csid }) => {
+        const result = await cutServiceModel.findById(csid)
         if (!result) {
             ErrorWrapper.createError({
-                name: 'service not exists',
+                name: 'cutService not exists',
                 cause: invalidFieldErrorInfo({
-                    name: 'service',
+                    name: 'cutService',
                     type: 'string',
                     value: result,
                 }),
@@ -27,19 +27,19 @@ export class CutServiceService {
         return result
     }
 
-    searchServices = async ({ query }) => {
+    searchCutServices = async ({ query }) => {
         return await cutServiceModel.find(query)
     }
 
-    updateService = async ({ service }) => {
-        const result = await cutServiceModel.findByIdAndUpdate(service._id, service, {
+    updateCutService = async ({ cutService }) => {
+        const result = await cutServiceModel.findByIdAndUpdate(cutService._id, cutService, {
             new: true,
         })
         if (!result) {
             ErrorWrapper.createError({
-                name: 'service not exists',
+                name: 'cutService not exists',
                 cause: invalidFieldErrorInfo({
-                    name: 'service',
+                    name: 'cutService',
                     type: 'string',
                     value: result,
                 }),
@@ -51,22 +51,22 @@ export class CutServiceService {
         return result
     }
 
-    deleteService = async ({ sid }) => {
-        const service = await cutServiceModel.findById(sid)
-        if (!service) {
+    deleteCutService = async ({ csid }) => {
+        const cutService = await cutServiceModel.findById(csid)
+        if (!cutService) {
             ErrorWrapper.createError({
-                name: 'service not exists',
+                name: 'cutService not exists',
                 cause: invalidFieldErrorInfo({
-                    name: 'service',
+                    name: 'cutService',
                     type: 'string',
-                    value: service,
+                    value: cutService,
                 }),
                 message: 'Error to get product',
                 code: codes.NOT_FOUND,
             })
         }
 
-        const result = await service.softDelete()
+        const result = await cutService.softDelete()
 
         return result
     }

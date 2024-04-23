@@ -35,4 +35,4 @@ cutServiceSchema.set('toJSON', {
     versionKey: false,
 })
 
-export const cutServiceModel = model('cutServices', cutServiceSchema)
+export const cutServiceModel = model('services', cutServiceSchema)
